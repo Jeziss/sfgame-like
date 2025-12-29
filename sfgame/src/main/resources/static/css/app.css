@@ -1,0 +1,36 @@
+/* Kontejner pro tlačítka */
+.button-container {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    width: 280px;
+    margin: 40px auto;
+    font-family: "Segoe UI", sans-serif;
+}
+
+/* Samotný čudlík */
+.button {
+    padding: 14px 20px;
+    background: linear-gradient(135deg, #4f8cff, #3b6fd8);
+    color: white;
+    border-radius: 10px;
+    text-align: center;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 500;
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
+    text-decoration: none;
+}
+
+/* Hover efekt */
+.button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25);
+    background: linear-gradient(135deg, #5a9bff, #457de6);
+}
+
+/* Kliknutí */
+.button:active {
+    transform: translateY(0);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}

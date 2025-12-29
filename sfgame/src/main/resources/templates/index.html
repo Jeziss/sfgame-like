@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="cs" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title th:text="#{mainMenuTitle}">Main Menu</title>
+    <link rel="stylesheet" href="/css/app.css" />
+</head>
+
+<body>
+    <div class="button-container">
+        <a href="/tavern" class="button" th:text="#{tavern}">Tavern</a>
+        <a href="/player-inventory" class="button" th:text="#{playerInventory}">Player Inventory</a>
+        <a href="/dungeons" class="button" th:text="#{dungeons}">Dungeons</a>
+        <a href="/magic-shop" class="button" th:text="#{magicShop}">Magic Shop</a>
+        <a href="/weapon-shop" class="button" th:text="#{weaponShop}">Weapon Shop</a>
+    </div>
+</body>
+</html>
