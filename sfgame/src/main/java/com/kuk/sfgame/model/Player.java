@@ -1,9 +1,15 @@
 package com.kuk.sfgame.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "players")
+@Data // Generuje gettery, settery, toString, equals a hashCode
+@NoArgsConstructor // Generuje bezparametrický konstruktor
+@AllArgsConstructor // Generuje konstruktor se všemi parametry
 public class Player {
 
     @Id
@@ -18,44 +24,29 @@ public class Player {
 
     @Column(name = "xp")
     private int experience;
+
     @Column(name = "gold")
     private int gold;
+
     @Column(name = "base_constitution")
     private int constitution;
+
     @Column(name = "base_strength")
     private int strength;
+
     @Column(name = "base_dexterity")
     private int dexterity;
+
     @Column(name = "base_intelligence")
     private int intelligence;
 
-    public Player() {
-    }
+    @Column(name = "player_class")
+    @Enumerated(EnumType.STRING)
+    private PlayerClass playerClass;
 
-    public Player(int id, String name, int level, int experience, int gold, int constitution, int strength, int dexterity, int intelligence) {
-        this.id = id;
-        this.name = name;
-        this.level = level;
-        this.experience = experience;
-        this.gold = gold;
-        this.constitution = constitution;
-        this.strength = strength;
-        this.dexterity = dexterity;
-        this.intelligence = intelligence;
-    }
+    @Transient
+    private int position; // Used for legacy leaderboard display, not persisted to database
 
-    public int getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public int getLevel() {
-        return level;
-    }
-
-
-    
+    @Transient
+    private String guild; // Used for guild display, not persisted to database
 }

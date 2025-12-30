@@ -4,6 +4,7 @@ DROP TABLE IF EXISTS weapon_stats CASCADE;
 DROP TABLE IF EXISTS guild_members CASCADE;
 DROP TABLE IF EXISTS guilds CASCADE;
 DROP TABLE IF EXISTS players CASCADE;
+DROP TABLE IF EXISTS legacy_leaderboard CASCADE;
 
 
 DROP TYPE IF EXISTS item_slot;
@@ -25,26 +26,6 @@ CREATE TABLE players (
     base_constitution INTEGER NOT NULL DEFAULT 15,
     player_class player_classes NOT NULL
 );
-
-
-CREATE OR REPLACE FUNCTION prevent_class_and_name_update()
-RETURNS TRIGGER AS $$
-BEGIN
-    IF NEW.player_class <> OLD.player_class THEN
-        RAISE EXCEPTION 'Class of player % with id % cannot be changed!', OLD.name, OLD.id;
-    END IF;
-    IF NEW.name <> OLD.name THEN
-        RAISE EXCEPTION 'Name of player % with id % cannot be changed!', OLD.name, OLD.id;
-    END IF;
-    RETURN NEW;
-END;
-$$ LANGUAGE plpgsql;
-
-CREATE TRIGGER class_name_no_update
-BEFORE UPDATE ON players
-FOR EACH ROW
-EXECUTE FUNCTION prevent_class_and_name_update();
-
 
 
 CREATE TABLE guilds (
@@ -88,3 +69,27 @@ CREATE TABLE weapon_stats (
     max_damage INTEGER NOT NULL
 );
 
+CREATE TABLE legacy_leaderboard (
+    player_id INTEGER PRIMARY KEY REFERENCES players(id),
+    position INTEGER NOT NULL DEFAULT 0
+);
+
+
+INSERT INTO players (name, player_class, lvl) VALUES
+('Basic Warrior', 'WARRIOR', 1),
+('Basic Mage', 'MAGE', 2),
+('Basic Scout', 'SCOUT', 3);
+
+INSERT INTO legacy_leaderboard (player_id, position) VALUES
+(1, 1),
+(2, 2),
+(3, 3);
+
+INSERT INTO guilds (name, xp_bonus_percent, gold_bonus_percent, dmg_bonus_percent, hp_bonus_percent) VALUES
+('Knights of Valor', 10, 5, 7, 8),
+('Mages Guild', 15, 3, 10, 5);
+
+INSERT INTO guild_members (member_id, guild_id) VALUES
+(1, 1),
+(2, 2),
+(3, 1);

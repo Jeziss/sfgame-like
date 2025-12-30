@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="cs" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title th:text="#{legacyLeaderboard}">Legacy Leaderboard</title>
+    <link rel="stylesheet" href="/css/app.css" />
+</head>
+
+<body>
+    <div class="container">
+        <h1 th:text="#{guild}">Guild</h1>
+
+        <div th:if="${param.success}" class="success-message" th:text="${param.success}"></div>
+        <div th:if="${errorMessage}" class="error-message" th:text="${errorMessage}"></div>
+
+        <div class="actions">
+            <a href="/" class="btn btn-link" th:text="#{backToMainMenu}">
+                Back to Home
+            </a>
+        </div>
+
+        <div class="guild-wrapper">
+
+            <!-- ===== GUILD 1 ===== -->
+            <div class="guild" th:if="${guild1players != null and !guild1players.isEmpty()}">
+
+                <div class="guild-header">
+                    <div class="guild-name" th:text="${guild1Name}">Guild One</div>
+                    <div class="guild-bonuses">
+                        <span>💰 Gold +<span th:text="${guild1Bonus.gold}">10</span>%</span>
+                        <span>⭐ XP +<span th:text="${guild1Bonus.xp}">10</span>%</span>
+                        <span>❤️ HP +<span th:text="${guild1Bonus.hp}">10</span>%</span>
+                        <span>⚔️ DMG +<span th:text="${guild1Bonus.dmg}">10</span>%</span>
+                    </div>
+                </div>
+
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Level</th>
+                            <th>Class</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="player : ${guild1players}">
+                            <td th:text="${player.name}">Player Name</td>
+                            <td th:text="${player.level}">1</td>
+                            <td th:text="${player.playerClass}">Class</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="guild info-message"
+                 th:if="${guild1players == null or guild1players.isEmpty()}">
+                <p>No players found.</p>
+            </div>
+
+            <!-- ===== GUILD 2 ===== -->
+            <div class="guild" th:if="${guild2players != null and !guild2players.isEmpty()}">
+
+                <div class="guild-header">
+                    <div class="guild-name" th:text="${guild2Name}">Guild Two</div>
+                    <div class="guild-bonuses">
+                        <span>💰 Gold +<span th:text="${guild2Bonus.gold}">10</span>%</span>
+                        <span>⭐ XP +<span th:text="${guild2Bonus.xp}">10</span>%</span>
+                        <span>❤️ HP +<span th:text="${guild2Bonus.hp}">10</span>%</span>
+                        <span>⚔️ DMG +<span th:text="${guild2Bonus.dmg}">10</span>%</span>
+                    </div>
+                </div>
+
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Level</th>
+                            <th>Class</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="player : ${guild2players}">
+                            <td th:text="${player.name}">Player Name</td>
+                            <td th:text="${player.level}">1</td>
+                            <td th:text="${player.playerClass}">Class</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="guild info-message"
+                 th:if="${guild2players == null or guild2players.isEmpty()}">
+                <p>No players found.</p>
+            </div>
+
+        </div>
+    </div>
+</body>
+
+</html>

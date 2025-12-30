@@ -34,3 +34,197 @@
     transform: translateY(0);
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
+
+/* === ZÁKLAD === */
+body {
+    font-family: "Segoe UI", sans-serif;
+    background: #f4f6f9;
+    color: #333;
+    margin: 0;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 20px;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+/* === ZPRÁVY === */
+.success-message {
+    background: #e6f7ea;
+    color: #1e7d34;
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+.error-message {
+    background: #fdecea;
+    color: #b42318;
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+.info-message {
+    background: #eef2ff;
+    padding: 12px;
+    border-radius: 8px;
+    text-align: center;
+    margin-top: 20px;
+}
+
+/* === AKCE === */
+.actions {
+    margin-bottom: 30px;
+}
+
+.btn-link {
+    text-decoration: none;
+    color: #3b6fd8;
+    font-weight: 500;
+}
+
+/* === LAYOUT GUILD === */
+.guild-wrapper {
+    display: flex;
+    gap: 30px;
+    align-items: flex-start;
+}
+
+/* === GUILD BLOK === */
+.guild {
+    background: white;
+    border-radius: 14px;
+    padding: 20px;
+    flex: 1;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+}
+
+/* === HLAVIČKA GUILDY === */
+.guild-header {
+    margin-bottom: 15px;
+}
+
+.guild-name {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+/* === BONUSY === */
+.guild-bonuses {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.guild-bonuses span {
+    background: #f0f4ff;
+    color: #2f5fd7;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+/* === TABULKA === */
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.data-table thead {
+    background: #f7f9fc;
+}
+
+.data-table th,
+.data-table td {
+    padding: 10px 12px;
+    text-align: left;
+}
+
+.data-table th {
+    font-size: 14px;
+    color: #666;
+}
+
+.data-table tbody tr {
+    border-top: 1px solid #eee;
+}
+
+.data-table tbody tr:hover {
+    background: #f8faff;
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 900px) {
+    .guild-wrapper {
+        flex-direction: column;
+    }
+}
+
+
+/* === CARD WRAPPER === */
+.card {
+    background: white;
+    border-radius: 14px;
+    padding: 20px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+}
+
+/* === LEADERBOARD SPECIFIKA === */
+.leaderboard-table th:first-child,
+.leaderboard-table td:first-child {
+    width: 60px;
+    text-align: center;
+    font-weight: 600;
+}
+
+/* TOP 1 hráč */
+.first-place {
+    background: linear-gradient(90deg, #fff7e6, #ffffff);
+}
+
+.first-place td:first-child {
+    color: #d48806;
+    font-weight: 700;
+}
+
+/* TOP 2 hráč */
+.second-place {
+    background: linear-gradient(90deg, #f5f7fa, #ffffff);
+}
+
+.second-place td:first-child {
+    color: #8c8c8c;
+    font-weight: 700;
+}
+
+/* TOP 3 hráč */
+.third-place {
+    background: linear-gradient(90deg, #fff1e6, #ffffff);
+}
+
+
+.third-place td:first-child {
+    color: #cd7f32;
+    font-weight: 700;
+}
+
+
+/* Hover zvýraznění */
+.data-table tbody tr {
+    transition: background 0.15s ease;
+}
+
+/* Guild jméno decentně */
+.leaderboard-table td:last-child {
+    font-weight: 500;
+    color: #3b6fd8;
+}

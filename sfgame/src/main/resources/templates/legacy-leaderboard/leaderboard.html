@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="cs" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title th:text="#{legacyLeaderboard}">Legacy Leaderboard</title>
+    <link rel="stylesheet" href="/css/app.css" />
+</head>
+
+<body>
+    <div class="container">
+        <h1 th:text="#{legacyLeaderboard}">Legacy Leaderboard</h1>
+
+        <div th:if="${param.success}" class="success-message" th:text="${param.success}"></div>
+        <div th:if="${errorMessage}" class="error-message" th:text="${errorMessage}"></div>
+
+        <div class="actions">
+            <a href="/" class="btn btn-link" th:text="#{backToMainMenu}">
+                Back to Home
+            </a>
+        </div>
+
+        <div class="card" th:if="${players != null and !players.isEmpty()}">
+            <table class="data-table leaderboard-table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Name</th>
+                        <th>Level</th>
+                        <th>Guild</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="player : ${players}"
+                        th:classappend="${player.position == 1} ? 'first-place' :
+                                       (${player.position == 2} ? 'second-place' :
+                                       (${player.position == 3} ? 'third-place' : ''))">
+                        <td th:text="${player.position}">1</td>
+                        <td th:text="${player.name}">Player Name</td>
+                        <td th:text="${player.level}">99</td>
+                        <td th:text="${player.guild}">Guild Name</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div th:if="${players == null or players.isEmpty()}" class="info-message">
+            <p>No players found.</p>
+        </div>
+    </div>
+</body>
+
+</html>
