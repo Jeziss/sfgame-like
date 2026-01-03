@@ -37,12 +37,22 @@ public class Item {
     // --- Vztah na hráče ---
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "player_id", nullable = false)
+    @ToString.Exclude
     private Player player;
 
     // --- Vztah na template ---
     @ManyToOne
     @JoinColumn(name = "template_id", nullable = false)
     private ItemTemplate template;
+
+
+    @OneToOne(mappedBy = "playerItem", fetch = FetchType.LAZY)
+    @ToString.Exclude
+    private Weapon weapon;
+
+    public boolean isWeapon() {
+        return weapon != null;
+    }
 
     // --- Pomocná metoda pro StatsStruct ---
     public StatsStruct toStatsStruct() {

@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Properties;
 
+import com.kuk.sfgame.model.Equipment;
+import com.kuk.sfgame.model.Item;
 import com.kuk.sfgame.model.Guild;
 import com.kuk.sfgame.mapper.GuildMapper;
 
@@ -13,7 +15,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class GuildRepository {
+public class EquipmentRepository {
     
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -24,11 +26,5 @@ public class GuildRepository {
         try (FileInputStream fis = new FileInputStream(path)) {
             sqlQueries.load(fis);
         }
-    }
-
-    public Guild findGuildById(int guildId) {
-        String sql = sqlQueries.getProperty("findGuildById");
-        List<Guild> guilds = jdbcTemplate.query(sql, new GuildMapper(), guildId);
-        return guilds.isEmpty() ? null : guilds.get(0);
     }
 }

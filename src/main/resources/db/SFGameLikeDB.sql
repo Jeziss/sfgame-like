@@ -93,3 +93,41 @@ INSERT INTO guild_members (member_id, guild_id) VALUES
 (1, 1),
 (2, 2),
 (3, 1);
+
+
+INSERT INTO item_templates (name, slot, icon) VALUES
+('Rusty Sword', 'WEAPON', 'sword_rusty.png'),
+('Oak Staff', 'WEAPON', 'staff_oak.png'),
+('Hunter Bow', 'WEAPON', 'bow_hunter.png'),
+('Leather Helmet', 'HELMET', 'helmet_leather.png'),
+('Iron Armor', 'ARMOR', 'armor_iron.png'),
+('Ring of Strength', 'RING', 'ring_strength.png'),
+('Amulet of Wisdom', 'AMULET', 'amulet_wisdom.png');
+
+
+INSERT INTO player_items
+(player_id, template_id, strength, dexterity, intelligence, constitution, equipped_slot)
+VALUES
+(1, 1, 2, 0, 0, 1, 'WEAPON'),
+(1, 4, 0, 0, 0, 2, 'HELMET'),
+(1, 5, 1, 0, 0, 3, 'ARMOR'),
+(1, 6, 3, 0, 0, 0, 'RING'),
+(2, 2, 0, 0, 3, 0, 'WEAPON'),
+(2, 7, 0, 0, 4, 0, 'AMULET'),
+(3, 3, 1, 2, 0, 0, 'WEAPON'),
+(3, 6, 2, 0, 0, 0, 'RING');
+
+INSERT INTO weapon_stats (player_item_id, min_damage, max_damage)
+SELECT id, 3, 6
+FROM player_items
+WHERE player_id = 1 AND equipped_slot = 'WEAPON';
+
+INSERT INTO weapon_stats (player_item_id, min_damage, max_damage)
+SELECT id, 2, 5
+FROM player_items
+WHERE player_id = 2 AND equipped_slot = 'WEAPON';
+
+INSERT INTO weapon_stats (player_item_id, min_damage, max_damage)
+SELECT id, 4, 7
+FROM player_items
+WHERE player_id = 3 AND equipped_slot = 'WEAPON';

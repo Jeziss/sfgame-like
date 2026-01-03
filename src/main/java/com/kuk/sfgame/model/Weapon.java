@@ -24,5 +24,6 @@ public class Weapon {
     @OneToOne
     @MapsId
     @JoinColumn(name = "player_item_id")
+    @ToString.Exclude
     private Item playerItem;
 }

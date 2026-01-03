@@ -60,7 +60,6 @@ public class Player {
     public StatsStruct getAllStats() {
 
         return equipment.getTotalStats()
-                        .add(weapon.getPlayerItem())
                         .add(this);         // Add player's base stats
     }
 

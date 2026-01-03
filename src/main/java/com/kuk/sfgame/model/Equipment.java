@@ -8,6 +8,8 @@ import java.util.Map;
 
 public class Equipment {
     private final Map<ItemSlot, Item> items;
+    private int weaponMinRoll;
+    private int weaponMaxRoll;
 
     public Equipment() {
         items = new EnumMap<>(ItemSlot.class); 
@@ -38,11 +40,27 @@ public class Equipment {
         return items.get(slot);
     }
 
-    public Map<ItemSlot, Item> getAllMap() {
+    public Item get(String slotName) {
+        if (slotName == null || items == null) return null;
+        try {
+            // Converts the String "WEAPON" back to the Enum ItemSlot.WEAPON
+            ItemSlot slot = ItemSlot.valueOf(slotName.toUpperCase());
+            return items.get(slot);
+        } catch (IllegalArgumentException e) {
+            return null;
+        }
+    }
+
+    public Weapon getWeapon() {
+        Item item = items.get(ItemSlot.WEAPON);
+        return item != null ? item.getWeapon() : null;
+    }
+
+    public Map<ItemSlot, Item> getItems() {
         return Collections.unmodifiableMap(items); // read-only
     }
 
-    public List<Item> getAllList() {
+    public List<Item> getItemsList() {
         return items.values().stream().toList();
     }
 

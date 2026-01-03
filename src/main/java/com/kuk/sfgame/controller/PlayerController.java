@@ -16,6 +16,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.kuk.sfgame.service.impl.PlayerService;
 import com.kuk.sfgame.dto.PlayerChoiceDto;
 import com.kuk.sfgame.dto.PlayerDto;
+import com.kuk.sfgame.model.Equipment;
+import com.kuk.sfgame.model.ItemSlot;
 import com.kuk.sfgame.model.Player;
 
 
@@ -55,12 +57,17 @@ public class PlayerController {
 
     @GetMapping("/player/details")
     public String getPlayerDetails(@RequestParam("id") int id, Model model) {
-        Player player = playerService.getPlayerById(id);
+        Player player = playerService.getPlayerWithGearById(id);
 
         if (player == null) {
             model.addAttribute("errorMessage", "Player not found");
             return "player/player-choice"; // nebo stránka s chybou
         }
+
+        assert(player.getEquipment() != null);
+        assert(player.getEquipment().getItems().get(ItemSlot.WEAPON) != null);
+        assert(player.getEquipment().getItems().get(ItemSlot.WEAPON).toStatsStruct() != null);
+
 
         model.addAttribute("player", player);
         return "player/player-details"; // Thymeleaf šablona s detaily hráče
