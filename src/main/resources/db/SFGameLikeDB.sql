@@ -8,7 +8,8 @@ DROP TABLE IF EXISTS legacy_leaderboard CASCADE;
 
 
 DROP TYPE IF EXISTS item_slot;
-CREATE TYPE item_slot AS ENUM ('WEAPON', 'HELMET', 'ARMOR', 'RING', 'AMULET');
+CREATE TYPE item_slot AS ENUM ('WEAPON', 'HAT', 'ARMOR', 'LEGGINS', 'AMULET', 'BOOTS');
+
 
 DROP TYPE IF EXISTS player_classes;
 CREATE TYPE player_classes AS ENUM ('WARRIOR', 'MAGE', 'SCOUT');
@@ -99,23 +100,26 @@ INSERT INTO item_templates (name, slot, icon) VALUES
 ('Rusty Sword', 'WEAPON', 'sword_rusty.png'),
 ('Oak Staff', 'WEAPON', 'staff_oak.png'),
 ('Hunter Bow', 'WEAPON', 'bow_hunter.png'),
-('Leather Helmet', 'HELMET', 'helmet_leather.png'),
+('Leather Helmet', 'HAT', 'helmet_leather.png'),
 ('Iron Armor', 'ARMOR', 'armor_iron.png'),
-('Ring of Strength', 'RING', 'ring_strength.png'),
-('Amulet of Wisdom', 'AMULET', 'amulet_wisdom.png');
+('Boots of Strength', 'BOOTS', 'ring_strength.png'),
+('Amulet of Wisdom', 'AMULET', 'amulet_wisdom.png'),
+('Shitting trousers', 'LEGGINS', 'amulet_wisdom.png');
 
 
 INSERT INTO player_items
 (player_id, template_id, strength, dexterity, intelligence, constitution, equipped_slot)
 VALUES
 (1, 1, 2, 0, 0, 1, 'WEAPON'),
-(1, 4, 0, 0, 0, 2, 'HELMET'),
+(1, 4, 0, 0, 0, 2, 'HAT'),
 (1, 5, 1, 0, 0, 3, 'ARMOR'),
-(1, 6, 3, 0, 0, 0, 'RING'),
+(1, 6, 3, 0, 0, 0, 'BOOTS'),
 (2, 2, 0, 0, 3, 0, 'WEAPON'),
 (2, 7, 0, 0, 4, 0, 'AMULET'),
 (3, 3, 1, 2, 0, 0, 'WEAPON'),
-(3, 6, 2, 0, 0, 0, 'RING');
+(3, 6, 2, 0, 0, 0, 'BOOTS'),
+(3, 8, 5, 0, 1, 0, 'LEGGINS');
+
 
 INSERT INTO weapon_stats (player_item_id, min_damage, max_damage)
 SELECT id, 3, 6

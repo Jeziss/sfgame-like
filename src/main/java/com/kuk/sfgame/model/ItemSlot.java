@@ -2,8 +2,9 @@ package com.kuk.sfgame.model;
 
 public enum ItemSlot {
     WEAPON,
-    HELMET,
     ARMOR,
-    RING,
+    LEGGINS,
+    HAT,
+    BOOTS,
     AMULET
 }

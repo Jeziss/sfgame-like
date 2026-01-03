@@ -1,90 +1,128 @@
 <!DOCTYPE html>
 <html lang="cs" xmlns:th="http://www.thymeleaf.org">
-
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title th:text="${player.name} + ' Details'">Player Details</title>
-    <link rel="stylesheet" href="/css/app.css" />
-    <style>
-        .stats-list { list-style: none; padding: 0; margin: 5px 0; }
-        .stats-list li { display: inline; margin-right: 15px; font-size: 0.9em; color: #555; }
-        .weapon-damage { color: #d9534f; font-weight: bold; margin-top: 4px; display: block; }
-        .empty-slot { color: #aaa; font-style: italic; }
-        .item-name { color: #2a3f54; font-weight: bold; }
-    </style>
+    <link rel="stylesheet" href="/css/player.css" />
 </head>
-
 <body>
-    <div class="container">
-        <h1 th:text="${player.name} + ' Details'">Player Details</h1>
+<div class="container">
 
-        <div th:if="${param.success}" class="success-message" th:text="${param.success}"></div>
-        <div th:if="${errorMessage}" class="error-message" th:text="${errorMessage}"></div>
-
-        <div class="actions" style="margin-bottom: 20px;">
-            <a href="/player" class="btn btn-link" th:text="#{backToPlayerList}">Back to Player List</a>
-        </div>
-
-        <div class="card" th:if="${player != null}">
-            <table class="data-table player-details-table">
-                <tbody>
-                    <tr>
-                        <th>Basic Info:</th>
-                        <td>
-                            <strong th:text="${player.name}">Name</strong> (Level <span th:text="${player.level}">1</span>)
-                            <br/>
-                            Class: <span th:text="${player.playerClass}">Class</span> | 
-                            Gold: <span th:text="${player.gold}">0</span>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <th>Base Stats:</th>
-                        <td>
-                            <ul class="stats-list">
-                                <li th:text="'Str: ' + ${player.strength}">Str: 0</li>
-                                <li th:text="'Dex: ' + ${player.dexterity}">Dex: 0</li>
-                                <li th:text="'Int: ' + ${player.intelligence}">Int: 0</li>
-                                <li th:text="'Con: ' + ${player.constitution}">Con: 0</li>
-                            </ul>
-                        </td>
-                    </tr>
-
-                    <tr th:each="slot : ${T(com.kuk.sfgame.model.ItemSlot).values()}">
-                        <th th:text="${slot} + ':'">Slot</th>
-                        <td th:with="item=${player.getEquipment().get(slot)}">
-                            
-                            <div th:if="${item != null}">
-                                <span class="item-name" th:text="${item.template.name}">Item Name</span>
-                                
-                                <ul class="stats-list">
-                                    <li th:if="${item.strength != null and item.strength > 0}" th:text="'+' + ${item.strength} + ' Str'">+0 Str</li>
-                                    <li th:if="${item.dexterity != null and item.dexterity > 0}" th:text="'+' + ${item.dexterity} + ' Dex'">+0 Dex</li>
-                                    <li th:if="${item.intelligence != null and item.intelligence > 0}" th:text="'+' + ${item.intelligence} + ' Int'">+0 Int</li>
-                                    <li th:if="${item.constitution != null and item.constitution > 0}" th:text="'+' + ${item.constitution} + ' Con'">+0 Con</li>
-                                </ul>
-
-                                <div th:if="${slot.name() == 'WEAPON' and item.weapon != null}">
-                                    <span class="weapon-damage">
-                                        Damage: <span th:text="${item.weapon.minDamage}">0</span> - <span th:text="${item.weapon.maxDamage}">0</span>
-                                    </span>
-                                </div>
-                            </div>
-
-                            <div th:if="${item == null}" class="empty-slot">
-                                None
-                            </div>
-                        </td>
-                    </tr>
-
-                </tbody>
-            </table>
-        </div>
-
-        <div th:if="${player == null}" class="info-message">
-            <p>Player data could not be loaded.</p>
-        </div>
+    <div class="action-buttons">
+        <a href="/player" th:text="#{backToPlayerList}">Back to Player List</a>
+        <a href="/" th:text="#{backToMainMenu}">Back to Main Menu</a>
     </div>
+
+    <div class="character-card" th:if="${player != null}">
+
+        <div class="gold-display">
+            <span th:text="${player.gold}">0</span> 🪙
+        </div>
+
+        <div class="character-area">
+
+            <div class="equipment-column equipment-column-left">
+                <div class="equipment-item" th:with="item=${player.getEquipment().get('HEAD')}">
+                    <div class="equipment-slot" th:text="${item?.template?.name ?: 'Head'}"></div>
+                    <div class="equipment-stats">
+                        <div th:if="${item?.strength != null}" th:text="'Str: ' + ${item.strength}"></div>
+                        <div th:if="${item?.dexterity != null}" th:text="'Dex: ' + ${item.dexterity}"></div>
+                        <div th:if="${item?.intelligence != null}" th:text="'Int: ' + ${item.intelligence}"></div>
+                        <div th:if="${item?.constitution != null}" th:text="'Con: ' + ${item.constitution}"></div>
+                    </div>
+                </div>
+
+                <div class="equipment-item" th:with="item=${player.getEquipment().get('AMULET')}">
+                    <div class="equipment-slot" th:text="${item?.template?.name ?: 'Neck'}"></div>
+                    <div class="equipment-stats">
+                        <div th:if="${item?.strength != null}" th:text="'Str: ' + ${item.strength}"></div>
+                        <div th:if="${item?.dexterity != null}" th:text="'Dex: ' + ${item.dexterity}"></div>
+                        <div th:if="${item?.intelligence != null}" th:text="'Int: ' + ${item.intelligence}"></div>
+                        <div th:if="${item?.constitution != null}" th:text="'Con: ' + ${item.constitution}"></div>
+                    </div>
+                </div>
+
+                <div class="equipment-item" th:with="item=${player.getEquipment().get('BOOTS')}">
+                    <div class="equipment-slot" th:text="${item?.template?.name ?: 'Feet'}"></div>
+                    <div class="equipment-stats">
+                        <div th:if="${item?.strength != null}" th:text="'Str: ' + ${item.strength}"></div>
+                        <div th:if="${item?.dexterity != null}" th:text="'Dex: ' + ${item.dexterity}"></div>
+                        <div th:if="${item?.intelligence != null}" th:text="'Int: ' + ${item.intelligence}"></div>
+                        <div th:if="${item?.constitution != null}" th:text="'Con: ' + ${item.constitution}"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="character-image">
+                <img th:src="@{/images/character.png}" alt="Character" />
+            </div>
+
+            <div class="equipment-column equipment-column-right">
+                <div class="equipment-item" th:with="item=${player.getEquipment().get('ARMOR')}">
+                    <div class="equipment-slot" th:text="${item?.template?.name ?: 'Body'}"></div>
+                    <div class="equipment-stats">
+                        <div th:if="${item?.strength != null}" th:text="'Str: ' + ${item.strength}"></div>
+                        <div th:if="${item?.dexterity != null}" th:text="'Dex: ' + ${item.dexterity}"></div>
+                        <div th:if="${item?.intelligence != null}" th:text="'Int: ' + ${item.intelligence}"></div>
+                        <div th:if="${item?.constitution != null}" th:text="'Con: ' + ${item.constitution}"></div>
+                    </div>
+                </div>
+
+                <div class="equipment-item" th:with="item=${player.getEquipment().get('LEGGINS')}">
+                    <div class="equipment-slot" th:text="${item?.template?.name ?: 'Legs'}"></div>
+                    <div class="equipment-stats">
+                        <div th:if="${item?.strength != null}" th:text="'Str: ' + ${item.strength}"></div>
+                        <div th:if="${item?.dexterity != null}" th:text="'Dex: ' + ${item.dexterity}"></div>
+                        <div th:if="${item?.intelligence != null}" th:text="'Int: ' + ${item.intelligence}"></div>
+                        <div th:if="${item?.constitution != null}" th:text="'Con: ' + ${item.constitution}"></div>
+                    </div>
+                </div>
+
+                <div class="equipment-item" th:with="item=${player.getEquipment().get('WEAPON')}">
+                    <div class="equipment-slot" th:text="${item?.template?.name ?: 'Hands'}"></div>
+                    <div class="equipment-stats">
+                        <div th:if="${item?.strength != null}" th:text="'Str: ' + ${item.strength}"></div>
+                        <div th:if="${item?.dexterity != null}" th:text="'Dex: ' + ${item.dexterity}"></div>
+                        <div th:if="${item?.intelligence != null}" th:text="'Int: ' + ${item.intelligence}"></div>
+                        <div th:if="${item?.constitution != null}" th:text="'Con: ' + ${item.constitution}"></div>
+                    </div>
+                </div>
+            </div>
+
+        </div> <div class="character-info">
+            <h2 th:text="${player.name}">Player Name</h2>
+            <div class="guild" th:text="${player.guild ?: 'No Guild'}">Guild Name</div>
+            <div class="level-exp">
+                Level: <span th:text="${player.level}">1</span> |
+                EXP: <span th:text="${player.experience}">0</span>
+            </div>
+        </div>
+
+        <div class="stats">
+            <p>Base Stats</p>
+            <ul class="stats-list">
+                <li th:text="'Str: ' + ${player.strength}"></li>
+                <li th:text="'Dex: ' + ${player.dexterity}"></li>
+                <li th:text="'Int: ' + ${player.intelligence}"></li>
+                <li th:text="'Con: ' + ${player.constitution}"></li>
+            </ul>
+
+            <div class="summary-stats" th:if="${player.getAllStats() != null}">
+                <p>Summary Stats</p>
+                <ul class="stats-list">
+                    <li th:text="'Str: ' + ${player.getAllStats().strength}"></li>
+                    <li th:text="'Dex: ' + ${player.getAllStats().dexterity}"></li>
+                    <li th:text="'Int: ' + ${player.getAllStats().intelligence}"></li>
+                    <li th:text="'Con: ' + ${player.getAllStats().constitution}"></li>
+                </ul>
+            </div>
+        </div>
+
+    </div> <div th:if="${player == null}" class="info-message">
+        <p>Player data could not be loaded.</p>
+    </div>
+
+</div>
 </body>
 </html>

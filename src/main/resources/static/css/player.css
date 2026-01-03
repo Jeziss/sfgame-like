@@ -1,0 +1,179 @@
+body {
+    font-family: Arial, sans-serif;
+    background: #f2f2f2;
+    margin: 0;
+    padding: 20px;
+}
+
+.container {
+    max-width: 900px;
+    margin: auto;
+}
+
+.character-card {
+    position: relative;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.gold-display {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    background: #ffd700;
+    padding: 5px 10px;
+    border-radius: 6px;
+    font-weight: bold;
+    color: #333;
+}
+
+.character-area {
+    display: flex;
+    align-items: center; /* Změněno na center pro lepší srovnání s obrázkem */
+    justify-content: center;
+    margin-top: 30px;
+    gap: 30px;
+}
+
+.equipment-column {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.equipment-item {
+    display: flex;
+    align-items: center;
+}
+
+/* LEVÝ SLOUPEC: Staty vlevo, Čtvereček vpravo */
+.equipment-column-left .equipment-item {
+    flex-direction: row-reverse; 
+}
+
+/* PRAVÝ SLOUPEC: Čtvereček vlevo, Staty vpravo */
+.equipment-column-right .equipment-item {
+    flex-direction: row;
+}
+
+.equipment-slot {
+    width: 80px;
+    height: 80px; /* Zvětšeno pro čtvercový vzhled */
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    background: #eee;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8em;
+    color: #555;
+    text-align: center;
+    flex-shrink: 0; /* Zabrání deformaci čtverce */
+}
+
+/* KLÍČOVÁ OPRAVA PRO ZAROVNÁNÍ */
+.equipment-stats {
+    width: 100px; /* Fixní šířka zajistí, že sloty zůstanou v řadě */
+    display: flex;
+    flex-direction: column;
+    font-size: 0.75em;
+    color: #333;
+    gap: 2px;
+}
+
+.equipment-column-left .equipment-stats {
+    text-align: right;
+    margin-right: 12px; /* Mezera mezi staty a slotem */
+}
+
+.equipment-column-right .equipment-stats {
+    text-align: left;
+    margin-left: 12px; /* Mezera mezi slotem a staty */
+}
+
+.character-image img {
+    width: 180px;
+    height: auto;
+    filter: drop-shadow(0 5px 15px rgba(0,0,0,0.2));
+}
+
+.character-info {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.character-info h2 {
+    margin: 5px 0;
+    font-size: 1.8em;
+    color: #2a3f54;
+}
+
+.character-info .guild {
+    font-style: italic;
+    color: #666;
+    margin-bottom: 5px;
+}
+
+.stats {
+    margin-top: 20px;
+    width: 100%;
+}
+
+.stats p {
+    text-align: center;
+    font-weight: bold;
+    color: #2a3f54;
+    margin-bottom: 10px;
+}
+
+.stats-list {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.stats-list li {
+    background: #f8f9fa;
+    border: 1px solid #dee2e6;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-weight: bold;
+    color: #495057;
+    min-width: 70px;
+    text-align: center;
+}
+
+.summary-stats {
+    border-top: 1px solid #eee;
+    padding-top: 15px;
+}
+
+.action-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.action-buttons a {
+    text-decoration: none;
+    background-color: #2a3f54;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-weight: bold;
+    transition: all 0.2s;
+}
+
+.action-buttons a:hover {
+    background-color: #1d2b3a;
+    transform: translateY(-1px);
+}

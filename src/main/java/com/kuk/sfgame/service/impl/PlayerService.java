@@ -5,6 +5,7 @@ import com.kuk.sfgame.repository.PlayerRepository;
 import com.kuk.sfgame.model.Player;
 import com.kuk.sfgame.model.Equipment;
 import com.kuk.sfgame.model.Item;
+import com.kuk.sfgame.model.Guild;
 import com.kuk.sfgame.model.ItemSlot;
 import com.kuk.sfgame.dto.PlayerDto;
 
@@ -22,6 +23,9 @@ public class PlayerService {
 
     @Autowired
     private ItemService itemService;
+
+    @Autowired
+    private GuildService guildService;
 
 
     public List<PlayerDto> getPlayerNamesId() {
@@ -60,6 +64,10 @@ public class PlayerService {
         }
 
         player.setEquipment(equip);
+
+        Guild playerGuild = guildService.getGuildByPlayerId(id);
+        player.setGuild(playerGuild.getName());
+
         return player;
     }
 

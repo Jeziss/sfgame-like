@@ -31,4 +31,10 @@ public class GuildRepository {
         List<Guild> guilds = jdbcTemplate.query(sql, new GuildMapper(), guildId);
         return guilds.isEmpty() ? null : guilds.get(0);
     }
+
+    public Guild findGuildByPlayerId(int playerId) {
+        String sql = sqlQueries.getProperty("findGuildByPlayerId");
+        List<Guild> guilds = jdbcTemplate.query(sql, new GuildMapper(), playerId);
+        return guilds.isEmpty() ? null : guilds.get(0);
+    }
 }

@@ -38,4 +38,8 @@ public class GuildService {
 
         return Tuple.of(guild1Players, guild2Players, guildName1, guildName2, guildBonus1, guildBonus2);
     }
+
+    public Guild getGuildByPlayerId(int playerId) {
+        return guildRepository.findGuildByPlayerId(playerId);
+    }
 }
