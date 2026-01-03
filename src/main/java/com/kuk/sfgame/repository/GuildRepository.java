@@ -6,9 +6,7 @@ import java.util.List;
 import java.util.Properties;
 
 import com.kuk.sfgame.model.Guild;
-import com.kuk.sfgame.model.Player;
 import com.kuk.sfgame.mapper.GuildMapper;
-import com.kuk.sfgame.mapper.PlayerRowMapper;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -28,20 +26,12 @@ public class GuildRepository {
         }
     }
 
-    public List<Player> findPlayersWithGuild() {
-        String sql = sqlQueries.getProperty("findPlayersWithGuild");
-        return jdbcTemplate.query(sql, new PlayerRowMapper());
-    }
-
     public Guild findGuildById(int guildId) {
         String sql = sqlQueries.getProperty("findGuildById");
         List<Guild> guilds = jdbcTemplate.query(sql, new GuildMapper(), guildId);
         return guilds.isEmpty() ? null : guilds.get(0);
     }
     
-    public List<Player> findPlayersByGuildId(int guildId) {
-        String sql = sqlQueries.getProperty("findPlayersByGuildId");
-        return jdbcTemplate.query(sql, new PlayerRowMapper(), guildId);
-    }
+
 
 }

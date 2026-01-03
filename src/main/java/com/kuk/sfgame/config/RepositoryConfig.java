@@ -4,7 +4,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.ResourceUtils;
 
-import com.kuk.sfgame.repository.LegacyLeaderboardRepository;
 import com.kuk.sfgame.repository.PlayerRepository;
 import com.kuk.sfgame.repository.GuildRepository;
 
@@ -13,12 +12,6 @@ public class RepositoryConfig {
     
     private String resolveSqlPropertiesPath() throws Exception {
         return ResourceUtils.getFile("classpath:db/sql.properties").getAbsolutePath();
-    }
-
-    @Bean
-    public LegacyLeaderboardRepository configureRentalRepository(LegacyLeaderboardRepository repo) throws Exception {
-        repo.setSQLQueriesFileName(resolveSqlPropertiesPath());
-        return repo;
     }
 
     @Bean

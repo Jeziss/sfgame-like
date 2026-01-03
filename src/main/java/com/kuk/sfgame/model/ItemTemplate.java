@@ -2,8 +2,7 @@ package com.kuk.sfgame.model;
 
 
 import jakarta.persistence.*;
-import lombok.*;
-import java.time.LocalDateTime;
+
 
 @Entity
 @Table(name = "item_templates")

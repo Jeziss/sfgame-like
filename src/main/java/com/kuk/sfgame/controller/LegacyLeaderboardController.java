@@ -5,18 +5,18 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.kuk.sfgame.repository.LegacyLeaderboardRepository;
+import com.kuk.sfgame.service.impl.PlayerService;
 import com.kuk.sfgame.model.Player;
 import java.util.List;
 
 @Controller
-public class LegacyLeaderboard {
+public class LegacyLeaderboardController {
     @Autowired
-    private LegacyLeaderboardRepository legacyLeaderboardRepository;
+    private PlayerService playerService;
 
     @GetMapping("/legacy-leaderboard")
     public String legacyLeaderboard(Model model) {
-        List<Player> players = legacyLeaderboardRepository.findAllPlayers();
+        List<Player> players = playerService.getPlayersForLeaderboardOrdered();
         model.addAttribute("players", players);
         return "legacy-leaderboard/leaderboard";
     }

@@ -55,4 +55,23 @@ public class PlayerRepository {
         List<Player> players = jdbcTemplate.query(sql, new PlayerRowMapper(), id);
         return players.isEmpty() ? null : players.get(0);
     }
+
+
+    // -------- GUILD QUERRIES --------------
+
+    public List<Player> findPlayersByGuildId(int guildId) {
+        String sql = sqlQueries.getProperty("findPlayersByGuildId");
+        return jdbcTemplate.query(sql, new PlayerRowMapper(), guildId);
+    }
+
+    public List<Player> findPlayersWithGuild() {
+        String sql = sqlQueries.getProperty("findPlayersWithGuild");
+        return jdbcTemplate.query(sql, new PlayerRowMapper());
+    }
+
+    //--------- LEGACY LEADERBOATD QUERRIES ---------------
+    public List<Player> findAllPlayersWithPositionOrdered() {
+        String sql = sqlQueries.getProperty("findAllPlayersWithPositionOrdered");
+        return jdbcTemplate.query(sql, new PlayerRowMapper());
+    }
 }

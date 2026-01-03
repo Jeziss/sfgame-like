@@ -31,5 +31,10 @@ public class PlayerService {
         return playerRepository.findPlayerById(id);
     }
 
+    public List<Player> getPlayersForLeaderboardOrdered(){
+        List<Player> players = playerRepository.findAllPlayersWithPositionOrdered();
+        return players;
+    }
+
 
 }

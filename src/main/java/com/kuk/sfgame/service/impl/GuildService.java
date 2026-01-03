@@ -1,7 +1,7 @@
 package com.kuk.sfgame.service.impl;
 
 import com.kuk.sfgame.repository.GuildRepository;
-
+import com.kuk.sfgame.repository.PlayerRepository;
 import com.kuk.sfgame.model.Player;
 import com.kuk.sfgame.model.Guild;
 import com.kuk.sfgame.model.GuildBonus;
@@ -19,10 +19,13 @@ public class GuildService {
     
     @Autowired
     private GuildRepository guildRepository;
+    
+    @Autowired
+    private PlayerRepository playerRepository;
 
     public Tuple6<List<Player>, List<Player>, String, String, GuildBonus, GuildBonus> getPlayersSplitToGuild(){
-        List<Player> guild1Players = guildRepository.findPlayersByGuildId(1);
-        List<Player> guild2Players = guildRepository.findPlayersByGuildId(2);
+        List<Player> guild1Players = playerRepository.findPlayersByGuildId(1);
+        List<Player> guild2Players = playerRepository.findPlayersByGuildId(2);
         
         Guild guild1 = guildRepository.findGuildById(1);
         Guild guild2 = guildRepository.findGuildById(2);
