@@ -1,12 +1,9 @@
 package com.kuk.sfgame.model;
 
-import java.util.Comparator;
 import java.util.List;
 
 import jakarta.persistence.*;
 
-
-import java.util.Collections;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,22 +21,22 @@ public class Guild {
     private int id;
 
     @Column(name = "name")
-    String name;
+    private String name;
 
     @Transient
-    List<Player> members;
+    private List<Player> members;
 
     @Column(name = "xp_bonus_percent")
-    int xpBonusPercent;
+    private int xpBonusPercent;
 
     @Column(name = "gold_bonus_percent")
-    int goldBonusPercent;
+    private int goldBonusPercent;
 
     @Column(name = "dmg_bonus_percent")
-    int dmgBonusPercent;
+    private int dmgBonusPercent;
 
     @Column(name = "hp_bonus_percent")
-    int hpBonusPercent;
+    private int hpBonusPercent;
 
     public GuildBonus getGuildBonus() {
         return new GuildBonus(goldBonusPercent, xpBonusPercent, hpBonusPercent, dmgBonusPercent);

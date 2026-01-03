@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="cs" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title th:text="${player.name} + ' Details'">Player Details</title>
+    <link rel="stylesheet" href="/css/app.css" />
+</head>
+
+<body>
+    <div class="container">
+        <h1 th:text="${player.name} + ' Details'">Player Details</h1>
+
+        <div th:if="${param.success}" class="success-message" th:text="${param.success}"></div>
+        <div th:if="${errorMessage}" class="error-message" th:text="${errorMessage}"></div>
+
+        <div class="actions">
+            <a href="/player" class="btn btn-link" th:text="#{backToPlayerList}">
+                Back to Player List
+            </a>
+        </div>
+
+        <div class="card" th:if="${player != null}">
+            <table class="data-table player-details-table">
+                <tbody>
+                    <tr>
+                        <th>Name:</th>
+                        <td th:text="${player.name}">Player Name</td>
+                    </tr>
+                    <tr>
+                        <th>Level:</th>
+                        <td th:text="${player.level}">99</td>
+                    </tr>
+                    <tr>
+                        <th>XP:</th>
+                        <td th:text="${player.experience}">12345</td>
+                    </tr>
+                    <tr>
+                        <th>Gold:</th>
+                        <td th:text="${player.gold}">9999</td>
+                    </tr>
+                    <tr>
+                        <th>Class:</th>
+                        <td th:text="${player.playerClass}">Warrior</td>
+                    </tr>
+                    <tr>
+                        <th>Guild:</th>
+                        <td th:text="${player.guild != null ? player.guild.name : 'None'}">Guild Name</td>
+                    </tr>
+                    <tr>
+                        <th>Stats:</th>
+                        <td>
+                            <ul>
+                                <li th:text="'Constitution: ' + ${player.constitution}">Constitution: 10</li>
+                                <li th:text="'Strength: ' + ${player.strength}">Strength: 10</li>
+                                <li th:text="'Dexterity: ' + ${player.dexterity}">Dexterity: 10</li>
+                                <li th:text="'Intelligence: ' + ${player.intelligence}">Intelligence: 10</li>
+                            </ul>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Equipment:</th>
+                        <td>
+                            <ul>
+                                <li th:each="entry : ${player.equipment != null ? player.equipment.entrySet() : {}}" 
+                                    th:text="${entry.key} + ': ' + (entry.value != null ? entry.value.name : 'None')">
+                                </li>
+
+                            </ul>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div th:if="${player == null}" class="info-message">
+            <p>Player not found.</p>
+        </div>
+    </div>
+</body>
+
+</html>

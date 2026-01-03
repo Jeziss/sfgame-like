@@ -1,5 +1,6 @@
 package com.kuk.sfgame.model;
 
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -49,4 +50,27 @@ public class Player {
 
     @Transient
     private String guild; // Used for guild display, not persisted to database
+
+    @Transient
+    private Equipment equipment; // Used to hold player's items, not persisted to database
+
+    @Transient
+    private Weapon weapon; // Used to hold player's weapon, not persisted to database
+
+    public StatsStruct getAllStats() {
+
+        return equipment.getTotalStats()
+                        .add(weapon.getPlayerItem())
+                        .add(this);         // Add player's base stats
+    }
+
+    public StatsStruct getBaseStats() {
+        return new StatsStruct(
+                constitution,
+                strength,
+                dexterity,
+                intelligence
+        );
+    }
+
 }

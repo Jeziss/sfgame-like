@@ -1,20 +1,28 @@
 package com.kuk.sfgame.model;
 
-public class Weapon extends Item {
-    private int minDamage;
-    private int maxDamage;
+import jakarta.persistence.*;
+import lombok.*;
 
-    public Weapon(int id, String name, String description, int level, int experience, int gold, int constitution, int strength, int dexterity, int intelligence, int minDamage, int maxDamage) {
-        super(id, name, description, level, experience, gold, constitution, strength, dexterity, intelligence);
-        this.minDamage = minDamage;
-        this.maxDamage = maxDamage;
-    }
-    
-    public int getMinDamage() {
-        return minDamage;
-    }
 
-    public int getMaxDamage() {
-        return maxDamage;
-    }
+@Entity
+@Table(name = "weapon_stats")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class Weapon {
+
+    @Id
+    @Column(name = "player_item_id")
+    private Integer id;
+
+    @Column(name = "min_damage")
+    private Integer minDamage;
+
+    @Column(name = "max_damage")
+    private Integer maxDamage;
+
+    @OneToOne
+    @MapsId
+    @JoinColumn(name = "player_item_id")
+    private Item playerItem;
 }

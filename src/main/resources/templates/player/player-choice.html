@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="cs" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title th:text="#{playerChoice}">Player Choice</title>
+    <link rel="stylesheet" href="/css/app.css" />
+</head>
+
+<body>
+    <div class="container">
+        <h1 th:text="#{chooseAPlayer}">Choose a Player</h1>
+
+        <div th:if="${param.success}" class="success-message" th:text="${param.success}"></div>
+        <div th:if="${errorMessage}" class="error-message" th:text="${errorMessage}"></div>
+
+        <div class="actions">
+            <a href="/" class="btn btn-link" th:text="#{backToMainMenu}">
+                Back to Home
+            </a>
+        </div>
+        <div class="card">
+            <form th:action="@{/player/choice}" 
+                th:object="${playerChoiceDto}" 
+                method="post">
+
+                <select th:field="*{selectedPlayerId}">
+                    <option th:each="player : ${players}" 
+                            th:text="${player.name}"
+                            th:value="${player.id}">
+                    </option>
+                </select>
+
+                <button type="submit">OK</button>
+            </form>
+        </div>
+        
+        <div th:if="${players == null or players.isEmpty()}" class="info-message">
+            <p>No players found.</p>
+        </div>
+    </div>
+</body>
+
+</html>

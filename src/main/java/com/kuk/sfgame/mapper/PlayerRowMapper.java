@@ -25,6 +25,7 @@ public class PlayerRowMapper implements RowMapper<Player> {
         player.setIntelligence(rs.getInt("base_intelligence"));
         // player_class is an enum type, need to get it as string
         // Try getting it as string first (if cast in query), otherwise as Object and convert
+        
         String classString = null;
         try {
             classString = rs.getString("player_class");

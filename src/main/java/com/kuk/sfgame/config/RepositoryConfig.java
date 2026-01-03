@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.util.ResourceUtils;
 
 import com.kuk.sfgame.repository.LegacyLeaderboardRepository;
+import com.kuk.sfgame.repository.PlayerRepository;
 import com.kuk.sfgame.repository.GuildRepository;
 
 @Configuration
@@ -22,6 +23,12 @@ public class RepositoryConfig {
 
     @Bean
     public GuildRepository configureGuildRepository(GuildRepository repo) throws Exception {
+        repo.setSQLQueriesFileName(resolveSqlPropertiesPath());
+        return repo;
+    }
+
+    @Bean
+    public PlayerRepository configurePlayerRepository(PlayerRepository repo) throws Exception {
         repo.setSQLQueriesFileName(resolveSqlPropertiesPath());
         return repo;
     }
