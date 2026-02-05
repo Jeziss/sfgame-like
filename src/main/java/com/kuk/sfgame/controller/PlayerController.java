@@ -16,7 +16,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.kuk.sfgame.service.impl.PlayerService;
 import com.kuk.sfgame.dto.PlayerChoiceDto;
 import com.kuk.sfgame.dto.PlayerDto;
-import com.kuk.sfgame.model.Equipment;
 import com.kuk.sfgame.model.ItemSlot;
 import com.kuk.sfgame.model.Player;
 
