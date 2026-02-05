@@ -2,7 +2,7 @@
 
 TODO:
 
-Update the player to only have the strength, constitution and luck. 
+Update the player to only have the strength, constitution and luck. One class only 
 Implement tavern functionality with the player energy
 Implement dungeons
 Implement item generation based on the player level -> Implement shops 

@@ -29,21 +29,14 @@ public class Player {
     @Column(name = "gold")
     private int gold;
 
-    @Column(name = "base_constitution")
-    private int constitution;
-
     @Column(name = "base_strength")
     private int strength;
 
-    @Column(name = "base_dexterity")
-    private int dexterity;
+    @Column(name = "base_constitution")
+    private int constitution;
 
-    @Column(name = "base_intelligence")
-    private int intelligence;
-
-    @Column(name = "player_class")
-    @Enumerated(EnumType.STRING)
-    private PlayerClass playerClass;
+    @Column(name = "base_luck")
+    private int luck;
 
     @Transient
     private int position; // Used for legacy leaderboard display, not persisted to database
@@ -65,10 +58,9 @@ public class Player {
 
     public StatsStruct getBaseStats() {
         return new StatsStruct(
-                constitution,
                 strength,
-                dexterity,
-                intelligence
+                constitution,
+                luck
         );
     }
 

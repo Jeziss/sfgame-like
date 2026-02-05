@@ -41,14 +41,12 @@
                         <tr>
                             <th>Name</th>
                             <th>Level</th>
-                            <th>Class</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr th:each="player : ${guild1players}">
                             <td th:text="${player.name}">Player Name</td>
                             <td th:text="${player.level}">1</td>
-                            <td th:text="${player.playerClass}">Class</td>
                         </tr>
                     </tbody>
                 </table>
@@ -77,14 +75,12 @@
                         <tr>
                             <th>Name</th>
                             <th>Level</th>
-                            <th>Class</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr th:each="player : ${guild2players}">
                             <td th:text="${player.name}">Player Name</td>
                             <td th:text="${player.level}">1</td>
-                            <td th:text="${player.playerClass}">Class</td>
                         </tr>
                     </tbody>
                 </table>

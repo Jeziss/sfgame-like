@@ -21,7 +21,7 @@ public class Equipment {
     public void equip(Item item) {
 
         if (!items.containsKey(item.getEquippedSlot())) {
-            throw new IllegalArgumentException("Neexistující slot: " + item.getEquippedSlot());
+            throw new IllegalArgumentException("Nonexistent slot: " + item.getEquippedSlot());
         }
 
         items.put(item.getEquippedSlot(), item);
@@ -30,7 +30,7 @@ public class Equipment {
 
     public void unequip(ItemSlot slot) {
         if (!items.containsKey(slot)) {
-            throw new IllegalArgumentException("Neexistující slot: " + slot);
+            throw new IllegalArgumentException("Nonexistent slot: " + slot);
         }
         items.put(slot, null);
     }
@@ -69,7 +69,7 @@ public class Equipment {
     }
 
     public StatsStruct getTotalStats() {
-        StatsStruct itemsStats = new StatsStruct(0, 0, 0, 0);
+        StatsStruct itemsStats = new StatsStruct(0, 0, 0);
 
         for (Item item : items.values()) {
             if (item != null) {

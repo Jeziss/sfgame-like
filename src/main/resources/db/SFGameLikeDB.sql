@@ -11,10 +11,6 @@ DROP TYPE IF EXISTS item_slot;
 CREATE TYPE item_slot AS ENUM ('WEAPON', 'HAT', 'ARMOR', 'LEGGINS', 'AMULET', 'BOOTS');
 
 
-DROP TYPE IF EXISTS player_classes;
-CREATE TYPE player_classes AS ENUM ('WARRIOR', 'MAGE', 'SCOUT');
-
-
 CREATE TABLE players (
     id SERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
@@ -22,10 +18,8 @@ CREATE TABLE players (
     xp INTEGER NOT NULL DEFAULT 0,
     gold INTEGER NOT NULL DEFAULT 1,
     base_strength INTEGER NOT NULL DEFAULT 15,
-    base_dexterity INTEGER NOT NULL DEFAULT 15,
-    base_intelligence INTEGER NOT NULL DEFAULT 15,
     base_constitution INTEGER NOT NULL DEFAULT 15,
-    player_class player_classes NOT NULL
+    base_luck INTEGER NOT NULL DEFAULT 0
 );
 
 
@@ -55,9 +49,8 @@ CREATE TABLE player_items (
     player_id INTEGER NOT NULL REFERENCES players(id) ON DELETE CASCADE,
     template_id INTEGER NOT NULL REFERENCES item_templates(id),
     strength INTEGER DEFAULT 0,
-    dexterity INTEGER DEFAULT 0,
-    intelligence INTEGER DEFAULT 0,
     constitution INTEGER DEFAULT 0,
+    luck INTEGER DEFAULT 0,
     equipped_slot item_slot,
     created_at TIMESTAMP NOT NULL DEFAULT now(),
     UNIQUE (player_id, equipped_slot)
@@ -76,10 +69,10 @@ CREATE TABLE legacy_leaderboard (
 );
 
 
-INSERT INTO players (name, player_class, lvl) VALUES
-('Basic Warrior', 'WARRIOR', 1),
-('Basic Mage', 'MAGE', 2),
-('Basic Scout', 'SCOUT', 3);
+INSERT INTO players (name, lvl) VALUES
+('Basic Hero 1', 1),
+('Basic Hero 2', 2),
+('Basic Hero 3', 3);
 
 INSERT INTO legacy_leaderboard (player_id, position) VALUES
 (1, 1),
@@ -108,17 +101,17 @@ INSERT INTO item_templates (name, slot, icon) VALUES
 
 
 INSERT INTO player_items
-(player_id, template_id, strength, dexterity, intelligence, constitution, equipped_slot)
+(player_id, template_id, strength, constitution, luck, equipped_slot)
 VALUES
-(1, 1, 2, 0, 0, 1, 'WEAPON'),
-(1, 4, 0, 0, 0, 2, 'HAT'),
-(1, 5, 1, 0, 0, 3, 'ARMOR'),
-(1, 6, 3, 0, 0, 0, 'BOOTS'),
-(2, 2, 0, 0, 3, 0, 'WEAPON'),
-(2, 7, 0, 0, 4, 0, 'AMULET'),
-(3, 3, 1, 2, 0, 0, 'WEAPON'),
-(3, 6, 2, 0, 0, 0, 'BOOTS'),
-(3, 8, 5, 0, 1, 0, 'LEGGINS');
+(1, 1, 2, 1, 0, 'WEAPON'),
+(1, 4, 0, 2, 0, 'HAT'),
+(1, 5, 1, 3, 0, 'ARMOR'),
+(1, 6, 3, 0, 0, 'BOOTS'),
+(2, 2, 0, 0, 3, 'WEAPON'),
+(2, 7, 0, 0, 4, 'AMULET'),
+(3, 3, 1, 0, 2, 'WEAPON'),
+(3, 6, 2, 0, 0, 'BOOTS'),
+(3, 8, 5, 0, 1, 'LEGGINS');
 
 
 INSERT INTO weapon_stats (player_item_id, min_damage, max_damage)

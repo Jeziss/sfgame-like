@@ -1,36 +1,40 @@
 package com.kuk.sfgame.model;
 
+/**
+ * Simple value object representing combined character statistics.
+ *
+ * The game now uses three core stats:
+ * - strength
+ * - constitution
+ * - luck
+ */
 public record StatsStruct(
-        int constitution,
         int strength,
-        int dexterity,
-        int intelligence
+        int constitution,
+        int luck
 ) {
 
     public StatsStruct add(Item item) {
         return new StatsStruct(
-                constitution + item.getConstitution(),
-                strength + item.getStrength(),
-                dexterity + item.getDexterity(),
-                intelligence + item.getIntelligence()
+                strength + (item.getStrength() != null ? item.getStrength() : 0),
+                constitution + (item.getConstitution() != null ? item.getConstitution() : 0),
+                luck + (item.getLuck() != null ? item.getLuck() : 0)
         );
     }
 
     public StatsStruct add(Player player) {
         return new StatsStruct(
-                constitution + player.getConstitution(),
                 strength + player.getStrength(),
-                dexterity + player.getDexterity(),
-                intelligence + player.getIntelligence()
+                constitution + player.getConstitution(),
+                luck + player.getLuck()
         );
     }
 
-    public StatsStruct add(StatsStruct allStat) {
+    public StatsStruct add(StatsStruct other) {
         return new StatsStruct(
-                constitution + allStat.constitution(),
-                strength + allStat.strength(),
-                dexterity + allStat.dexterity(),
-                intelligence + allStat.intelligence()
+                strength + other.strength(),
+                constitution + other.constitution(),
+                luck + other.luck()
         );
     }
 }

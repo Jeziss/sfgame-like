@@ -6,7 +6,6 @@ import java.sql.SQLException;
 import org.springframework.jdbc.core.RowMapper;
 
 import com.kuk.sfgame.model.Player;
-import com.kuk.sfgame.model.PlayerClass;
 
 public class PlayerRowMapper implements RowMapper<Player> {
     
@@ -19,26 +18,9 @@ public class PlayerRowMapper implements RowMapper<Player> {
         player.setExperience(rs.getInt("xp"));
         player.setGold(rs.getInt("gold"));
         // Use the actual database column names
-        player.setConstitution(rs.getInt("base_constitution"));
         player.setStrength(rs.getInt("base_strength"));
-        player.setDexterity(rs.getInt("base_dexterity"));
-        player.setIntelligence(rs.getInt("base_intelligence"));
-        // player_class is an enum type, need to get it as string
-        // Try getting it as string first (if cast in query), otherwise as Object and convert
-        
-        String classString = null;
-        try {
-            classString = rs.getString("player_class");
-        } catch (SQLException e) {
-            // If direct string access fails, try getting as Object
-            Object classObj = rs.getObject("player_class");
-            if (classObj != null) {
-                classString = classObj.toString();
-            }
-        }
-        if (classString != null) {
-            player.setPlayerClass(PlayerClass.valueOf(classString));
-        }
+        player.setConstitution(rs.getInt("base_constitution"));
+        player.setLuck(rs.getInt("base_luck"));
         // Set position if column exists (for legacy leaderboard)
         try {
             int position = rs.getInt("position");

@@ -6,17 +6,17 @@ public class Monster {
     private int level;
     private int health;
     private int strength;
-    private int dexterity;
-    private int intelligence;
+    private int constitution;
+    private int luck;
 
 
-    public Monster(Long id, String name, int level, int experience, int gold, int health, int strength, int dexterity, int intelligence) {
+    public Monster(Long id, String name, int level, int experience, int gold, int health, int strength, int constitution, int luck) {
         this.id = id;
         this.name = name;
         this.health = health;
         this.strength = strength;
-        this.dexterity = dexterity;
-        this.intelligence = intelligence;
+        this.constitution = constitution;
+        this.luck = luck;
     }
 
     public Long getId() {

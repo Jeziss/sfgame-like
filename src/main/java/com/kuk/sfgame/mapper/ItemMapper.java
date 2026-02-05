@@ -15,8 +15,7 @@ public class ItemMapper implements RowMapper<Item> {
 
         item.setConstitution(rs.getInt("constitution"));
         item.setStrength(rs.getInt("strength"));
-        item.setDexterity(rs.getInt("dexterity"));
-        item.setIntelligence(rs.getInt("intelligence"));
+        item.setLuck(rs.getInt("luck"));
 
         return item;
     }

@@ -21,11 +21,8 @@ public class Item {
     @Column(name = "strength")
     private Integer strength;
 
-    @Column(name = "dexterity")
-    private Integer dexterity;
-
-    @Column(name = "intelligence")
-    private Integer intelligence;
+    @Column(name = "luck")
+    private Integer luck;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "equipped_slot")
@@ -57,10 +54,9 @@ public class Item {
     // --- Pomocná metoda pro StatsStruct ---
     public StatsStruct toStatsStruct() {
         return new StatsStruct(
-                constitution != null ? constitution : 0,
                 strength != null ? strength : 0,
-                dexterity != null ? dexterity : 0,
-                intelligence != null ? intelligence : 0
+                constitution != null ? constitution : 0,
+                luck != null ? luck : 0
         );
     }
 }

@@ -23,13 +23,12 @@
         <div class="character-area">
 
             <div class="equipment-column equipment-column-left">
-                <div class="equipment-item" th:with="item=${player.getEquipment().get('HEAD')}">
-                    <div class="equipment-slot" th:text="${item?.template?.name ?: 'Head'}"></div>
+                <div class="equipment-item" th:with="item=${player.getEquipment().get('HAT')}">
+                    <div class="equipment-slot" th:text="${item?.template?.name ?: 'Hat'}"></div>
                     <div class="equipment-stats">
                         <div th:if="${item?.strength != null}" th:text="'Str: ' + ${item.strength}"></div>
-                        <div th:if="${item?.dexterity != null}" th:text="'Dex: ' + ${item.dexterity}"></div>
-                        <div th:if="${item?.intelligence != null}" th:text="'Int: ' + ${item.intelligence}"></div>
                         <div th:if="${item?.constitution != null}" th:text="'Con: ' + ${item.constitution}"></div>
+                        <div th:if="${item?.luck != null}" th:text="'Luck: ' + ${item.luck}"></div>
                     </div>
                 </div>
 
@@ -37,9 +36,8 @@
                     <div class="equipment-slot" th:text="${item?.template?.name ?: 'Neck'}"></div>
                     <div class="equipment-stats">
                         <div th:if="${item?.strength != null}" th:text="'Str: ' + ${item.strength}"></div>
-                        <div th:if="${item?.dexterity != null}" th:text="'Dex: ' + ${item.dexterity}"></div>
-                        <div th:if="${item?.intelligence != null}" th:text="'Int: ' + ${item.intelligence}"></div>
                         <div th:if="${item?.constitution != null}" th:text="'Con: ' + ${item.constitution}"></div>
+                        <div th:if="${item?.luck != null}" th:text="'Luck: ' + ${item.luck}"></div>
                     </div>
                 </div>
 
@@ -47,9 +45,8 @@
                     <div class="equipment-slot" th:text="${item?.template?.name ?: 'Feet'}"></div>
                     <div class="equipment-stats">
                         <div th:if="${item?.strength != null}" th:text="'Str: ' + ${item.strength}"></div>
-                        <div th:if="${item?.dexterity != null}" th:text="'Dex: ' + ${item.dexterity}"></div>
-                        <div th:if="${item?.intelligence != null}" th:text="'Int: ' + ${item.intelligence}"></div>
                         <div th:if="${item?.constitution != null}" th:text="'Con: ' + ${item.constitution}"></div>
+                        <div th:if="${item?.luck != null}" th:text="'Luck: ' + ${item.luck}"></div>
                     </div>
                 </div>
             </div>
@@ -63,9 +60,8 @@
                     <div class="equipment-slot" th:text="${item?.template?.name ?: 'Body'}"></div>
                     <div class="equipment-stats">
                         <div th:if="${item?.strength != null}" th:text="'Str: ' + ${item.strength}"></div>
-                        <div th:if="${item?.dexterity != null}" th:text="'Dex: ' + ${item.dexterity}"></div>
-                        <div th:if="${item?.intelligence != null}" th:text="'Int: ' + ${item.intelligence}"></div>
                         <div th:if="${item?.constitution != null}" th:text="'Con: ' + ${item.constitution}"></div>
+                        <div th:if="${item?.luck != null}" th:text="'Luck: ' + ${item.luck}"></div>
                     </div>
                 </div>
 
@@ -73,9 +69,8 @@
                     <div class="equipment-slot" th:text="${item?.template?.name ?: 'Legs'}"></div>
                     <div class="equipment-stats">
                         <div th:if="${item?.strength != null}" th:text="'Str: ' + ${item.strength}"></div>
-                        <div th:if="${item?.dexterity != null}" th:text="'Dex: ' + ${item.dexterity}"></div>
-                        <div th:if="${item?.intelligence != null}" th:text="'Int: ' + ${item.intelligence}"></div>
                         <div th:if="${item?.constitution != null}" th:text="'Con: ' + ${item.constitution}"></div>
+                        <div th:if="${item?.luck != null}" th:text="'Luck: ' + ${item.luck}"></div>
                     </div>
                 </div>
 
@@ -83,10 +78,9 @@
                     <div class="equipment-slot" th:text="${item?.template?.name ?: 'Hands'}"></div>
                     <div class="equipment-stats">
                         <div th:if="${item?.strength != null}" th:text="'Str: ' + ${item.strength}"></div>
-                        <div th:if="${item?.dexterity != null}" th:text="'Dex: ' + ${item.dexterity}"></div>
-                        <div th:if="${item?.intelligence != null}" th:text="'Int: ' + ${item.intelligence}"></div>
                         <div th:if="${item?.constitution != null}" th:text="'Con: ' + ${item.constitution}"></div>
-                        <div th:if="${item?.getWeapon != null}" th:text="'Dmg Dev: ' + ${item.getWeapon.getMinDamage} + ' - ' + ${item.getWeapon.getMaxDamage}"></div>
+                        <div th:if="${item?.luck != null}" th:text="'Luck: ' + ${item.luck}"></div>
+                        <div th:if="${item?.weapon != null}" th:text="'Dmg: ' + ${item.weapon.minDamage} + ' - ' + ${item.weapon.maxDamage}"></div>
                     </div>
                 </div>
             </div>
@@ -104,18 +98,16 @@
             <p>Base Stats</p>
             <ul class="stats-list">
                 <li th:text="'Str: ' + ${player.strength}"></li>
-                <li th:text="'Dex: ' + ${player.dexterity}"></li>
-                <li th:text="'Int: ' + ${player.intelligence}"></li>
                 <li th:text="'Con: ' + ${player.constitution}"></li>
+                <li th:text="'Luck: ' + ${player.luck}"></li>
             </ul>
 
             <div class="summary-stats" th:if="${player.getAllStats() != null}">
                 <p>Summary Stats</p>
                 <ul class="stats-list">
                     <li th:text="'Str: ' + ${player.getAllStats().strength}"></li>
-                    <li th:text="'Dex: ' + ${player.getAllStats().dexterity}"></li>
-                    <li th:text="'Int: ' + ${player.getAllStats().intelligence}"></li>
                     <li th:text="'Con: ' + ${player.getAllStats().constitution}"></li>
+                    <li th:text="'Luck: ' + ${player.getAllStats().luck}"></li>
                 </ul>
             </div>
         </div>
