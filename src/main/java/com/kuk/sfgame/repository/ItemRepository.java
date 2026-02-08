@@ -13,6 +13,6 @@ public interface ItemRepository extends JpaRepository<Item, Integer> {
         "template",
         "weapon"
     })
-    List<Item> findByPlayer_Id(int playerId);
+    List<Item> findByPlayerId(int playerId);
 }
 

@@ -18,6 +18,6 @@ public class ItemService {
 
     @Transactional
     public List<Item> getItemsForPlayer(int playerId) {
-        return itemRepository.findByPlayer_Id(playerId);
+        return itemRepository.findByPlayerId(playerId);
     }
 }

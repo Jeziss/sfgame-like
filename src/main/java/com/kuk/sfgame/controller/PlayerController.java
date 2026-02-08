@@ -27,18 +27,20 @@ public class PlayerController {
     private PlayerService playerService;
 
     @GetMapping("/player")
-    public String getPlayerChoice(Model model) {
+    public String getPlayerChoice(Model model, @RequestParam PlayerSelectTarget target) {
         List<PlayerDto> players = playerService.getPlayerNamesId();
         assert(players != null && !players.isEmpty());
         model.addAttribute("players", players);
 
         model.addAttribute("playerChoiceDto", new PlayerChoiceDto());
+        model.addAttribute("target", target);
         
         return "player/player-choice";
     }
 
     @PostMapping("/player/choice")
-    public String postPlayerChoice(@RequestParam("selectedPlayerId") int id, 
+    public String postPlayerChoice(@RequestParam("selectedPlayerId") int id,
+                                    @RequestParam PlayerSelectTarget target, 
                                     RedirectAttributes redirectAttributes) {
         // Handle the player choice submission
         // For example, redirect to the player's detail page
@@ -48,14 +50,14 @@ public class PlayerController {
         if (player == null) {
             // Přidej zprávu do redirectu, aby Thymeleaf mohl zobrazit error
             redirectAttributes.addFlashAttribute("errorMessage", "Player not found: " + id);
-            return "redirect:/player-choice"; // zpět na výběr hráče
+            return "redirect:/player"; // zpět na výběr hráče
         }
 
-        return "redirect:/player/details?id=" + id;
+        return "redirect:" + target.getRedirectPath() + "?playerId=" + id; // přesměrování na cílovou stránku s ID hráče jako param);
     }
 
     @GetMapping("/player/details")
-    public String getPlayerDetails(@RequestParam("id") int id, Model model) {
+    public String getPlayerDetails(@RequestParam("playerId") int id, Model model) {
         Player player = playerService.getPlayerWithGearById(id);
 
         if (player == null) {

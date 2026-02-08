@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Shop</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        table { border-collapse: collapse; width: 100%; }
+        th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+        th { background-color: #f4f4f4; }
+        .weapon { color: red; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h1>Shop Items</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Slot</th>
+                <th>Stats sum</th>
+                <th>Strength</th>
+                <th>Constitution</th>
+                <th>Luck</th>
+                <th>Price</th>
+                <th>Min Damage</th>
+                <th>Max Damage</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="item : ${items}" th:class="${item.minDamage != null} ? 'weapon'">
+                <td th:text="${item.template.name}">Item Name</td>
+                <td th:text="${item.slot}">Slot</td>
+                <td th:text="${item.strength + item.constitution + item.luck}">Stats Sum</td>
+                <td th:text="${item.strength}">Strength</td>
+                <td th:text="${item.constitution}">Constitution</td>
+                <td th:text="${item.luck}">Luck</td>
+                <td th:text="${item.price}">Price</td>
+                <td th:text="${item.minDamage != null} ? ${item.minDamage} : '-'">Min</td>
+                <td th:text="${item.maxDamage != null} ? ${item.maxDamage} : '-'">Max</td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

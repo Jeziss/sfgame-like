@@ -10,7 +10,7 @@
 <div class="container">
 
     <div class="action-buttons">
-        <a href="/player" th:text="#{backToPlayerList}">Back to Player List</a>
+        <a th:href="@{/player(target=DETAILS)}" th:text="#{backToPlayerList}">Back to Player List</a>
         <a href="/" th:text="#{backToMainMenu}">Back to Main Menu</a>
     </div>
 

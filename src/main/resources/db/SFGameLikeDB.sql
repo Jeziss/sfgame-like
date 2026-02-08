@@ -8,7 +8,7 @@ DROP TABLE IF EXISTS legacy_leaderboard CASCADE;
 
 
 DROP TYPE IF EXISTS item_slot;
-CREATE TYPE item_slot AS ENUM ('WEAPON', 'HAT', 'ARMOR', 'LEGGINS', 'AMULET', 'BOOTS');
+CREATE TYPE item_slot AS ENUM ('WEAPON', 'HAT', 'ARMOR', 'GLOVES', 'AMULET', 'BOOTS');
 
 
 CREATE TABLE players (
@@ -72,12 +72,19 @@ CREATE TABLE legacy_leaderboard (
 INSERT INTO players (name, lvl) VALUES
 ('Basic Hero 1', 1),
 ('Basic Hero 2', 2),
-('Basic Hero 3', 3);
+('Basic Hero 3', 3),
+('Basic Hero 6', 6),
+('Basic Hero 12', 12),
+('Basic Hero 20', 20);
 
 INSERT INTO legacy_leaderboard (player_id, position) VALUES
 (1, 1),
 (2, 2),
-(3, 3);
+(3, 3),
+(4, 4),
+(5, 5),
+(6, 6);
+
 
 INSERT INTO guilds (name, xp_bonus_percent, gold_bonus_percent, dmg_bonus_percent, hp_bonus_percent) VALUES
 ('Knights of Valor', 10, 5, 7, 8),
@@ -86,7 +93,11 @@ INSERT INTO guilds (name, xp_bonus_percent, gold_bonus_percent, dmg_bonus_percen
 INSERT INTO guild_members (member_id, guild_id) VALUES
 (1, 1),
 (2, 2),
-(3, 1);
+(3, 1),
+(4, 2),
+(5, 1),
+(6, 2);
+
 
 
 INSERT INTO item_templates (name, slot, icon) VALUES
@@ -97,7 +108,7 @@ INSERT INTO item_templates (name, slot, icon) VALUES
 ('Iron Armor', 'ARMOR', 'armor_iron.png'),
 ('Boots of Strength', 'BOOTS', 'ring_strength.png'),
 ('Amulet of Wisdom', 'AMULET', 'amulet_wisdom.png'),
-('Shitting trousers', 'LEGGINS', 'amulet_wisdom.png');
+('Shitting trousers', 'GLOVES', 'gloves_shitting.png');
 
 
 INSERT INTO player_items
@@ -111,7 +122,7 @@ VALUES
 (2, 7, 0, 0, 4, 'AMULET'),
 (3, 3, 1, 0, 2, 'WEAPON'),
 (3, 6, 2, 0, 0, 'BOOTS'),
-(3, 8, 5, 0, 1, 'LEGGINS');
+(3, 8, 5, 0, 1, 'GLOVES');
 
 
 INSERT INTO weapon_stats (player_item_id, min_damage, max_damage)

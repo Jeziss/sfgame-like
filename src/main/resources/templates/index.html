@@ -11,10 +11,10 @@
 <body>
     <div class="button-container">
         <a href="/tavern" class="button" th:text="#{tavern}">Tavern</a>
-        <a href="/player" class="button" th:text="#{playerInventory}">Player Inventory</a>
+        <a th:href="@{/player(target=DETAILS)}" class="button" th:text="#{playerInventory}">Player Inventory</a>
         <a href="/dungeons" class="button" th:text="#{dungeons}">Dungeons</a>
         <a href="/magic-shop" class="button" th:text="#{magicShop}">Magic Shop</a>
-        <a href="/weapon-shop" class="button" th:text="#{weaponShop}">Weapon Shop</a>
+        <a th:href="@{/player(target=SHOP)}" class="button" th:text="#{weaponShop}">Weapon Shop</a>
         <a href="/legacy-leaderboard" class="button" th:text="#{legacyLeaderboard}">Legacy Leaderboard</a>
         <a href="/guilds" class="button" th:text="#{guilds}">Guilds</a>
     </div>

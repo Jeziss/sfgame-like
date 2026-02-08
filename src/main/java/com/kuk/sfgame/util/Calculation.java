@@ -102,7 +102,11 @@ public final class Calculation {
     public static int calculateItemStats(int level) {
 
         if (level < 5) {
-            return (level + RANDOM.nextInt(7) - 3) * 2; // level 1-4: -3 to +3, doubled
+            return 1 + RANDOM.nextInt(4); // level 1-4: -3 to +3, doubled
+        }
+
+        if (level < 10) {
+            return Math.abs((level + RANDOM.nextInt(7) - 3) * 2); // level 5-9: -3 to +3, doubled
         }
 
         if (level < 15) {
@@ -116,10 +120,5 @@ public final class Calculation {
         //TODO: implement, think about it
         return 1;
     }
-
-
-
-
-
 
 }

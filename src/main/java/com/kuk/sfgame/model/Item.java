@@ -51,6 +51,13 @@ public class Item {
         return weapon != null;
     }
 
+    public Item(Integer constitution, Integer strength, Integer luck) {
+        this.constitution = constitution;
+        this.strength = strength;
+        this.luck = luck;
+        
+        this.createdAt = LocalDateTime.now();
+    }
     // --- Pomocná metoda pro StatsStruct ---
     public StatsStruct toStatsStruct() {
         return new StatsStruct(

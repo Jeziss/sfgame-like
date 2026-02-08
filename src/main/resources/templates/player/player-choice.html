@@ -24,7 +24,8 @@
             <form th:action="@{/player/choice}" 
                 th:object="${playerChoiceDto}" 
                 method="post">
-
+                <input type="hidden" name="target" th:value="${target}" />
+                
                 <select th:field="*{selectedPlayerId}">
                     <option th:each="player : ${players}" 
                             th:text="${player.name}"
