@@ -75,10 +75,21 @@ public class PlayerRepository {
         return jdbcTemplate.query(sql, new PlayerRowMapper());
     }
 
+    public void updatePlayerPosition(int playerId, int newPosition) {
+        String sql = sqlQueries.getProperty("updatePlayerPosition");
+        jdbcTemplate.update(sql, newPosition, playerId);
+    }
+
     //---------- SHOP QUERIES ---------------
 
     public void updatePlayerGold(int playerId, int newGoldAmount) {
         String sql = sqlQueries.getProperty("updatePlayerGold");
         jdbcTemplate.update(sql, newGoldAmount, playerId);
+    }
+
+
+    public void updatePlayerStats(Player player) {
+        String sql = sqlQueries.getProperty("updatePlayerStats");
+        jdbcTemplate.update(sql, player.getStrength(), player.getConstitution(), player.getLuck(), player.getId());
     }
 }

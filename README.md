@@ -8,6 +8,9 @@ Implement dungeons
 Implement item generation based on the player level -> Implement shops - DONE only price remainings
 Implement upadatable leaderboard
 Implement arena
+Implement admin panel. Updating guild bonuses, giving xp/gold to players
+Implement upgrading the atributes
+Implement error tables when doing something with not enough gold.
 
 Think about the equation for the critic chance based on luck and HP based on constitution
 

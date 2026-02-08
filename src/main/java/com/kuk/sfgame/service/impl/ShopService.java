@@ -3,9 +3,11 @@ package com.kuk.sfgame.service.impl;
 
 import java.util.Optional;
 
+import org.aspectj.weaver.ast.Not;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.kuk.sfgame.exception.NotEnoughGoldException;
 import com.kuk.sfgame.model.Item;
 import com.kuk.sfgame.model.ItemSlot;
 import com.kuk.sfgame.model.ItemTemplate;
@@ -41,7 +43,7 @@ public class ShopService {
         }
 
         if (player.getGold() < itemPrice) {
-            throw new IllegalArgumentException("Player does not have enough gold to buy this item.");
+            throw new NotEnoughGoldException("Player does not have enough gold to buy this item.");
         }
 
         player.setGold(player.getGold() - itemPrice);

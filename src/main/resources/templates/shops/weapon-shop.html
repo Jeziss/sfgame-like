@@ -144,9 +144,13 @@
                     <div class="equipment-item" th:with="item=${player.getEquipment().get('WEAPON')}">
                         <div class="equipment-slot" th:text="${item?.template?.name ?: 'Hands'}"></div>
                         <div class="equipment-stats">
+                            <div th:if="${item?.strength != null}" th:text="'Str: ' + ${item.strength}"></div>
+                            <div th:if="${item?.constitution != null}" th:text="'Con: ' + ${item.constitution}"></div>
+                            <div th:if="${item?.luck != null}" th:text="'Luck: ' + ${item.luck}"></div>
                             <div th:if="${item?.weapon != null}"
                                  th:text="'Dmg: ' + ${item.weapon.minDamage} + '-' + ${item.weapon.maxDamage}">
                             </div>
+
                         </div>
                     </div>
                 </div>

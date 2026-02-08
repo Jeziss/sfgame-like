@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 
 import com.kuk.sfgame.dto.ShopItemDto;
+import com.kuk.sfgame.exception.NotEnoughGoldException;
 import com.kuk.sfgame.model.Player;
 import com.kuk.sfgame.service.impl.ItemGenerationService;
 import com.kuk.sfgame.service.impl.PlayerService;
@@ -65,8 +66,10 @@ public class ShopController {
             shopService.buyItem(playerId, 
                 itemStrength, itemConstitution, itemLuck,
                  itemTemplateId, itemSlot, itemMaxDamage, itemMinDamage, itemPrice);
-        } catch (IllegalArgumentException e) {
+        } catch (NotEnoughGoldException e) {
             redirectAttributes.addFlashAttribute("error", e.getMessage());
+        } catch (RuntimeException e) {
+            redirectAttributes.addFlashAttribute("error", "An unexpected error occurred while processing the purchase.");
         }
 
         return "redirect:/weapon-shop?playerId=" + playerId;

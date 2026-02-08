@@ -9,6 +9,7 @@ import com.kuk.sfgame.service.impl.PlayerService;
 import com.kuk.sfgame.model.Player;
 import java.util.List;
 
+
 @Controller
 public class LegacyLeaderboardController {
     @Autowired
@@ -20,4 +21,10 @@ public class LegacyLeaderboardController {
         model.addAttribute("players", players);
         return "legacy-leaderboard/leaderboard";
     }
+
+     @GetMapping("/legacy-leaderboard/update")
+     public String getMethodName() {
+         playerService.sortAllPlayersByPower();
+         return "redirect:/legacy-leaderboard";
+     }
 }

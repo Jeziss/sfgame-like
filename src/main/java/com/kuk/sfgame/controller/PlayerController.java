@@ -17,6 +17,9 @@ import com.kuk.sfgame.service.impl.PlayerService;
 import com.kuk.sfgame.dto.PlayerChoiceDto;
 import com.kuk.sfgame.dto.PlayerDto;
 import com.kuk.sfgame.model.Player;
+import com.kuk.sfgame.model.UpgradePricesRecord;
+
+
 
 
 @Controller
@@ -73,7 +76,63 @@ public class PlayerController {
         }
 
         model.addAttribute("player", player);
+        model.addAttribute("upgradePrices", playerService.getUpgradePrices(player));
+
         return "player/player-details"; // Thymeleaf šablona s detaily hráče
     }
+
+    @PostMapping("player/increaseStat")
+    public String increaseStat(@RequestParam("playerId") int id,
+                                @RequestParam("stat") String stat,
+                                RedirectAttributes redirectAttributes) {
+        
+        Player player = playerService.getPlayerById(id);
+        if (player == null) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Player not found: " + id);
+            return "redirect:/player";
+        }
+
+        UpgradePricesRecord prices;
+        int cost;
+        try {
+            prices = playerService.getUpgradePrices(player);
+            switch (stat.toLowerCase()) {
+                case "strength":
+                    cost = prices.strength();
+                    if (player.getGold() < cost) {
+                        throw new IllegalArgumentException("Not enough gold to upgrade strength.");
+                    }
+                    player.setStrength(player.getStrength() + 1);
+                    break;
+                case "constitution":
+                    cost = prices.constitution();
+                    if (player.getGold() < cost) {
+                        throw new IllegalArgumentException("Not enough gold to upgrade constitution.");
+                    }
+                    player.setConstitution(player.getConstitution() + 1);
+                    break;
+                case "luck":
+                    cost = prices.luck();
+                    if (player.getGold() < cost) {
+                        throw new IllegalArgumentException("Not enough gold to upgrade luck.");
+                    }
+                    player.setLuck(player.getLuck() + 1);
+                    break;
+                default:
+                    throw new IllegalArgumentException("Invalid stat: " + stat);
+            }
+        } catch (IllegalArgumentException e) {
+            redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
+            return "redirect:/player/details?playerId=" + id;
+        }
+
+        player.setGold(player.getGold() - cost);
+        playerService.updatePlayerGold(id, player.getGold());
+        playerService.updatePlayerStats(player);
+        redirectAttributes.addFlashAttribute("successMessage", "Increased " + stat + " for player " + player.getName() + " at a cost of " + cost + " gold.");
+        
+        return "redirect:/player/details?playerId=" + id; // přesměrování zpět na detail hráče
+    }
+    
 
 }

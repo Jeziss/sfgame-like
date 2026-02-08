@@ -97,9 +97,30 @@
         <div class="stats">
             <p>Base Stats</p>
             <ul class="stats-list">
-                <li th:text="'Str: ' + ${player.strength}"></li>
-                <li th:text="'Con: ' + ${player.constitution}"></li>
-                <li th:text="'Luck: ' + ${player.luck}"></li>
+                <li>
+                    <span th:text="'Str: ' + ${player.getAllStats().strength}"></span>
+                    <form th:action="@{/player/increaseStat}" method="post" class="stat-form">
+                        <input type="hidden" name="stat" value="strength" />
+                        <input type="hidden" name="playerId" th:value="${player.id}" />
+                        <button type="submit" th:text="|+  (${upgradePrices.strength} 🪙)|"></button>
+                    </form>
+                </li> 
+                <li>
+                    <span th:text="'Con: ' + ${player.getAllStats().constitution}"></span>
+                    <form th:action="@{/player/increaseStat}" method="post" class="stat-form">
+                        <input type="hidden" name="stat" value="constitution" />
+                        <input type="hidden" name="playerId" th:value="${player.id}" />
+                        <button type="submit" th:text="|+  (${upgradePrices.constitution} 🪙)|"></button>
+                    </form>
+                </li>
+                <li>
+                    <span th:text="'Luck: ' + ${player.getAllStats().luck}"></span>
+                    <form th:action="@{/player/increaseStat}" method="post" class="stat-form">
+                        <input type="hidden" name="stat" value="luck" />
+                        <input type="hidden" name="playerId" th:value="${player.id}" />
+                        <button type="submit" th:text="|+  (${upgradePrices.luck} 🪙)|"></button>
+                    </form>
+                </li>
             </ul>
 
             <div class="summary-stats" th:if="${player.getAllStats() != null}">
