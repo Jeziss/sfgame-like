@@ -1,0 +1,328 @@
+/* =========================
+   GLOBAL
+   ========================= */
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f2f2f2;
+    margin: 0;
+    padding: 20px;
+}
+
+.container {
+    max-width: 1400px;
+    margin: auto;
+}
+
+/* =========================
+   LAYOUT 50 / 50
+   ========================= */
+
+.split-layout {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+}
+
+/* =========================
+   SHOP PANEL (LEFT)
+   ========================= */
+
+.shop-panel {
+    flex: 1;
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.shop-panel h2 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    color: #2a3f54;
+}
+
+/* TABLE */
+
+.shop-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9em;
+}
+
+.shop-table th,
+.shop-table td {
+    padding: 8px 10px;
+    border-bottom: 1px solid #e0e0e0;
+    text-align: left;
+}
+
+.shop-table th {
+    background: #f8f9fa;
+    color: #2a3f54;
+    font-weight: bold;
+}
+
+.shop-table tr:hover {
+    background: #f1f4f8;
+}
+
+/* WEAPON HIGHLIGHT */
+
+.shop-table tr.weapon {
+    background: #fff4f4;
+    font-weight: bold;
+}
+
+.shop-table tr.weapon:hover {
+    background: #ffecec;
+}
+
+/* =========================
+   PLAYER PANEL (RIGHT)
+   ========================= */
+
+.player-panel {
+    flex: 1;
+}
+
+/* =========================
+   CHARACTER CARD
+   ========================= */
+
+.character-card {
+    position: relative;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    padding: 20px;
+}
+
+/* GOLD */
+
+.gold-display {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    background: #ffd700;
+    padding: 5px 10px;
+    border-radius: 6px;
+    font-weight: bold;
+    color: #333;
+}
+
+/* =========================
+   CHARACTER AREA
+   ========================= */
+
+.character-area {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 30px;
+    gap: 30px;
+}
+
+/* =========================
+   EQUIPMENT COLUMNS
+   ========================= */
+
+.equipment-column {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.equipment-item {
+    display: flex;
+    align-items: center;
+}
+
+/* LEFT COLUMN – stats left, slot right */
+.equipment-column-left .equipment-item {
+    flex-direction: row-reverse;
+}
+
+/* RIGHT COLUMN – slot left, stats right */
+.equipment-column-right .equipment-item {
+    flex-direction: row;
+}
+
+/* =========================
+   EQUIPMENT SLOT
+   ========================= */
+
+.equipment-slot {
+    width: 80px;
+    height: 80px;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    background: #eeeeee;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8em;
+    color: #555;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+/* =========================
+   EQUIPMENT STATS
+   ========================= */
+
+.equipment-stats {
+    width: 100px;
+    display: flex;
+    flex-direction: column;
+    font-size: 0.75em;
+    color: #333;
+    gap: 2px;
+}
+
+.equipment-column-left .equipment-stats {
+    text-align: right;
+    margin-right: 12px;
+}
+
+.equipment-column-right .equipment-stats {
+    text-align: left;
+    margin-left: 12px;
+}
+
+/* =========================
+   CHARACTER IMAGE
+   ========================= */
+
+.character-image img {
+    width: 180px;
+    height: auto;
+    filter: drop-shadow(0 5px 15px rgba(0,0,0,0.2));
+}
+
+/* =========================
+   CHARACTER INFO
+   ========================= */
+
+.character-info {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.character-info h2 {
+    margin: 5px 0;
+    font-size: 1.8em;
+    color: #2a3f54;
+}
+
+.character-info .guild {
+    font-style: italic;
+    color: #666;
+    margin-bottom: 5px;
+}
+
+/* =========================
+   RESPONSIVE
+   ========================= */
+
+@media (max-width: 1100px) {
+    .split-layout {
+        flex-direction: column;
+    }
+}
+
+/* =========================
+   ACTION BUTTONS
+   ========================= */
+
+.buy-button {
+    background-color: #2a3f54;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 0.8em;
+}
+
+.buy-button:hover {
+    background-color: #1d2b3a;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 12px;
+}
+
+.action-buttons a {
+    text-decoration: none;
+    background-color: #2a3f54;
+    color: #ffffff;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-weight: bold;
+    font-size: 0.85em;
+    transition: all 0.2s ease;
+}
+
+.action-buttons a:hover {
+    background-color: #1d2b3a;
+    transform: translateY(-1px);
+}
+
+/* Pravý horní roh nad kartou */
+.action-buttons-right {
+    justify-content: flex-end;
+    margin-bottom: 10px;
+}
+
+/* =========================
+   PLAYER PANEL HEADER
+   ========================= */
+
+.player-panel-header {
+    padding: 20px;              /* stejné odsazení jako shop-panel */
+    padding-bottom: 10px;
+}
+
+/* =========================
+   STATS PANEL 
+   ========================= */
+
+.stats {
+    margin-top: 20px;
+    width: 100%;
+}
+
+.stats p {
+    text-align: center;
+    font-weight: bold;
+    color: #2a3f54;
+    margin-bottom: 10px;
+}
+
+.stats-list {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.stats-list li {
+    background: #f8f9fa;
+    border: 1px solid #dee2e6;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-weight: bold;
+    color: #495057;
+    min-width: 70px;
+    text-align: center;
+}
+
+.summary-stats {
+    border-top: 1px solid #eee;
+    padding-top: 15px;
+}

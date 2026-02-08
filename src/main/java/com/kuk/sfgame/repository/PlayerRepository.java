@@ -57,7 +57,7 @@ public class PlayerRepository {
     }
 
 
-    // -------- GUILD QUERRIES --------------
+    // -------- GUILD QUERIES --------------
 
     public List<Player> findPlayersByGuildId(int guildId) {
         String sql = sqlQueries.getProperty("findPlayersByGuildId");
@@ -69,9 +69,16 @@ public class PlayerRepository {
         return jdbcTemplate.query(sql, new PlayerRowMapper());
     }
 
-    //--------- LEGACY LEADERBOATD QUERRIES ---------------
+    //--------- LEGACY LEADERBOARD QUERIES ---------------
     public List<Player> findAllPlayersWithPositionOrdered() {
         String sql = sqlQueries.getProperty("findAllPlayersWithPositionOrdered");
         return jdbcTemplate.query(sql, new PlayerRowMapper());
+    }
+
+    //---------- SHOP QUERIES ---------------
+
+    public void updatePlayerGold(int playerId, int newGoldAmount) {
+        String sql = sqlQueries.getProperty("updatePlayerGold");
+        jdbcTemplate.update(sql, newGoldAmount, playerId);
     }
 }

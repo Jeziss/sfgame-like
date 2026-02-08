@@ -49,7 +49,7 @@ public class ItemGenerationService {
         int constitution = 0;
         int luck = 0;
 
-        if (ThreadLocalRandom.current().nextBoolean()) { // Signle stat item, 50% chance
+        if (ThreadLocalRandom.current().nextBoolean()) { // Single stat item, 50% chance
             
             int statValue = Calculation.calculateItemStats(playerLevel);
             int statType = ThreadLocalRandom.current().nextInt(3); // 0 = strength, 1 = constitution, 2 = luck
@@ -72,15 +72,15 @@ public class ItemGenerationService {
                 statType2 = ThreadLocalRandom.current().nextInt(3); // Ensure different stats
             }
 
-            strength =     (statType1 == 0) ? statValue1 : 0 + (statType2 == 0 ? statValue2 : 0);
-            constitution = (statType1 == 1) ? statValue1 : 0 + (statType2 == 1 ? statValue2 : 0);
-            luck =         (statType1 == 2) ? statValue1 : 0 + (statType2 == 2 ? statValue2 : 0);
+            strength =     (statType1 == 0 ? statValue1 : 0) + (statType2 == 0 ? statValue2 : 0);
+            constitution = (statType1 == 1 ? statValue1 : 0) + (statType2 == 1 ? statValue2 : 0);
+            luck =         (statType1 == 2 ? statValue1 : 0) + (statType2 == 2 ? statValue2 : 0);
         }
 
         // Strength, constitution and luck are set at this point.
 
         //TODO: solve price
-        int price = 10;
+        int price = 1;
 
         ItemTemplate template = ALL_ITEM_TEMPLATES.get(ThreadLocalRandom.current().nextInt(ALL_ITEM_TEMPLATES.size()));
         

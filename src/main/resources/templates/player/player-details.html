@@ -65,7 +65,7 @@
                     </div>
                 </div>
 
-                <div class="equipment-item" th:with="item=${player.getEquipment().get('LEGGINS')}">
+                <div class="equipment-item" th:with="item=${player.getEquipment().get('GLOVES')}">
                     <div class="equipment-slot" th:text="${item?.template?.name ?: 'Legs'}"></div>
                     <div class="equipment-stats">
                         <div th:if="${item?.strength != null}" th:text="'Str: ' + ${item.strength}"></div>

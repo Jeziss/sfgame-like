@@ -51,7 +51,9 @@ public class Player {
     private Weapon weapon; // Used to hold player's weapon, not persisted to database
 
     public StatsStruct getAllStats() {
-
+        if (equipment == null) {
+            return getBaseStats();
+        }
         return equipment.getTotalStats()
                         .add(this);         // Add player's base stats
     }

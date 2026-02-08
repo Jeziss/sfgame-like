@@ -21,7 +21,7 @@ public class Weapon {
     @Column(name = "max_damage")
     private Integer maxDamage;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @MapsId
     @JoinColumn(name = "player_item_id")
     @ToString.Exclude

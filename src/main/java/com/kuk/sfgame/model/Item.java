@@ -43,7 +43,7 @@ public class Item {
     private ItemTemplate template;
 
 
-    @OneToOne(mappedBy = "playerItem", fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "playerItem", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @ToString.Exclude
     private Weapon weapon;
 

@@ -4,16 +4,16 @@ import java.util.Random;
 
 import com.kuk.sfgame.util.Constants;
 
-// All caclulations have been reverse engineered from the game help tool begaviour:
+// All calculations have been reverse engineered from the game help tool behaviour:
 // https://sftools.mar21.eu/attributes.html
 
 // Todo:
 // - Add more complex calculations (e.g. damage, defense, etc.) based on the stats
 // - Add methods to calculate derived stats (e.g. HP, attack power, etc.) based on the core stats
-// - Calclulate the amout of xp and gold recived from the tavern - DONE
-// - Calulate price of the item
+// - Calculate the amount of xp and gold received from the tavern - DONE
+// - Calculate price of the item
 // - Calculate the stats of the item based on level - DONE
-// - Calculate the price of atribute upgrade - DONE
+// - Calculate the price of attribute upgrade - DONE
 
 
 public final class Calculation {

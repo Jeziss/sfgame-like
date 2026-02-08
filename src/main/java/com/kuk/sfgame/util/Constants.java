@@ -1,7 +1,5 @@
 package com.kuk.sfgame.util;
 
-import java.util.List;
-
 /**
  * Application-wide constants
  */

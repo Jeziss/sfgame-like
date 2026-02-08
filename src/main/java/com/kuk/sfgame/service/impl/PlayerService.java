@@ -6,7 +6,6 @@ import com.kuk.sfgame.model.Player;
 import com.kuk.sfgame.model.Equipment;
 import com.kuk.sfgame.model.Item;
 import com.kuk.sfgame.model.Guild;
-import com.kuk.sfgame.model.ItemSlot;
 import com.kuk.sfgame.dto.PlayerDto;
 
 import java.util.List;
@@ -66,7 +65,9 @@ public class PlayerService {
         player.setEquipment(equip);
 
         Guild playerGuild = guildService.getGuildByPlayerId(id);
-        player.setGuild(playerGuild.getName());
+        if (playerGuild != null) {
+            player.setGuild(playerGuild.getName());
+        }
 
         return player;
     }

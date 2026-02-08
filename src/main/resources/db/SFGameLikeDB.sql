@@ -1,16 +1,17 @@
+-- --------------------------------------------------
+-- DROP EXISTUJÍCÍ TABULKY (pro čistou instalaci)
+-- --------------------------------------------------
+DROP TABLE IF EXISTS weapon_stats CASCADE;
 DROP TABLE IF EXISTS player_items CASCADE;
 DROP TABLE IF EXISTS item_templates CASCADE;
-DROP TABLE IF EXISTS weapon_stats CASCADE;
 DROP TABLE IF EXISTS guild_members CASCADE;
 DROP TABLE IF EXISTS guilds CASCADE;
-DROP TABLE IF EXISTS players CASCADE;
 DROP TABLE IF EXISTS legacy_leaderboard CASCADE;
+DROP TABLE IF EXISTS players CASCADE;
 
-
-DROP TYPE IF EXISTS item_slot;
-CREATE TYPE item_slot AS ENUM ('WEAPON', 'HAT', 'ARMOR', 'GLOVES', 'AMULET', 'BOOTS');
-
-
+-- --------------------------------------------------
+-- Hráči
+-- --------------------------------------------------
 CREATE TABLE players (
     id SERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
@@ -22,7 +23,9 @@ CREATE TABLE players (
     base_luck INTEGER NOT NULL DEFAULT 0
 );
 
-
+-- --------------------------------------------------
+-- Guilds
+-- --------------------------------------------------
 CREATE TABLE guilds (
     id SERIAL PRIMARY KEY,
     name VARCHAR(255) UNIQUE NOT NULL,
@@ -37,13 +40,19 @@ CREATE TABLE guild_members (
     guild_id INTEGER NOT NULL REFERENCES guilds(id) ON DELETE CASCADE
 );
 
+-- --------------------------------------------------
+-- Item Templates
+-- --------------------------------------------------
 CREATE TABLE item_templates (
     id SERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
-    slot item_slot NOT NULL,
+    slot VARCHAR(20) NOT NULL, -- původně enum, nyní string
     icon VARCHAR(255)
 );
 
+-- --------------------------------------------------
+-- Player Items
+-- --------------------------------------------------
 CREATE TABLE player_items (
     id SERIAL PRIMARY KEY,
     player_id INTEGER NOT NULL REFERENCES players(id) ON DELETE CASCADE,
@@ -51,11 +60,14 @@ CREATE TABLE player_items (
     strength INTEGER DEFAULT 0,
     constitution INTEGER DEFAULT 0,
     luck INTEGER DEFAULT 0,
-    equipped_slot item_slot,
+    equipped_slot VARCHAR(20), -- původně enum, nyní string
     created_at TIMESTAMP NOT NULL DEFAULT now(),
     UNIQUE (player_id, equipped_slot)
 );
 
+-- --------------------------------------------------
+-- Weapon Stats
+-- --------------------------------------------------
 CREATE TABLE weapon_stats (
     player_item_id INTEGER PRIMARY KEY
         REFERENCES player_items(id) ON DELETE CASCADE,
@@ -63,11 +75,17 @@ CREATE TABLE weapon_stats (
     max_damage INTEGER NOT NULL
 );
 
+-- --------------------------------------------------
+-- Legacy Leaderboard
+-- --------------------------------------------------
 CREATE TABLE legacy_leaderboard (
     player_id INTEGER PRIMARY KEY REFERENCES players(id),
     position INTEGER NOT NULL DEFAULT 0
 );
 
+-- --------------------------------------------------
+-- INSERT DEMO DATA
+-- --------------------------------------------------
 
 INSERT INTO players (name, lvl) VALUES
 ('Basic Hero 1', 1),
@@ -85,7 +103,6 @@ INSERT INTO legacy_leaderboard (player_id, position) VALUES
 (5, 5),
 (6, 6);
 
-
 INSERT INTO guilds (name, xp_bonus_percent, gold_bonus_percent, dmg_bonus_percent, hp_bonus_percent) VALUES
 ('Knights of Valor', 10, 5, 7, 8),
 ('Mages Guild', 15, 3, 10, 5);
@@ -98,8 +115,6 @@ INSERT INTO guild_members (member_id, guild_id) VALUES
 (5, 1),
 (6, 2);
 
-
-
 INSERT INTO item_templates (name, slot, icon) VALUES
 ('Rusty Sword', 'WEAPON', 'sword_rusty.png'),
 ('Oak Staff', 'WEAPON', 'staff_oak.png'),
@@ -108,12 +123,9 @@ INSERT INTO item_templates (name, slot, icon) VALUES
 ('Iron Armor', 'ARMOR', 'armor_iron.png'),
 ('Boots of Strength', 'BOOTS', 'ring_strength.png'),
 ('Amulet of Wisdom', 'AMULET', 'amulet_wisdom.png'),
-('Shitting trousers', 'GLOVES', 'gloves_shitting.png');
+('Shitting gloves', 'GLOVES', 'gloves_shitting.png');
 
-
-INSERT INTO player_items
-(player_id, template_id, strength, constitution, luck, equipped_slot)
-VALUES
+INSERT INTO player_items (player_id, template_id, strength, constitution, luck, equipped_slot) VALUES
 (1, 1, 2, 1, 0, 'WEAPON'),
 (1, 4, 0, 2, 0, 'HAT'),
 (1, 5, 1, 3, 0, 'ARMOR'),
@@ -123,7 +135,6 @@ VALUES
 (3, 3, 1, 0, 2, 'WEAPON'),
 (3, 6, 2, 0, 0, 'BOOTS'),
 (3, 8, 5, 0, 1, 'GLOVES');
-
 
 INSERT INTO weapon_stats (player_item_id, min_damage, max_damage)
 SELECT id, 3, 6

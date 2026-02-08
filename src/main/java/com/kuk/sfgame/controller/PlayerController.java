@@ -16,7 +16,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.kuk.sfgame.service.impl.PlayerService;
 import com.kuk.sfgame.dto.PlayerChoiceDto;
 import com.kuk.sfgame.dto.PlayerDto;
-import com.kuk.sfgame.model.ItemSlot;
 import com.kuk.sfgame.model.Player;
 
 
@@ -29,7 +28,10 @@ public class PlayerController {
     @GetMapping("/player")
     public String getPlayerChoice(Model model, @RequestParam PlayerSelectTarget target) {
         List<PlayerDto> players = playerService.getPlayerNamesId();
-        assert(players != null && !players.isEmpty());
+        if (players == null || players.isEmpty()) {
+            model.addAttribute("errorMessage", "No players found");
+            return "player/player-choice";
+        }
         model.addAttribute("players", players);
 
         model.addAttribute("playerChoiceDto", new PlayerChoiceDto());
@@ -53,7 +55,7 @@ public class PlayerController {
             return "redirect:/player"; // zpět na výběr hráče
         }
 
-        return "redirect:" + target.getRedirectPath() + "?playerId=" + id; // přesměrování na cílovou stránku s ID hráče jako param);
+        return "redirect:" + target.getRedirectPath() + "?playerId=" + id; // přesměrování na cílovou stránku s ID hráče jako param
     }
 
     @GetMapping("/player/details")
@@ -65,10 +67,10 @@ public class PlayerController {
             return "player/player-choice"; // nebo stránka s chybou
         }
 
-        assert(player.getEquipment() != null);
-        assert(player.getEquipment().getItems().get(ItemSlot.WEAPON) != null);
-        assert(player.getEquipment().getItems().get(ItemSlot.WEAPON).toStatsStruct() != null);
-
+        if (player.getEquipment() == null) {
+            model.addAttribute("errorMessage", "Player equipment not found");
+            return "player/player-choice";
+        }
 
         model.addAttribute("player", player);
         return "player/player-details"; // Thymeleaf šablona s detaily hráče

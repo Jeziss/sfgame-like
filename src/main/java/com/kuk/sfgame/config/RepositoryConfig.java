@@ -6,7 +6,6 @@ import org.springframework.util.ResourceUtils;
 
 import com.kuk.sfgame.repository.PlayerRepository;
 import com.kuk.sfgame.repository.GuildRepository;
-import com.kuk.sfgame.repository.ItemTemplateRepository;
 
 @Configuration
 public class RepositoryConfig {

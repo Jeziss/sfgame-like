@@ -1,45 +1,176 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="cs" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Shop</title>
-    <style>
-        body { font-family: Arial, sans-serif; padding: 20px; }
-        table { border-collapse: collapse; width: 100%; }
-        th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
-        th { background-color: #f4f4f4; }
-        .weapon { color: red; font-weight: bold; }
-    </style>
+    <meta charset="UTF-8" />
+    <title>Shop & Player</title>
+    <link rel="stylesheet" href="/css/weapon-shop.css" />
 </head>
 <body>
-    <h1>Shop Items</h1>
-    <table>
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Slot</th>
-                <th>Stats sum</th>
-                <th>Strength</th>
-                <th>Constitution</th>
-                <th>Luck</th>
-                <th>Price</th>
-                <th>Min Damage</th>
-                <th>Max Damage</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr th:each="item : ${items}" th:class="${item.minDamage != null} ? 'weapon'">
-                <td th:text="${item.template.name}">Item Name</td>
-                <td th:text="${item.slot}">Slot</td>
-                <td th:text="${item.strength + item.constitution + item.luck}">Stats Sum</td>
-                <td th:text="${item.strength}">Strength</td>
-                <td th:text="${item.constitution}">Constitution</td>
-                <td th:text="${item.luck}">Luck</td>
-                <td th:text="${item.price}">Price</td>
-                <td th:text="${item.minDamage != null} ? ${item.minDamage} : '-'">Min</td>
-                <td th:text="${item.maxDamage != null} ? ${item.maxDamage} : '-'">Max</td>
-            </tr>
-        </tbody>
-    </table>
+
+
+<div class="player-panel-header">
+    <div class="action-buttons">
+        <a th:href="@{/player(target=SHOP)}">Back to Player List</a>
+        <a th:href="@{/}">Back to Main Menu</a>
+    </div>
+</div>
+
+<div class="container split-layout">
+
+    <!-- LEVÁ POLOVINA – SHOP -->
+    <div class="shop-panel">
+        <h2>Shop Items</h2>
+
+        <div class="shop-table-wrapper">
+            <table class="shop-table">
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Slot</th>
+                    <th>Str</th>
+                    <th>Con</th>
+                    <th>Luck</th>
+                    <th>Price</th>
+                    <th>Dmg</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="item : ${items}"
+                    th:classappend="${item.minDamage != null} ? 'weapon'">
+
+                    <td th:text="${item.template.name}">Item</td>
+                    <td th:text="${item.slot}">Slot</td>
+                    <td th:text="${item.strength}">0</td>
+                    <td th:text="${item.constitution}">0</td>
+                    <td th:text="${item.luck}">0</td>
+                    <td>
+                        <span th:text="${item.price}">0</span> 🪙
+                    </td>
+                    <td>
+                        <span th:if="${item.minDamage != null}"
+                              th:text="${item.minDamage} + '–' + ${item.maxDamage}">
+                        </span>
+                        <span th:if="${item.minDamage == null}">-</span>
+                    </td>
+
+                    <td>
+                        <form th:action="@{/shop/buy}" method="post">
+                            <input type="hidden" name="itemStrength" th:value="${item.strength}" />
+                            <input type="hidden" name="itemConstitution" th:value="${item.constitution}" />
+                            <input type="hidden" name="itemLuck" th:value="${item.luck}" />
+                            <input type="hidden" name="itemTemplateId" th:value="${item.template.id}" />
+                            <input type="hidden" name="itemSlot" th:value="${item.slot}" />
+                            <input type="hidden" name="itemMaxDamage" th:value="${item.maxDamage}" />
+                            <input type="hidden" name="itemMinDamage" th:value="${item.minDamage}" />
+                            <input type="hidden" name="itemPrice" th:value="${item.price}" />
+                            <input type="hidden" name="playerId" th:value="${player.id}" />
+                            <button type="submit" class="buy-button">Buy</button>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- PRAVÁ POLOVINA – POSTAVA -->
+    <div class="player-panel">
+
+
+        <div class="character-card" th:if="${player != null}">
+
+            <div class="gold-display">
+                <span th:text="${player.gold}">0</span> 🪙
+            </div>
+
+            <div class="character-area">
+
+                <!-- LEVÝ EQUIP -->
+                <div class="equipment-column equipment-column-left">
+                    <div class="equipment-item" th:with="item=${player.getEquipment().get('HAT')}">
+                        <div class="equipment-slot" th:text="${item?.template?.name ?: 'Hat'}"></div>
+                        <div class="equipment-stats">
+                            <div th:if="${item?.strength != null}" th:text="'Str: ' + ${item.strength}"></div>
+                            <div th:if="${item?.constitution != null}" th:text="'Con: ' + ${item.constitution}"></div>
+                            <div th:if="${item?.luck != null}" th:text="'Luck: ' + ${item.luck}"></div>
+                        </div>
+                    </div>
+
+                    <div class="equipment-item" th:with="item=${player.getEquipment().get('AMULET')}">
+                        <div class="equipment-slot" th:text="${item?.template?.name ?: 'Neck'}"></div>
+                        <div class="equipment-stats">
+                            <div th:if="${item?.strength != null}" th:text="'Str: ' + ${item.strength}"></div>
+                            <div th:if="${item?.constitution != null}" th:text="'Con: ' + ${item.constitution}"></div>
+                            <div th:if="${item?.luck != null}" th:text="'Luck: ' + ${item.luck}"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="equipment-item" th:with="item=${player.getEquipment().get('BOOTS')}">
+                        <div class="equipment-slot" th:text="${item?.template?.name ?: 'Feet'}"></div>
+                        <div class="equipment-stats">
+                            <div th:if="${item?.strength != null}" th:text="'Str: ' + ${item.strength}"></div>
+                            <div th:if="${item?.constitution != null}" th:text="'Con: ' + ${item.constitution}"></div>
+                            <div th:if="${item?.luck != null}" th:text="'Luck: ' + ${item.luck}"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="character-image">
+                    <img th:src="@{/images/character.png}" alt="Character" />
+                </div>
+
+                <!-- PRAVÝ EQUIP -->
+                <div class="equipment-column equipment-column-right">
+                    <div class="equipment-item" th:with="item=${player.getEquipment().get('ARMOR')}">
+                        <div class="equipment-slot" th:text="${item?.template?.name ?: 'Body'}"></div>
+                        <div class="equipment-stats">
+                            <div th:if="${item?.strength != null}" th:text="'Str: ' + ${item.strength}"></div>
+                            <div th:if="${item?.constitution != null}" th:text="'Con: ' + ${item.constitution}"></div>
+                            <div th:if="${item?.luck != null}" th:text="'Luck: ' + ${item.luck}"></div>
+                        </div>
+                    </div>
+
+
+                    <div class="equipment-item" th:with="item=${player.getEquipment().get('GLOVES')}">
+                        <div class="equipment-slot" th:text="${item?.template?.name ?: 'Legs'}"></div>
+                        <div class="equipment-stats">
+                            <div th:if="${item?.strength != null}" th:text="'Str: ' + ${item.strength}"></div>
+                            <div th:if="${item?.constitution != null}" th:text="'Con: ' + ${item.constitution}"></div>
+                            <div th:if="${item?.luck != null}" th:text="'Luck: ' + ${item.luck}"></div>
+                        </div>
+                    </div>
+
+                    <div class="equipment-item" th:with="item=${player.getEquipment().get('WEAPON')}">
+                        <div class="equipment-slot" th:text="${item?.template?.name ?: 'Hands'}"></div>
+                        <div class="equipment-stats">
+                            <div th:if="${item?.weapon != null}"
+                                 th:text="'Dmg: ' + ${item.weapon.minDamage} + '-' + ${item.weapon.maxDamage}">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="character-info">
+                <h2 th:text="${player.name}">Player</h2>
+                <div class="guild" th:text="${player.guild ?: 'No Guild'}"></div>
+            </div>
+
+            <div class="summary-stats" th:if="${player.getAllStats() != null}">
+                <ul class="stats-list">
+                    <li th:text="'Str: ' + ${player.getAllStats().strength}"></li>
+                    <li th:text="'Con: ' + ${player.getAllStats().constitution}"></li>
+                    <li th:text="'Luck: ' + ${player.getAllStats().luck}"></li>
+                </ul>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
 </body>
 </html>
