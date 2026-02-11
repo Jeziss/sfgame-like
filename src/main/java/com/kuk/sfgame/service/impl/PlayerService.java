@@ -2,15 +2,23 @@ package com.kuk.sfgame.service.impl;
 
 import com.kuk.sfgame.repository.PlayerRepository;
 import com.kuk.sfgame.util.Calculation;
+import com.kuk.sfgame.util.Constants;
+
+import io.vavr.collection.List.Cons;
+
 import com.kuk.sfgame.model.Player;
+import com.kuk.sfgame.model.Quest;
 import com.kuk.sfgame.model.UpgradePricesRecord;
 import com.kuk.sfgame.model.Equipment;
 import com.kuk.sfgame.model.Item;
 import com.kuk.sfgame.model.Guild;
+import com.kuk.sfgame.model.GuildBonus;
 import com.kuk.sfgame.dto.PlayerDto;
+import com.kuk.sfgame.dto.QuestDto;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -54,8 +62,6 @@ public class PlayerService {
         if (player == null) {
             return null;
         }
-
-
 
         List<Item> items = itemService.getItemsForPlayer(id);
         Equipment equip = new Equipment();
@@ -127,6 +133,40 @@ public class PlayerService {
         for (int i = 0; i < sorted.size(); i++) {
             playerRepository.updatePlayerPosition(sorted.get(i).getId(), i + 1);
         }
+    }
 
+
+    public List<QuestDto> getQuestsForPlayer(int playerId) {
+
+        Player player = getPlayerById(playerId); // just to check if player exists, otherwise throw exception
+        
+        GuildBonus guildBonus = guildService.getGuildBonusForPlayer(playerId);
+
+        int maxGold = Calculation.calculateTavernGoldMax(player.getLevel(),guildBonus.gold);
+        int minGold  = Calculation.calculateTavernGoldMin(player.getLevel(),guildBonus.gold);
+        int maxXp = Calculation.calculateTavernXPmax(player.getLevel(),guildBonus.gold);
+        int minXp = Calculation.calculateTavernXPmin(player.getLevel(),guildBonus.gold);
+
+        // TODO: Implement ability toh have bonus quests
+        int numberOfQuests = 3; 
+
+        List<QuestDto> quests = new ArrayList<>();
+
+        for (int i = 0; i < numberOfQuests; i++) {
+            double proportionalityConstant = ThreadLocalRandom.current().nextDouble(0, 1);
+            int goldReward = (int) (minGold + proportionalityConstant * (maxGold - minGold));
+            int xpReward = (int) (minXp + (1 - proportionalityConstant) * (maxXp - minXp));
+            
+            int multiplier = ThreadLocalRandom.current().nextInt(1, 5);
+            int energyCost = multiplier * 5;
+
+            goldReward = (int) (goldReward * multiplier);
+            xpReward = (int) (xpReward * multiplier);
+
+            String location = Constants.LOCATION_NAMES.get(ThreadLocalRandom.current().nextInt(Constants.LOCATION_NAMES.size()));
+
+            quests.add(new QuestDto(xpReward, goldReward, energyCost, location));
+        }
+        return quests;
     }
 }

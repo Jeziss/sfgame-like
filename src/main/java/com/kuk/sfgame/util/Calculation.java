@@ -44,13 +44,13 @@ public final class Calculation {
     }
 
     // --------------- Tavern calculations GOLD ---------------
-    private static int calculateBaseGold(int playerLevel) {
-        return (int) (Constants.GOLD_CURVE[Math.min(playerLevel, 100)] * 12) / 1000; // Base gold with hard cap at level 100
+    public static int calculateBaseGold(int playerLevel) { //TODO: make private again after testing
+        return (int) (Constants.GOLD_CURVE[Math.min(playerLevel, 100)] * 12) / 100; // Base gold with hard cap at level 100
     }
 
     public static int calculateTavernGoldMin(int playerLevel, int guildBonusPercent) {
         double multiplier = 1 + guildBonusPercent / 100.0; // base gold + guild bonus
-        return (int) Math.floor((calculateBaseGold(playerLevel) * multiplier) / 11);
+        return Math.max(1, (int) Math.floor((calculateBaseGold(playerLevel) * multiplier) / 11));
     }
 
     public static int calculateTavernGoldMax(int playerLevel, int guildBonusPercent) {
@@ -61,7 +61,7 @@ public final class Calculation {
     // --------------- Experience calculations ---------------
 
     public static int calculateXPForLevelUp(int level) {
-        return Constants.EXPERIENCE_TO_LVLUP[Math.min(level + 1, 100)]; // HARD CAP for level 100
+        return Constants.EXPERIENCE_TO_LVLUP[Math.min(level + 1, 99)]; // HARD CAP for level 100
     }
 
     // --------------- Atribute calculations ---------------
@@ -87,7 +87,7 @@ public final class Calculation {
         }
 
         // Rounding
-        cost = (cost / 25) * 5 / 100;
+        cost = (cost / 25) * 5 / 20;
 
         // Min and max cap
         cost = Math.max(cost, 1);

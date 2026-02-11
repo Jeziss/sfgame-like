@@ -1,5 +1,7 @@
 package com.kuk.sfgame.util;
 
+import java.util.List;
+
 /**
  * Application-wide constants
  */
@@ -15,6 +17,8 @@ public class Constants {
     // Pagination
     public static final int DEFAULT_PAGE_SIZE = 20;
     public static final int MAX_PAGE_SIZE = 100;
+
+    public static final List<String> LOCATION_NAMES = List.of("Forest", "Cave", "Ruins");
 
     public static final int[] EXPERIENCE_TO_LVLUP = {
         0, 400, 900, 1400, 1800, 2200, 2890, 3580, 4405, 5355, 6435, 7515, 8925,

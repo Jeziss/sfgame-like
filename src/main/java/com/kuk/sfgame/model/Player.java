@@ -1,7 +1,12 @@
 package com.kuk.sfgame.model;
 
+import com.kuk.sfgame.util.Constants;
 
+import org.apache.tomcat.util.bcel.classfile.Constant;
+
+import io.vavr.collection.List.Cons;
 import jakarta.persistence.*;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -38,6 +43,9 @@ public class Player {
     @Column(name = "base_luck")
     private int luck;
 
+    @Column(name = "energy")
+    private Integer energy;
+
     @Transient
     private int position; // Used for legacy leaderboard display, not persisted to database
 
@@ -49,6 +57,9 @@ public class Player {
 
     @Transient
     private Weapon weapon; // Used to hold player's weapon, not persisted to database
+
+    @OneToOne(mappedBy = "player", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    private Quest quests; // Used to hold player's quests, not persisted to database
 
     public StatsStruct getAllStats() {
         if (equipment == null) {
@@ -66,4 +77,26 @@ public class Player {
         );
     }
 
+    public void earnExperience(int xp) {
+        this.experience += xp;
+        if (this.experience >= Constants.EXPERIENCE_TO_LVLUP[this.level]) {
+            this.experience -= Constants.EXPERIENCE_TO_LVLUP[this.level];
+            this.level++;
+            
+            earnExperience(0); // Check for multiple level-ups
+        }
+    }
+
+
+    public void earnGold(int gold) {
+        this.gold += gold;
+    }
+
+    public void spendGold(int gold) {
+        if (this.gold >= gold) {
+            this.gold -= gold;
+        } else {
+            throw new IllegalArgumentException("Not enough gold");
+        }
+    }
 }

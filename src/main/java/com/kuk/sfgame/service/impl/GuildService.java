@@ -42,4 +42,9 @@ public class GuildService {
     public Guild getGuildByPlayerId(int playerId) {
         return guildRepository.findGuildByPlayerId(playerId);
     }
+
+    public GuildBonus getGuildBonusForPlayer(int playerId) {
+        Guild guild = getGuildByPlayerId(playerId);
+        return (guild != null) ? guild.getGuildBonus() : new GuildBonus(0, 0, 0, 0);
+    }
 }
