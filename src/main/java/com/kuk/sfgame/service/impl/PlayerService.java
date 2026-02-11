@@ -1,5 +1,6 @@
 package com.kuk.sfgame.service.impl;
 
+import com.kuk.sfgame.repository.LegacyLeaderboardRepository;
 import com.kuk.sfgame.repository.PlayerRepository;
 import com.kuk.sfgame.util.Calculation;
 import com.kuk.sfgame.util.Constants;
@@ -11,6 +12,7 @@ import com.kuk.sfgame.model.Quest;
 import com.kuk.sfgame.model.UpgradePricesRecord;
 import com.kuk.sfgame.model.Equipment;
 import com.kuk.sfgame.model.Item;
+import com.kuk.sfgame.model.LegacyLeaderboard;
 import com.kuk.sfgame.model.Guild;
 import com.kuk.sfgame.model.GuildBonus;
 import com.kuk.sfgame.dto.PlayerDto;
@@ -22,7 +24,8 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import jakarta.transaction.Transactional;
+
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class PlayerService {
@@ -36,6 +39,9 @@ public class PlayerService {
     @Autowired
     private GuildService guildService;
 
+    @Autowired    
+    private LegacyLeaderboardRepository leaderboardRepository;
+
 
     public List<PlayerDto> getPlayerNamesId() {
         List<PlayerDto> players = playerRepository.findAllPlayersNamesId();
@@ -43,16 +49,28 @@ public class PlayerService {
     }
 
     public Player getPlayerByName(String playerName) {
-        return playerRepository.findPlayerByName(playerName);
+        return playerRepository.findByName(playerName).orElse(null);
     }
 
     public Player getPlayerById(int id) {
-        return playerRepository.findPlayerById(id);
+        return playerRepository.findById(id).orElse(null);
     }
 
+    @Transactional(readOnly = true)
     public List<Player> getPlayersForLeaderboardOrdered(){
-        List<Player> players = playerRepository.findAllPlayersWithPositionOrdered();
+        List<LegacyLeaderboard> leaderboard = leaderboardRepository.findAllByOrderByPositionAsc();
+
+        List<Player> players = new ArrayList<>();
+        for (LegacyLeaderboard lb : leaderboard) {
+            players.add(getPlayerById(lb.getPlayerId()));
+        }
+
         return players;
+    }
+
+    @Transactional
+    public void updatePlayerPosition(int playerId, int newPosition) {
+        leaderboardRepository.updatePosition(playerId, newPosition);
     }
 
 
@@ -76,7 +94,7 @@ public class PlayerService {
 
         Guild playerGuild = guildService.getGuildByPlayerId(id);
         if (playerGuild != null) {
-            player.setGuild(playerGuild.getName());
+            player.setGuild(playerGuild);
         }
 
         return player;
@@ -91,17 +109,13 @@ public class PlayerService {
         return new UpgradePricesRecord(strengthPrice, constitutionPrice, luckPrice);
     }
 
-    public void updatePlayerStats(Player player) {
-        playerRepository.updatePlayerStats(player);
-    }
-
-    public void updatePlayerGold(int playerId, int newGoldAmount) {
-        playerRepository.updatePlayerGold(playerId, newGoldAmount);
+    public void save(Player player) {
+        playerRepository.save(player);
     }
 
 
     public void sortAllPlayersByPower() {
-        List<Player> playersOrdered =  playerRepository.findAllPlayersWithPositionOrdered();
+        List<Player> playersOrdered = getPlayersForLeaderboardOrdered();
         playersOrdered.stream()
                 .map(player -> {
                     Player fullPlayer = getPlayerWithGearById(player.getId());
@@ -131,7 +145,7 @@ public class PlayerService {
 
 
         for (int i = 0; i < sorted.size(); i++) {
-            playerRepository.updatePlayerPosition(sorted.get(i).getId(), i + 1);
+            playerRepository.updatePlayerPosition(sorted.get(i), i);
         }
     }
 

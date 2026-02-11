@@ -16,7 +16,6 @@ import com.kuk.sfgame.model.Quest;
 import com.kuk.sfgame.service.impl.PlayerService;
 import com.kuk.sfgame.service.impl.QuestService;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
 
 
@@ -60,22 +59,20 @@ public class TavernController {
 
         questService.createQuestForPlayer(playerId, questGold, questXp, questEnergy, questLocation);
 
-        
-        return "redirect:tavern/tavern-inside?playerId=" + playerId;
+        return "redirect:/player?target=TAVERN";
     }
 
 
     @PostMapping("tavern/fail-quest")
     public String failQuest(@RequestParam int playerId) {
         questService.failQuestForPlayer(playerId);
-        return "redirect:tavern/tavern-inside?playerId=" + playerId;
+        return "redirect:/player?target=TAVERN_LOCATIONS";
     }
     
     @PostMapping("tavern/finish-quest")
     public String finishQuest(@RequestParam int playerId) {
-        questService.finishQuestForPlayer(playerId);
-        return "redirect:tavern/tavern-inside?playerId=" + playerId;
+        questService.completeQuestForPlayer(playerId);
+        return "redirect:/player?target=TAVERN_LOCATIONS";
     }
-    
     
 }

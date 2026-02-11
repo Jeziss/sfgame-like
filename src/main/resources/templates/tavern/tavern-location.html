@@ -83,8 +83,14 @@
 
 <body>
 <div class="container">
-    <h1>🍺 Hospoda – vyber si quest</h1>
-
+    
+    <div class="action-buttons">
+        <a th:href="@{/player(target=TAVERN)}" th:text="#{backToPlayerList}">Back to Player List</a>
+        <a href="/" th:text="#{backToMainMenu}">Back to Main Menu</a>
+    </div>
+    
+    <h1>🍺 Splň quest</h1>
+    <div th:if="${quest != null}">
         <h3 th:text="${quest.location}">Název questu</h3>
 
         <div class="quest-info">
@@ -103,6 +109,10 @@
             <input type="hidden" name="playerId" th:value="${player.id}"/>
             <button type="submit">Nesplněno?</button>
         </form>
+    </div>
+    <div th:if="${quest == null}">
+        <p>Nemáš žádný aktivní quest.</p>
+    </div>
 </div>
 </body>
 </html>

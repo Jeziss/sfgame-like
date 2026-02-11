@@ -31,7 +31,7 @@ public class QuestService {
             String location
     ) {
 
-        Player player = playerRepository.findPlayerById(playerId);
+        Player player = playerRepository.findById(playerId).orElse(null);
 
         if (player == null) {
             throw new IllegalArgumentException("Player not found with id: " + playerId);
@@ -52,41 +52,28 @@ public class QuestService {
         return questRepository.save(quest);
     }
 
-    //TODO
-    public void completeQuest(int playerId) {
+    public void completeQuestForPlayer(int playerId) {
         Quest quest = questRepository.findByPlayerId(playerId)
                 .orElseThrow(() -> new IllegalArgumentException("No active quest for player with id: " + playerId));
 
         Player player = quest.getPlayer();
+        player.setQuest(null);
+
 
         player.earnExperience(quest.getXpReward());
         player.earnGold(quest.getGoldReward());
-
-        // Odečíst energii
-        int newEnergy = player.getEnergy() - quest.getEnergyCost();
-        if (newEnergy < 0) {
-            newEnergy = 0; // Energie nesmí být záporná
-        }
-        player.setEnergy(newEnergy);
 
         playerRepository.save(player);
         questRepository.delete(quest);
     }
 
-    //TODO
     public void failQuestForPlayer(int playerId) {
         Quest quest = questRepository.findByPlayerId(playerId)
                 .orElseThrow(() -> new IllegalArgumentException("No active quest for player with id: " + playerId));
 
         Player player = quest.getPlayer();
-
-        // Odečíst energii
-        int newEnergy = player.getEnergy() - quest.getEnergyCost();
-        if (newEnergy < 0) {
-            newEnergy = 0; // Energie nesmí být záporná
-        }
-        player.setEnergy(newEnergy);
-
+        player.setQuest(null);
+        
         playerRepository.save(player);
         questRepository.delete(quest);
     }

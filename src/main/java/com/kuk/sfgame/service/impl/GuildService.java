@@ -24,8 +24,8 @@ public class GuildService {
     private PlayerRepository playerRepository;
 
     public Tuple6<List<Player>, List<Player>, String, String, GuildBonus, GuildBonus> getPlayersSplitToGuild(){
-        List<Player> guild1Players = playerRepository.findPlayersByGuildId(1);
-        List<Player> guild2Players = playerRepository.findPlayersByGuildId(2);
+        List<Player> guild1Players = playerRepository.findByGuildId(1);
+        List<Player> guild2Players = playerRepository.findByGuildId(2);
         
         Guild guild1 = guildRepository.findGuildById(1);
         Guild guild2 = guildRepository.findGuildById(2);

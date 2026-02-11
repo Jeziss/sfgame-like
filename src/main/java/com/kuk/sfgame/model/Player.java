@@ -49,8 +49,12 @@ public class Player {
     @Transient
     private int position; // Used for legacy leaderboard display, not persisted to database
 
-    @Transient
-    private String guild; // Used for guild display, not persisted to database
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "guild_id") // sloupec v tabulce players
+    private Guild guild;
+
+    @OneToOne(mappedBy = "player", fetch = FetchType.LAZY)
+    private LegacyLeaderboard leaderboard;
 
     @Transient
     private Equipment equipment; // Used to hold player's items, not persisted to database
@@ -59,7 +63,7 @@ public class Player {
     private Weapon weapon; // Used to hold player's weapon, not persisted to database
 
     @OneToOne(mappedBy = "player", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-    private Quest quests; // Used to hold player's quests, not persisted to database
+    private Quest quest; // Used to hold player's quests, not persisted to database
 
     public StatsStruct getAllStats() {
         if (equipment == null) {

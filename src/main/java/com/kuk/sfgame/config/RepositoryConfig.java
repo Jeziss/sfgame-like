@@ -20,11 +20,12 @@ public class RepositoryConfig {
         return repo;
     }
 
-    @Bean
-    public PlayerRepository configurePlayerRepository(PlayerRepository repo) throws Exception {
-        repo.setSQLQueriesFileName(resolveSqlPropertiesPath());
-        return repo;
-    }
+
+    // @Bean
+    // public PlayerRepository configurePlayerRepository(PlayerRepository repo) throws Exception {
+    //     repo.setSQLQueriesFileName(resolveSqlPropertiesPath());
+    //     return repo;
+    // }
 
     
     //@Bean

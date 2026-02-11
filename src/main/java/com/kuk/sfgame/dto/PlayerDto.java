@@ -17,6 +17,11 @@ public class PlayerDto {
         this.guildName = guildName;
     }
 
+    public PlayerDto(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
     public int getId() {
         return id;
     }

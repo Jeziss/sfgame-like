@@ -15,13 +15,9 @@ import com.kuk.sfgame.model.Player;
 import com.kuk.sfgame.model.Weapon;
 import com.kuk.sfgame.repository.ItemRepository;
 import com.kuk.sfgame.repository.ItemTemplateRepository;
-import com.kuk.sfgame.repository.PlayerRepository;
 
 @Service
 public class ShopService {
-    
-    @Autowired
-    private PlayerRepository playerRepository;
 
     @Autowired
     private PlayerService playerService;
@@ -46,11 +42,8 @@ public class ShopService {
             throw new NotEnoughGoldException("Player does not have enough gold to buy this item.");
         }
 
-        player.setGold(player.getGold() - itemPrice);
-        playerRepository.updatePlayerGold(playerId, player.getGold());
-
-
-
+        player.spendGold(itemPrice);
+        playerService.save(player);
 
 
         Optional<ItemTemplate> itemTemplate = itemTemplateRepository.findById(itemTemplateId);
@@ -85,7 +78,6 @@ public class ShopService {
             weapon.setMaxDamage(itemMaxDamage);
             item.setWeapon(weapon);
             weapon.setPlayerItem(item);
-
         }
 
         player.getEquipment().equip(item);

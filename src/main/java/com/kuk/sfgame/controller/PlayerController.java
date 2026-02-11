@@ -126,9 +126,9 @@ public class PlayerController {
             return "redirect:/player/details?playerId=" + id;
         }
 
-        player.setGold(player.getGold() - cost);
-        playerService.updatePlayerGold(id, player.getGold());
-        playerService.updatePlayerStats(player);
+        player.spendGold(cost);
+        playerService.save(player);
+
         redirectAttributes.addFlashAttribute("successMessage", "Increased " + stat + " for player " + player.getName() + " at a cost of " + cost + " gold.");
         
         return "redirect:/player/details?playerId=" + id; // přesměrování zpět na detail hráče

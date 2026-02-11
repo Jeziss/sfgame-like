@@ -23,7 +23,7 @@ public class Guild {
     @Column(name = "name")
     private String name;
 
-    @Transient
+    @OneToMany(mappedBy = "guild", fetch = FetchType.LAZY)
     private List<Player> members;
 
     @Column(name = "xp_bonus_percent")

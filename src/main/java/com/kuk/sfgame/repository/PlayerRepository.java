@@ -1,95 +1,61 @@
 package com.kuk.sfgame.repository;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.List;
-import java.util.Properties;
+import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.kuk.sfgame.model.Player;
 import com.kuk.sfgame.dto.PlayerDto;
-import com.kuk.sfgame.mapper.PlayerRowMapper;
+import com.kuk.sfgame.model.Player;
 
 @Repository
-public class PlayerRepository {
+public interface PlayerRepository extends JpaRepository<Player, Integer> {
 
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
+    // ---------------- Basic finders ----------------
 
-    private Properties sqlQueries = new Properties();
+    // Najde hráče podle jména
+    Optional<Player> findByName(String name);
 
-    public void setSQLQueriesFileName(String path) throws IOException {
-        try (FileInputStream fis = new FileInputStream(path)) {
-            sqlQueries.load(fis);
-        }
+    // Všichni hráči seřazení podle jména
+    List<Player> findAllByOrderByNameAsc();
+
+    // ---------------- Guild related ----------------
+    List<Player> findByGuildId(int guildId);
+
+    // ---------------- Leaderboard / position ----------------
+    // Transient pole `position` → řadíme v Java
+    default List<Player> sortPlayersByPosition(List<Player> players) {
+        players.sort((p1, p2) -> Integer.compare(p1.getPosition(), p2.getPosition()));
+        return players;
     }
 
-    public List<PlayerDto> findAllPlayersNamesId() {
-        String sql = sqlQueries.getProperty("findPlayersNamesIdOrderByName");
-        return jdbcTemplate.query(sql, new RowMapper<PlayerDto>() {
-            @Override
-            public PlayerDto mapRow(ResultSet rs, int rowNum) throws SQLException {
-                PlayerDto playerDto = new PlayerDto();
-                playerDto.setId(rs.getInt("id"));
-                playerDto.setName(rs.getString("name"));
-                return playerDto;
-            }
-        });
+    // ---------------- Update methods ----------------
+    // Gold update
+    default void updatePlayerGold(Player player, int newGoldAmount) {
+        player.setGold(newGoldAmount);
+        save(player);
     }
 
-    public Player findPlayerByName(String playerName) {
-        String sql = sqlQueries.getProperty("findPlayerByName");
-        
-        List<Player> players = jdbcTemplate.query(sql, new PlayerRowMapper(), playerName);
-        return players.isEmpty() ? null : players.get(0);
+    // Stats update (strength, constitution, luck)
+    default void updatePlayerStats(Player player, int strength, int constitution, int luck) {
+        player.setStrength(strength);
+        player.setConstitution(constitution);
+        player.setLuck(luck);
+        save(player);
     }
 
-    public Player findPlayerById(int id) {
-        String sql = sqlQueries.getProperty("findPlayerById");
-        List<Player> players = jdbcTemplate.query(sql, new PlayerRowMapper(), id);
-        return players.isEmpty() ? null : players.get(0);
+    // Position update (transient, jen pro runtime / memory)
+    default void updatePlayerPosition(Player player, int newPosition) {
+        player.setPosition(newPosition);
+        // Pokud chceš persistovat do DB, musíš pole uložit do DB a nechat ho nepřetransient
     }
 
-
-    // -------- GUILD QUERIES --------------
-
-    public List<Player> findPlayersByGuildId(int guildId) {
-        String sql = sqlQueries.getProperty("findPlayersByGuildId");
-        return jdbcTemplate.query(sql, new PlayerRowMapper(), guildId);
-    }
-
-    public List<Player> findPlayersWithGuild() {
-        String sql = sqlQueries.getProperty("findPlayersWithGuild");
-        return jdbcTemplate.query(sql, new PlayerRowMapper());
-    }
-
-    //--------- LEGACY LEADERBOARD QUERIES ---------------
-    public List<Player> findAllPlayersWithPositionOrdered() {
-        String sql = sqlQueries.getProperty("findAllPlayersWithPositionOrdered");
-        return jdbcTemplate.query(sql, new PlayerRowMapper());
-    }
-
-    public void updatePlayerPosition(int playerId, int newPosition) {
-        String sql = sqlQueries.getProperty("updatePlayerPosition");
-        jdbcTemplate.update(sql, newPosition, playerId);
-    }
-
-    //---------- SHOP QUERIES ---------------
-
-    public void updatePlayerGold(int playerId, int newGoldAmount) {
-        String sql = sqlQueries.getProperty("updatePlayerGold");
-        jdbcTemplate.update(sql, newGoldAmount, playerId);
-    }
-
-
-    public void updatePlayerStats(Player player) {
-        String sql = sqlQueries.getProperty("updatePlayerStats");
-        jdbcTemplate.update(sql, player.getStrength(), player.getConstitution(), player.getLuck(), player.getId());
+    // ---------------- DTO projections ----------------
+    // Pokud potřebuješ pouze id + jméno
+    default List<PlayerDto> findAllPlayersNamesId() {
+        return findAllByOrderByNameAsc().stream()
+                .map(p -> new PlayerDto(p.getId(), p.getName()))
+                .toList();
     }
 }
