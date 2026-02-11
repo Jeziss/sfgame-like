@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import lombok.AllArgsConstructor;
 
 @Entity
@@ -24,6 +25,7 @@ public class Guild {
     private String name;
 
     @OneToMany(mappedBy = "guild", fetch = FetchType.LAZY)
+    @ToString.Exclude
     private List<Player> members;
 
     @Column(name = "xp_bonus_percent")

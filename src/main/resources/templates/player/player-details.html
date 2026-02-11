@@ -87,7 +87,7 @@
 
         </div> <div class="character-info">
             <h2 th:text="${player.name}">Player Name</h2>
-            <div class="guild" th:text="${player.guild ?: 'No Guild'}">Guild Name</div>
+            <div class="guild" th:if="${player.guild != null}" th:text="${player.guild.name ?: 'No Guild'}">Guild Name</div>
             <div class="level-exp">
                 Level: <span th:text="${player.level}">1</span> |
                 EXP: <span th:text="${player.experience}">0</span>

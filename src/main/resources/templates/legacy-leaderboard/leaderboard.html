@@ -39,7 +39,7 @@
                         <td th:text="${player.position}">1</td>
                         <td th:text="${player.name}">Player Name</td>
                         <td th:text="${player.level}">99</td>
-                        <td th:text="${player.guild}">Guild Name</td>
+                        <td th:text="${player.guild?.name}">No Guild</td>
                     </tr>
                 </tbody>
             </table>

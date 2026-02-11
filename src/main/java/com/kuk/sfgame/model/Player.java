@@ -10,6 +10,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Entity
 @Table(name = "players")
@@ -51,6 +52,7 @@ public class Player {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "guild_id") // sloupec v tabulce players
+    @ToString.Exclude
     private Guild guild;
 
     @OneToOne(mappedBy = "player", fetch = FetchType.LAZY)

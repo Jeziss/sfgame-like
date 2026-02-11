@@ -159,7 +159,7 @@
 
             <div class="character-info">
                 <h2 th:text="${player.name}">Player</h2>
-                <div class="guild" th:text="${player.guild ?: 'No Guild'}"></div>
+                <div class="guild" th:text="${player.guild != null ? player.guild.name : 'No Guild'}">Guild Name</div>
             </div>
 
             <div class="summary-stats" th:if="${player.getAllStats() != null}">

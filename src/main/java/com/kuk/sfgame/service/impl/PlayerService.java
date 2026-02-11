@@ -62,7 +62,11 @@ public class PlayerService {
 
         List<Player> players = new ArrayList<>();
         for (LegacyLeaderboard lb : leaderboard) {
-            players.add(getPlayerById(lb.getPlayerId()));
+            Player player = getPlayerById(lb.getPlayerId());
+            if (player != null) {
+                player.setPosition(lb.getPosition());
+                players.add(player);
+            }
         }
 
         return players;
