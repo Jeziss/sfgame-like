@@ -32,7 +32,7 @@ public class TavernController {
     public String getTavern(@RequestParam int playerId, Model model) {
 
         Player player = playerService.getPlayerById(playerId);
-        List<QuestDto> quests = playerService.getQuestsForPlayer(playerId);
+        List<QuestDto> quests = questService.getQuestsForPlayer(playerId);
 
         model.addAttribute("player", player);
         model.addAttribute("quests", quests);

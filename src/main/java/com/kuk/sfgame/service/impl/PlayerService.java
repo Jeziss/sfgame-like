@@ -5,10 +5,8 @@ import com.kuk.sfgame.repository.PlayerRepository;
 import com.kuk.sfgame.util.Calculation;
 import com.kuk.sfgame.util.Constants;
 
-import io.vavr.collection.List.Cons;
 
 import com.kuk.sfgame.model.Player;
-import com.kuk.sfgame.model.Quest;
 import com.kuk.sfgame.model.UpgradePricesRecord;
 import com.kuk.sfgame.model.Equipment;
 import com.kuk.sfgame.model.Item;
@@ -19,6 +17,7 @@ import com.kuk.sfgame.dto.PlayerDto;
 import com.kuk.sfgame.dto.QuestDto;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -74,9 +73,14 @@ public class PlayerService {
 
     @Transactional
     public void updatePlayerPosition(int playerId, int newPosition) {
-        leaderboardRepository.updatePosition(playerId, newPosition);
-    }
+        LegacyLeaderboard leaderboard = leaderboardRepository.findByPlayerId(playerId);
+        if (leaderboard == null) {
+            throw new IllegalArgumentException("Player not found in leaderboard with id: " + playerId);
+        }
 
+        leaderboard.setPosition(newPosition);
+        leaderboardRepository.save(leaderboard);
+    }
 
     @Transactional
     public Player getPlayerWithGearById(int id) {
@@ -117,10 +121,10 @@ public class PlayerService {
         playerRepository.save(player);
     }
 
-
+    @Transactional
     public void sortAllPlayersByPower() {
         List<Player> playersOrdered = getPlayersForLeaderboardOrdered();
-        playersOrdered.stream()
+        playersOrdered = playersOrdered.stream()
                 .map(player -> {
                     Player fullPlayer = getPlayerWithGearById(player.getId());
                     fullPlayer.setPosition(player.getPosition());
@@ -128,15 +132,18 @@ public class PlayerService {
                 })
         .toList();
 
+        // Fighting from the weakest to the strongest. The strongesest player does not have to fight everyone.
+        List<Player> reversedPlayers = new ArrayList<>(playersOrdered);
+        Collections.reverse(reversedPlayers);
+
         // Players will be sorted using insert sort. An transitive property is assumed.
-        
         List<Player> sorted = new ArrayList<>();
 
-        for (Player p : playersOrdered) {
+        for (Player p : reversedPlayers) {
             boolean inserted = false;
             for (int i = 0; i < sorted.size(); i++) {
                 Player current = sorted.get(i);
-                if (p.getLevel() > current.getLevel() ) { // p porazí current //TODO: implement fight method
+                if (fight(p, current)) { // p porazí current 
                     sorted.add(i, p); // vlož p před current
                     inserted = true;
                     break;
@@ -147,44 +154,84 @@ public class PlayerService {
             }
         }
 
-
         for (int i = 0; i < sorted.size(); i++) {
-            playerRepository.updatePlayerPosition(sorted.get(i), i);
+            updatePlayerPosition(sorted.get(i).getId(), i + 1);
+        }
+    }
+
+    public boolean fight(Player player1, Player player2) {
+
+        GuildBonus guildBonus1 = guildService.getGuildBonusForPlayer(player1.getId());
+        GuildBonus guildBonus2 = guildService.getGuildBonusForPlayer(player2.getId());
+
+        int HP1 = Calculation.calculatePlayerHP(player1, guildBonus1);
+        int HP2 = Calculation.calculatePlayerHP(player2, guildBonus2);
+
+        int minDamage1 = Calculation.calculateMinPlayerDamage(player1, guildBonus1);
+        int minDamage2 = Calculation.calculateMinPlayerDamage(player2, guildBonus2);
+
+        int maxDamage1 = Calculation.calculateMaxPlayerDamage(player1, guildBonus1);
+        int maxDamage2 = Calculation.calculateMaxPlayerDamage(player2, guildBonus2);
+
+        double criticalChance1 = 1;
+        double criticalChance2 = 1;
+
+        boolean player1Turn;
+
+        if (player1.getLuck() > player2.getLuck()) {
+            player1Turn = true;
+        } else if (player2.getLuck() > player1.getLuck()) {
+            player1Turn = false;
+        } else {
+            // Coinflip if luck is the same
+            player1Turn = ThreadLocalRandom.current().nextBoolean();
+        }
+
+        int damageTo1, damageTo2;
+
+        while (HP1 > 0 && HP2 > 0) {
+            boolean criticalHit = false;
+            if (player1Turn) {
+                damageTo2 = ThreadLocalRandom.current().nextInt(minDamage1, maxDamage1 + 1);
+                criticalHit = ThreadLocalRandom.current().nextDouble() < criticalChance1;
+
+                if (criticalHit) {
+                    damageTo2 = Calculation.calculateCritDamage(damageTo2);
+                }
+                // Deal damagae to player 2
+                HP2 -= damageTo2;
+                
+                // Check if player 2 is defeated
+                if (HP2 <= 0) {
+                    return true; // player1 wins
+                }
+
+                player1Turn = false;
+            } else {
+                // Player 2 attacks
+                damageTo1 = ThreadLocalRandom.current().nextInt(minDamage2, maxDamage2 + 1);
+                criticalHit = ThreadLocalRandom.current().nextDouble() < criticalChance2;
+
+                if (criticalHit) {
+                    damageTo1 = Calculation.calculateCritDamage(damageTo1);
+                }
+
+                HP1 -= damageTo1;
+
+                if (HP1 <= 0) {
+                    return false; // player2 wins
+                }
+                player1Turn = true;
+            }
+        }
+
+        if (HP1 > 0) {
+            return true; // player1 wins
+        } else {
+            return false; // player2 wins
         }
     }
 
 
-    public List<QuestDto> getQuestsForPlayer(int playerId) {
 
-        Player player = getPlayerById(playerId); // just to check if player exists, otherwise throw exception
-        
-        GuildBonus guildBonus = guildService.getGuildBonusForPlayer(playerId);
-
-        int maxGold = Calculation.calculateTavernGoldMax(player.getLevel(),guildBonus.gold);
-        int minGold  = Calculation.calculateTavernGoldMin(player.getLevel(),guildBonus.gold);
-        int maxXp = Calculation.calculateTavernXPmax(player.getLevel(),guildBonus.gold);
-        int minXp = Calculation.calculateTavernXPmin(player.getLevel(),guildBonus.gold);
-
-        // TODO: Implement ability toh have bonus quests
-        int numberOfQuests = 3; 
-
-        List<QuestDto> quests = new ArrayList<>();
-
-        for (int i = 0; i < numberOfQuests; i++) {
-            double proportionalityConstant = ThreadLocalRandom.current().nextDouble(0, 1);
-            int goldReward = (int) (minGold + proportionalityConstant * (maxGold - minGold));
-            int xpReward = (int) (minXp + (1 - proportionalityConstant) * (maxXp - minXp));
-            
-            int multiplier = ThreadLocalRandom.current().nextInt(1, 5);
-            int energyCost = multiplier * 5;
-
-            goldReward = (int) (goldReward * multiplier);
-            xpReward = (int) (xpReward * multiplier);
-
-            String location = Constants.LOCATION_NAMES.get(ThreadLocalRandom.current().nextInt(Constants.LOCATION_NAMES.size()));
-
-            quests.add(new QuestDto(xpReward, goldReward, energyCost, location));
-        }
-        return quests;
-    }
 }

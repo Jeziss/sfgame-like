@@ -2,9 +2,7 @@ package com.kuk.sfgame.model;
 
 import com.kuk.sfgame.util.Constants;
 
-import org.apache.tomcat.util.bcel.classfile.Constant;
 
-import io.vavr.collection.List.Cons;
 import jakarta.persistence.*;
 
 import lombok.AllArgsConstructor;

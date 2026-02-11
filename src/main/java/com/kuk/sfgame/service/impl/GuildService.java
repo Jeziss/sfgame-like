@@ -33,8 +33,8 @@ public class GuildService {
         String guildName1 = (guild1 != null) ? guild1.getName() : "Guild 1";
         String guildName2 = (guild2 != null) ? guild2.getName() : "Guild 2";
 
-        GuildBonus guildBonus1 = (guild1 != null) ? guild1.getGuildBonus() : new GuildBonus(0, 0, 0, 0);
-        GuildBonus guildBonus2 = (guild2 != null) ? guild2.getGuildBonus() : new GuildBonus(0, 0, 0, 0);
+        GuildBonus guildBonus1 = (guild1 != null) ? guild1.getGuildBonus() : new GuildBonus(0, 0, 0, 0, 0);
+        GuildBonus guildBonus2 = (guild2 != null) ? guild2.getGuildBonus() : new GuildBonus(0, 0, 0, 0, 0);
 
         return Tuple.of(guild1Players, guild2Players, guildName1, guildName2, guildBonus1, guildBonus2);
     }
@@ -45,6 +45,6 @@ public class GuildService {
 
     public GuildBonus getGuildBonusForPlayer(int playerId) {
         Guild guild = getGuildByPlayerId(playerId);
-        return (guild != null) ? guild.getGuildBonus() : new GuildBonus(0, 0, 0, 0);
+        return (guild != null) ? guild.getGuildBonus() : new GuildBonus(0, 0, 0, 0, 0);
     }
 }

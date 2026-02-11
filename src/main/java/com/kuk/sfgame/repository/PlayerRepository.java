@@ -5,8 +5,11 @@ import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.kuk.sfgame.dto.PlayerDto;
+import com.kuk.sfgame.model.LegacyLeaderboard;
+import com.kuk.sfgame.model.LegacyLeaderboard;
 import com.kuk.sfgame.model.Player;
 
 @Repository
@@ -50,6 +53,7 @@ public interface PlayerRepository extends JpaRepository<Player, Integer> {
         player.setPosition(newPosition);
         // Pokud chceš persistovat do DB, musíš pole uložit do DB a nechat ho nepřetransient
     }
+
 
     // ---------------- DTO projections ----------------
     // Pokud potřebuješ pouze id + jméno

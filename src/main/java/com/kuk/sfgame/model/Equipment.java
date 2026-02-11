@@ -8,8 +8,6 @@ import java.util.Map;
 
 public class Equipment {
     private final Map<ItemSlot, Item> items;
-    private int weaponMinRoll;
-    private int weaponMaxRoll;
 
     public Equipment() {
         items = new EnumMap<>(ItemSlot.class); 

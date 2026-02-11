@@ -40,7 +40,10 @@ public class Guild {
     @Column(name = "hp_bonus_percent")
     private int hpBonusPercent;
 
+    @Column(name = "quest_offer_number")
+    private int questOfferNumber;
+
     public GuildBonus getGuildBonus() {
-        return new GuildBonus(goldBonusPercent, xpBonusPercent, hpBonusPercent, dmgBonusPercent);
+        return new GuildBonus(goldBonusPercent, xpBonusPercent, hpBonusPercent, dmgBonusPercent, questOfferNumber);
     }
 }

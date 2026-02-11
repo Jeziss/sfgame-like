@@ -1,8 +1,12 @@
 package com.kuk.sfgame.util;
 
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
-import com.kuk.sfgame.util.Constants;
+import com.kuk.sfgame.model.GuildBonus;
+import com.kuk.sfgame.model.Player;
+import com.kuk.sfgame.model.Weapon;
+
 
 // All calculations have been reverse engineered from the game help tool behaviour:
 // https://sftools.mar21.eu/attributes.html
@@ -121,4 +125,30 @@ public final class Calculation {
         return 1;
     }
 
+    public static int calculateMinPlayerDamage(Player player, GuildBonus guildBonus) {
+        Weapon weapon = player.getEquipment().getWeapon();
+        if (weapon == null) {
+            return (1 + player.getStrength() / 10); // Base damage if no weapon is equipped
+        }
+
+        return (int) Math.round(weapon.getMinDamage() * (1 + player.getStrength() / 10) * (1 + guildBonus.dmg / 100.0)); // Weapon damage plus strength bonus
+    }
+
+    public static int calculateMaxPlayerDamage(Player player, GuildBonus guildBonus) {
+        Weapon weapon = player.getEquipment().getWeapon();
+        if (weapon == null) {
+            return (1 + player.getStrength() / 10) * 2; // Base damage if no weapon is equipped
+        }
+
+        return (int) Math.round(weapon.getMaxDamage() * (1 + player.getStrength() / 10) * (1 + guildBonus.dmg / 100.0)); // Weapon damage plus strength bonus
+    }
+
+    public static int calculateCritDamage(int currentRoll) {
+        return currentRoll * 2;
+    }
+
+    public static int calculatePlayerHP(Player player, GuildBonus guildBonus) {
+        int base_hp = player.getConstitution() * 4 * (player.getLevel() + 1); // Base HP from constitution and level 
+        return (int) Math.round(base_hp * (1 + guildBonus.hp / 100.0));
+    }
 }

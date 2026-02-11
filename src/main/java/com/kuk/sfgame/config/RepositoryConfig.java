@@ -4,7 +4,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.ResourceUtils;
 
-import com.kuk.sfgame.repository.PlayerRepository;
 import com.kuk.sfgame.repository.GuildRepository;
 
 @Configuration
@@ -20,18 +19,5 @@ public class RepositoryConfig {
         return repo;
     }
 
-
-    // @Bean
-    // public PlayerRepository configurePlayerRepository(PlayerRepository repo) throws Exception {
-    //     repo.setSQLQueriesFileName(resolveSqlPropertiesPath());
-    //     return repo;
-    // }
-
-    
-    //@Bean
-    //public ItemTemplateRepository configureItemTemplateRepository(ItemTemplateRepository repo) throws Exception {
-    //    repo.setSQLQueriesFileName(resolveSqlPropertiesPath());
-    //    return repo;
-    //}
 
 }

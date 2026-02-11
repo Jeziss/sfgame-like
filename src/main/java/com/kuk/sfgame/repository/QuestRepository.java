@@ -2,7 +2,6 @@ package com.kuk.sfgame.repository;
 
 import com.kuk.sfgame.model.Quest;
 
-import jakarta.persistence.criteria.CriteriaBuilder.In;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

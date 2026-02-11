@@ -32,7 +32,8 @@ CREATE TABLE guilds (
     xp_bonus_percent INTEGER DEFAULT 0,
     gold_bonus_percent INTEGER DEFAULT 0,
     dmg_bonus_percent INTEGER DEFAULT 0,
-    hp_bonus_percent INTEGER DEFAULT 0
+    hp_bonus_percent INTEGER DEFAULT 0,
+    quest_offer_number INTEGER DEFAULT 3
 );
 
 CREATE TABLE guild_members (
@@ -103,9 +104,9 @@ INSERT INTO legacy_leaderboard (player_id, position) VALUES
 (5, 5),
 (6, 6);
 
-INSERT INTO guilds (name, xp_bonus_percent, gold_bonus_percent, dmg_bonus_percent, hp_bonus_percent) VALUES
-('Knights of Valor', 10, 5, 7, 8),
-('Mages Guild', 15, 3, 10, 5);
+INSERT INTO guilds (name, xp_bonus_percent, gold_bonus_percent, dmg_bonus_percent, hp_bonus_percent, quest_offer_number) VALUES
+('Knights of Valor', 10, 5, 7, 8, 5),
+('Mages Guild', 15, 3, 10, 5, 3);
 
 INSERT INTO guild_members (member_id, guild_id) VALUES
 (1, 1),
