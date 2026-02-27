@@ -49,7 +49,7 @@ public class Player {
     private int position; // Used for legacy leaderboard display, not persisted to database
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "guild_id") // sloupec v tabulce players
+    @JoinColumn(name = "guild_id")  // FK na guild
     @ToString.Exclude
     private Guild guild;
 
@@ -81,14 +81,16 @@ public class Player {
         );
     }
 
-    public void earnExperience(int xp) {
+    public boolean earnExperience(int xp) {
         this.experience += xp;
         if (this.experience >= Constants.EXPERIENCE_TO_LVLUP[this.level]) {
             this.experience -= Constants.EXPERIENCE_TO_LVLUP[this.level];
             this.level++;
             
             earnExperience(0); // Check for multiple level-ups
+            return true;
         }
+        return false;
     }
 
 

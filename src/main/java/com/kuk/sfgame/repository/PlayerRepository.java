@@ -3,6 +3,8 @@ package com.kuk.sfgame.repository;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.jpa.repository.Query; 
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,6 +27,9 @@ public interface PlayerRepository extends JpaRepository<Player, Integer> {
 
     // ---------------- Guild related ----------------
     List<Player> findByGuildId(int guildId);
+
+    @Query("SELECT p FROM Player p JOIN FETCH p.guild")
+    List<Player> findAllWithGuild();
 
     // ---------------- Leaderboard / position ----------------
     // Transient pole `position` → řadíme v Java

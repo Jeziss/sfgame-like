@@ -24,11 +24,18 @@ public class GuildService {
     private PlayerRepository playerRepository;
 
     public Tuple6<List<Player>, List<Player>, String, String, GuildBonus, GuildBonus> getPlayersSplitToGuild(){
-        List<Player> guild1Players = playerRepository.findByGuildId(1);
-        List<Player> guild2Players = playerRepository.findByGuildId(2);
+        List<Player> allPlayers = playerRepository.findAllWithGuild();
+
+        List<Player> guild1Players = allPlayers.stream()
+            .filter(p -> p.getGuild() != null && p.getGuild().getId() == 1)
+            .toList();
+
+        List<Player> guild2Players = allPlayers.stream()
+            .filter(p -> p.getGuild() != null && p.getGuild().getId() == 2)
+            .toList();
         
-        Guild guild1 = guildRepository.findGuildById(1);
-        Guild guild2 = guildRepository.findGuildById(2);
+        Guild guild1 = guild1Players.isEmpty() ? null : guild1Players.get(0).getGuild();
+        Guild guild2 = guild2Players.isEmpty() ? null : guild2Players.get(0).getGuild();
 
         String guildName1 = (guild1 != null) ? guild1.getName() : "Guild 1";
         String guildName2 = (guild2 != null) ? guild2.getName() : "Guild 2";
