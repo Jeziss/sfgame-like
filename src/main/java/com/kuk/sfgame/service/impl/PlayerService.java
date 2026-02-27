@@ -3,7 +3,6 @@ package com.kuk.sfgame.service.impl;
 import com.kuk.sfgame.repository.LegacyLeaderboardRepository;
 import com.kuk.sfgame.repository.PlayerRepository;
 import com.kuk.sfgame.util.Calculation;
-import com.kuk.sfgame.util.Constants;
 
 
 import com.kuk.sfgame.model.Player;
@@ -14,7 +13,6 @@ import com.kuk.sfgame.model.LegacyLeaderboard;
 import com.kuk.sfgame.model.Guild;
 import com.kuk.sfgame.model.GuildBonus;
 import com.kuk.sfgame.dto.PlayerDto;
-import com.kuk.sfgame.dto.QuestDto;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -230,6 +228,12 @@ public class PlayerService {
         } else {
             return false; // player2 wins
         }
+    }
+
+
+    //TODO: check, coded offline!
+    public void resetTheDay() {
+        playerRepository.updateAllPlayersEnergy(100);
     }
 
 

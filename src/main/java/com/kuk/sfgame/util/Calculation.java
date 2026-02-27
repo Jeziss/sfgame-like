@@ -1,7 +1,6 @@
 package com.kuk.sfgame.util;
 
 import java.util.Random;
-import java.util.concurrent.ThreadLocalRandom;
 
 import com.kuk.sfgame.model.GuildBonus;
 import com.kuk.sfgame.model.Player;
@@ -12,8 +11,7 @@ import com.kuk.sfgame.model.Weapon;
 // https://sftools.mar21.eu/attributes.html
 
 // Todo:
-// - Add more complex calculations (e.g. damage, defense, etc.) based on the stats
-// - Add methods to calculate derived stats (e.g. HP, attack power, etc.) based on the core stats
+// - Add methods to calculate derived stats (e.g. HP, attack power, etc.) based on the core stats - DONE, except luck.
 // - Calculate the amount of xp and gold received from the tavern - DONE
 // - Calculate price of the item
 // - Calculate the stats of the item based on level - DONE
@@ -48,7 +46,7 @@ public final class Calculation {
     }
 
     // --------------- Tavern calculations GOLD ---------------
-    public static int calculateBaseGold(int playerLevel) { //TODO: make private again after testing
+    private static int calculateBaseGold(int playerLevel) { 
         return (int) (Constants.GOLD_CURVE[Math.min(playerLevel, 100)] * 12) / 100; // Base gold with hard cap at level 100
     }
 

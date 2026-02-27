@@ -1,40 +1,71 @@
 package com.kuk.sfgame.repository;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.util.List;
-import java.util.Properties;
-
 import com.kuk.sfgame.model.Guild;
-import com.kuk.sfgame.mapper.GuildMapper;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 @Repository
-public class GuildRepository {
-    
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
+public interface GuildRepository extends JpaRepository<Guild, Integer> {
 
-    private Properties sqlQueries = new Properties();
+    // Najde guildu podle ID
+    Guild findById(int id);
 
-    public void setSQLQueriesFileName(String path) throws IOException {
-        try (FileInputStream fis = new FileInputStream(path)) {
-            sqlQueries.load(fis);
-        }
-    }
+    // Najde guildu podle ID hráče
+    @Query("""
+        SELECT g FROM Guild g
+        JOIN g.members m
+        WHERE m.id = :playerId
+    """)
+    Guild findByPlayerId(@Param("playerId") int playerId);
 
-    public Guild findGuildById(int guildId) {
-        String sql = sqlQueries.getProperty("findGuildById");
-        List<Guild> guilds = jdbcTemplate.query(sql, new GuildMapper(), guildId);
-        return guilds.isEmpty() ? null : guilds.get(0);
-    }
+    // Aktualizace všech bonusů najednou
+    @Modifying
+    @Transactional
+    @Query("""
+        UPDATE Guild g
+        SET g.goldBonusPercent = :gold,
+            g.xpBonusPercent = :xp,
+            g.hpBonusPercent = :hp,
+            g.dmgBonusPercent = :dmg,
+            g.questOfferNumber = :quests
+        WHERE g.id = :guildId
+    """)
+    int updateGuildBonuses(
+            @Param("guildId") int guildId,
+            @Param("gold") int gold,
+            @Param("xp") int xp,
+            @Param("hp") int hp,
+            @Param("dmg") int dmg,
+            @Param("quests") int quests
+    );
 
-    public Guild findGuildByPlayerId(int playerId) {
-        String sql = sqlQueries.getProperty("findGuildByPlayerId");
-        List<Guild> guilds = jdbcTemplate.query(sql, new GuildMapper(), playerId);
-        return guilds.isEmpty() ? null : guilds.get(0);
-    }
+    // Individuální aktualizace bonusů (pokud chceš mít samostatně)
+    @Modifying
+    @Transactional
+    @Query("UPDATE Guild g SET g.goldBonusPercent = :gold WHERE g.id = :guildId")
+    int updateGoldBonus(@Param("guildId") int guildId, @Param("gold") int gold);
+
+    @Modifying
+    @Transactional
+    @Query("UPDATE Guild g SET g.xpBonusPercent = :xp WHERE g.id = :guildId")
+    int updateXpBonus(@Param("guildId") int guildId, @Param("xp") int xp);
+
+    @Modifying
+    @Transactional
+    @Query("UPDATE Guild g SET g.hpBonusPercent = :hp WHERE g.id = :guildId")
+    int updateHpBonus(@Param("guildId") int guildId, @Param("hp") int hp);
+
+    @Modifying
+    @Transactional
+    @Query("UPDATE Guild g SET g.dmgBonusPercent = :dmg WHERE g.id = :guildId")
+    int updateDmgBonus(@Param("guildId") int guildId, @Param("dmg") int dmg);
+
+    @Modifying
+    @Transactional
+    @Query("UPDATE Guild g SET g.questOfferNumber = :quests WHERE g.id = :guildId")
+    int updateQuestBonus(@Param("guildId") int guildId, @Param("quests") int quests);
 }

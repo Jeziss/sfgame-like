@@ -5,12 +5,14 @@ import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.kuk.sfgame.dto.PlayerDto;
-import com.kuk.sfgame.model.LegacyLeaderboard;
-import com.kuk.sfgame.model.LegacyLeaderboard;
 import com.kuk.sfgame.model.Player;
+
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 public interface PlayerRepository extends JpaRepository<Player, Integer> {
@@ -34,6 +36,11 @@ public interface PlayerRepository extends JpaRepository<Player, Integer> {
     }
 
     // ---------------- Update methods ----------------
+    @Modifying
+    @Transactional
+    @Query("UPDATE Player p SET p.energy = :newEnergy")
+    int updateAllPlayersEnergy(@Param("newEnergy") int newEnergy);
+
     // Gold update
     default void updatePlayerGold(Player player, int newGoldAmount) {
         player.setGold(newGoldAmount);
@@ -62,4 +69,5 @@ public interface PlayerRepository extends JpaRepository<Player, Integer> {
                 .map(p -> new PlayerDto(p.getId(), p.getName()))
                 .toList();
     }
+
 }

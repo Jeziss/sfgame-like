@@ -69,10 +69,23 @@ public class TavernController {
         return "redirect:/player?target=TAVERN_LOCATIONS";
     }
     
+
+    //TODO: Check, coded offline!
     @PostMapping("tavern/finish-quest")
     public String finishQuest(@RequestParam int playerId) {
-        questService.completeQuestForPlayer(playerId);
+        boolean levelUp = questService.completeQuestForPlayer(playerId);
+        if (levelUp) {
+            //Show thaat the player has leveled up
+        }
         return "redirect:/player?target=TAVERN_LOCATIONS";
     }
+
+    //TODO: Check, coded offline!
+    @GetMapping("tavern/day-reset")
+    public String resetTheDay() {
+        playerService.resetTheDay();
+        return "redirect:/index";
+    }
+    
     
 }

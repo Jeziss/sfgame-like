@@ -57,6 +57,17 @@ public class QuestService {
             goldReward = (int) (goldReward * multiplier);
             xpReward = (int) (xpReward * multiplier);
 
+
+            //TODO: check, coded offline!
+            // If the random roll of the quest enery exceeds the player energy, reduce the rewards as well as 
+            // the energy cost to match the possible maximum 
+            if (player.getEnergy() < energyCost) {
+                double energyProportion = player.getEnergy() / energyCost;
+                xpReward = (int) (xpReward * energyProportion);
+                goldReward = (int) (goldReward * energyProportion);
+                energyCost = player.getEnergy();
+            } 
+
             String location = Constants.LOCATION_NAMES.get(ThreadLocalRandom.current().nextInt(Constants.LOCATION_NAMES.size()));
 
             quests.add(new QuestDto(xpReward, goldReward, energyCost, location));
@@ -98,7 +109,8 @@ public class QuestService {
         return questRepository.save(quest);
     }
 
-    public void completeQuestForPlayer(int playerId) {
+    //TODO: Check, coded offline
+    public boolean completeQuestForPlayer(int playerId) {
         Quest quest = questRepository.findByPlayerId(playerId)
                 .orElseThrow(() -> new IllegalArgumentException("No active quest for player with id: " + playerId));
 
@@ -106,11 +118,13 @@ public class QuestService {
         player.setQuest(null);
 
 
-        player.earnExperience(quest.getXpReward());
+        boolean levelUp = player.earnExperience(quest.getXpReward());
         player.earnGold(quest.getGoldReward());
 
         playerRepository.save(player);
         questRepository.delete(quest);
+
+        return levelUp;
     }
 
     public void failQuestForPlayer(int playerId) {

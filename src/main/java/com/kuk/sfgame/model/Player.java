@@ -1,5 +1,7 @@
 package com.kuk.sfgame.model;
 
+import java.beans.Transient;
+
 import com.kuk.sfgame.util.Constants;
 
 
@@ -48,8 +50,12 @@ public class Player {
     @Transient
     private int position; // Used for legacy leaderboard display, not persisted to database
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "guild_id") // sloupec v tabulce players
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinTable(
+        name = "guild_members",
+        joinColumns = @JoinColumn(name = "member_id"),
+        inverseJoinColumns = @JoinColumn(name = "guild_id")
+    )
     @ToString.Exclude
     private Guild guild;
 
@@ -81,14 +87,21 @@ public class Player {
         );
     }
 
-    public void earnExperience(int xp) {
+    /**
+     * Add experience to a player, returns true if level-up happened
+     * @param xp
+     * @return
+     */
+    public boolean earnExperience(int xp) {
         this.experience += xp;
         if (this.experience >= Constants.EXPERIENCE_TO_LVLUP[this.level]) {
             this.experience -= Constants.EXPERIENCE_TO_LVLUP[this.level];
             this.level++;
             
             earnExperience(0); // Check for multiple level-ups
+            return true;
         }
+        return false;
     }
 
 

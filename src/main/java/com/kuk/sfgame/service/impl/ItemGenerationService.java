@@ -80,7 +80,7 @@ public class ItemGenerationService {
         // Strength, constitution and luck are set at this point.
 
         //TODO: solve price
-        int price = 1;
+        int price = Calculation.calculateItemPrice(playerLevel);
 
         ItemTemplate template = ALL_ITEM_TEMPLATES.get(ThreadLocalRandom.current().nextInt(ALL_ITEM_TEMPLATES.size()));
         
