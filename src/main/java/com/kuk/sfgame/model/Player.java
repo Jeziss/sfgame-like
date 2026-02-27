@@ -1,7 +1,5 @@
 package com.kuk.sfgame.model;
 
-import java.beans.Transient;
-
 import com.kuk.sfgame.util.Constants;
 
 
