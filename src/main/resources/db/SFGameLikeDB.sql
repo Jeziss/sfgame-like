@@ -89,12 +89,12 @@ CREATE TABLE legacy_leaderboard (
 -- --------------------------------------------------
 
 INSERT INTO players (name, lvl) VALUES
-('Basic Hero 1', 1),
-('Basic Hero 2', 2),
-('Basic Hero 3', 3),
-('Basic Hero 6', 6),
-('Basic Hero 12', 12),
-('Basic Hero 20', 20);
+('Jindra 1', 1),
+('Kacka 2', 2),
+('Paja 3', 3),
+('Pavel 6', 6),
+('Sasa 12', 12),
+('Sarka 20', 20);
 
 INSERT INTO legacy_leaderboard (player_id, position) VALUES
 (1, 1),
