@@ -42,8 +42,9 @@ public class QuestService {
         int maxXp = Calculation.calculateTavernXPmax(player.getLevel(),guildBonus.gold);
         int minXp = Calculation.calculateTavernXPmin(player.getLevel(),guildBonus.gold);
 
-        int numberOfQuests = guildBonus.questOfferNumber;; 
-
+        //TODO: implement number of quests based on guild bonus, for now it's just 3 for everyone
+        //int numberOfQuests = guildBonus.questOfferNumber;; 
+        int numberOfQuests = 3; // prozatím pevně, dokud nebude implementace guild bonusů hotová
         List<QuestDto> quests = new ArrayList<>();
 
         for (int i = 0; i < numberOfQuests; i++) {
