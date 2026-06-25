@@ -2,6 +2,7 @@ package com.kuk.sfgame.repository;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import java.util.Properties;
 
@@ -24,6 +25,10 @@ public class GuildRepository {
         try (FileInputStream fis = new FileInputStream(path)) {
             sqlQueries.load(fis);
         }
+    }
+
+    public void loadSqlQueries(InputStream inputStream) throws IOException {
+        sqlQueries.load(inputStream);
     }
 
     public Guild findGuildById(int guildId) {

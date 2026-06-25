@@ -2,6 +2,7 @@ package com.kuk.sfgame.repository;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Properties;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,5 +21,9 @@ public class EquipmentRepository {
         try (FileInputStream fis = new FileInputStream(path)) {
             sqlQueries.load(fis);
         }
+    }
+
+    public void loadSqlQueries(InputStream inputStream) throws IOException {
+        sqlQueries.load(inputStream);
     }
 }

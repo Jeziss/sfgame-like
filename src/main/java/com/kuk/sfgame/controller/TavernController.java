@@ -22,11 +22,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 public class TavernController {
 
-    @Autowired
-    private PlayerService playerService;
+    private final PlayerService playerService;
 
-    @Autowired
-    private QuestService questService;
+    private final QuestService questService;
+
+    TavernController(PlayerService playerService, QuestService questService) {
+        this.playerService = playerService;
+        this.questService = questService;
+    }
 
     @GetMapping("/tavern")
     public String getTavern(@RequestParam int playerId, Model model) {
