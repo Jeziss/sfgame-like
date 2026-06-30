@@ -38,6 +38,12 @@ public class TavernController {
         List<QuestDto> quests = questService.getQuestsForPlayer(playerId);
 
         model.addAttribute("player", player);
+        // Ensure energy is shown in the template (default to max 100 when null)
+        Integer energy = player != null && player.getEnergy() != null ? player.getEnergy() : 100;
+        model.addAttribute("energy", energy);
+        // Active quest flag for the player
+        boolean hasActiveQuest = questService.getQuestForPlayer(playerId) != null;
+        model.addAttribute("hasActiveQuest", hasActiveQuest);
         model.addAttribute("quests", quests);
 
         return "tavern/tavern-inside";

@@ -90,7 +90,8 @@
             <div class="guild" th:if="${player.guild != null}" th:text="${player.guild.name ?: 'No Guild'}">Guild Name</div>
             <div class="level-exp">
                 Level: <span th:text="${player.level}">1</span> |
-                EXP: <span th:text="${player.experience}">0</span>
+                EXP: <span th:text="${player.experience}">0</span> /
+                <span th:text="${xpToLevelUp}">0</span>
             </div>
         </div>
 

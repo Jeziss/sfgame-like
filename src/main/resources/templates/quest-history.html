@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="cs" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Historie questů</title>
+    <link rel="stylesheet" href="/css/app.css" />
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #2b2b2b;
+            color: #f0e6d2;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 15px;
+        }
+        .action-buttons {
+            margin-bottom: 20px;
+        }
+        .action-buttons a {
+            margin-right: 12px;
+            padding: 10px 16px;
+            background: #8b5a2b;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 6px;
+        }
+        .filter-panel {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        .filter-panel label {
+            display: flex;
+            flex-direction: column;
+            font-size: 14px;
+            color: #d8caa5;
+        }
+        .filter-panel input,
+        .filter-panel select,
+        .filter-panel button {
+            padding: 8px 10px;
+            border-radius: 5px;
+            border: 1px solid #6b4e2e;
+            background: #3a2f25;
+            color: #f0e6d2;
+        }
+        .history-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        .history-table th,
+        .history-table td {
+            border: 1px solid #6b4e2e;
+            padding: 12px 10px;
+            text-align: left;
+        }
+        .history-table th {
+            background: #4c3d30;
+        }
+        .history-table tbody tr:nth-child(even) {
+            background: rgba(255,255,255,0.03);
+        }
+        .status-success {
+            color: #8cff6b;
+            font-weight: bold;
+        }
+        .status-failed {
+            color: #ff6b6b;
+            font-weight: bold;
+        }
+        .empty-message {
+            padding: 20px;
+            background: #3a2f25;
+            border: 1px solid #6b4e2e;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="action-buttons">
+        <a href="/" th:text="#{backToMainMenu}">Back to Main Menu</a>
+    </div>
+
+    <h1>Historie questů</h1>
+
+    <form class="filter-panel" method="get" th:action="@{/quest-history}">
+        <label>
+            Hráč
+            <input type="text" name="playerName" th:value="${playerName}" placeholder="Hledat podle jména" />
+        </label>
+        <label>
+            Stav
+            <select name="success">
+                <option value="ALL" th:selected="${success == 'ALL'}">Všechny</option>
+                <option value="SUCCESS" th:selected="${success == 'SUCCESS'}">Splněno</option>
+                <option value="FAILED" th:selected="${success == 'FAILED'}">Nesplněno</option>
+            </select>
+        </label>
+        <label>
+            Den
+            <input type="date" name="date" th:value="${date}" />
+        </label>
+        <button type="submit">Filtrovat</button>
+    </form>
+
+    <div th:if="${summary != null and !summary.isEmpty()}">
+        <h2>Souhrn odměn podle dne</h2>
+        <table class="history-table">
+            <thead>
+                <tr>
+                    <th>Den</th>
+                    <th>Celkem energie</th>
+                    <th>Celkem gold</th>
+                    <th>Celkem XP</th>
+                    <th>Gold / energie</th>
+                    <th>XP / energie</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="summaryItem : ${summary}">
+                    <td th:text="${summaryItem.day()}">2026-06-30</td>
+                    <td th:text="${summaryItem.totalEnergy()}">100</td>
+                    <td th:text="${summaryItem.totalGold()}">450</td>
+                    <td th:text="${summaryItem.totalXp()}">1200</td>
+                    <td th:text="${summaryItem.rewardPerEnergy()}">4.50</td>
+                    <td th:text="${summaryItem.xpPerEnergy()}">3.20</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div th:if="${history != null and !history.isEmpty()}">
+        <h2>Detailní historie</h2>
+        <table class="history-table">
+            <thead>
+                <tr>
+                    <th>Datum</th>
+                    <th>Hráč</th>
+                    <th>Lokace</th>
+                    <th>Energie</th>
+                    <th>XP</th>
+                    <th>Gold</th>
+                    <th>Výsledek</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="historyItem : ${history}">
+                    <td th:text="${#temporals.format(historyItem.completedAt, 'yyyy-MM-dd HH:mm')}">2026-06-30 14:00</td>
+                    <td th:text="${historyItem.player.name}">Jindra</td>
+                    <td th:text="${historyItem.location}">Forest</td>
+                    <td th:text="${historyItem.energyCost}">10</td>
+                    <td th:text="${historyItem.xpReward}">120</td>
+                    <td th:text="${historyItem.goldReward}">45</td>
+                    <td th:text="${historyItem.success ? 'Splněno' : 'Nesplněno'}"
+                        th:classappend="${historyItem.success} ? 'status-success' : 'status-failed'">
+                        Splněno
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div th:if="${history == null or history.isEmpty()}" class="empty-message">
+        <p>Nebyly nalezeny žádné záznamy o questech.</p>
+    </div>
+</div>
+</body>
+</html>

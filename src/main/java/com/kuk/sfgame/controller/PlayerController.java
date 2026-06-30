@@ -18,6 +18,7 @@ import com.kuk.sfgame.dto.PlayerChoiceDto;
 import com.kuk.sfgame.dto.PlayerDto;
 import com.kuk.sfgame.model.Player;
 import com.kuk.sfgame.model.UpgradePricesRecord;
+import com.kuk.sfgame.util.Constants;
 
 
 
@@ -77,6 +78,8 @@ public class PlayerController {
 
         model.addAttribute("player", player);
         model.addAttribute("upgradePrices", playerService.getUpgradePrices(player));
+        int xpToLevelUp = Constants.EXPERIENCE_TO_LVLUP[Math.min(player.getLevel() + 1, Constants.EXPERIENCE_TO_LVLUP.length - 1)] - player.getExperience();
+        model.addAttribute("xpToLevelUp", Math.max(xpToLevelUp, 0));
 
         return "player/player-details"; // Thymeleaf šablona s detaily hráče
     }

@@ -20,7 +20,8 @@ CREATE TABLE players (
     gold INTEGER NOT NULL DEFAULT 100,
     base_strength INTEGER NOT NULL DEFAULT 15,
     base_constitution INTEGER NOT NULL DEFAULT 15,
-    base_luck INTEGER NOT NULL DEFAULT 0
+    base_luck INTEGER NOT NULL DEFAULT 0,
+    energy INTEGER NOT NULL DEFAULT 100
 );
 
 -- --------------------------------------------------
@@ -82,6 +83,17 @@ CREATE TABLE weapon_stats (
 CREATE TABLE legacy_leaderboard (
     player_id INTEGER PRIMARY KEY REFERENCES players(id),
     position INTEGER NOT NULL DEFAULT 0
+);
+
+CREATE TABLE quest_history (
+    id SERIAL PRIMARY KEY,
+    player_id INTEGER NOT NULL REFERENCES players(id) ON DELETE CASCADE,
+    location VARCHAR(255) NOT NULL,
+    energy_cost INTEGER NOT NULL,
+    xp_reward INTEGER NOT NULL,
+    gold_reward INTEGER NOT NULL,
+    success BOOLEAN NOT NULL,
+    completed_at TIMESTAMP NOT NULL
 );
 
 -- --------------------------------------------------
