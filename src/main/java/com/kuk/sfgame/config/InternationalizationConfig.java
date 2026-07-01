@@ -23,7 +23,7 @@ public class InternationalizationConfig {
     @Bean
     public LocaleResolver localeResolver() {
         SessionLocaleResolver slr = new SessionLocaleResolver();
-        slr.setDefaultLocale(Locale.ENGLISH); // výchozí jazyk
+        slr.setDefaultLocale(Locale.forLanguageTag("cs")); // výchozí jazyk
         return slr;
     }
 }
