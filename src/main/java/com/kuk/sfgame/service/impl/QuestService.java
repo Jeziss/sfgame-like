@@ -145,7 +145,7 @@ public class QuestService {
         return questRepository.save(quest);
     }
 
-    public void completeQuestForPlayer(int playerId) {
+    public int completeQuestForPlayer(int playerId) {
         Quest quest = questRepository.findByPlayerId(playerId)
                 .orElseThrow(() -> new IllegalArgumentException("No active quest for player with id: " + playerId));
 
@@ -153,7 +153,7 @@ public class QuestService {
         player.setQuest(null);
 
         int levelAtCompletion = player.getLevel();
-        player.earnExperience(quest.getXpReward());
+        boolean leveledUp = player.earnExperience(quest.getXpReward());
         player.earnGold(quest.getGoldReward());
 
         QuestHistory history = new QuestHistory();
@@ -169,6 +169,8 @@ public class QuestService {
 
         playerRepository.save(player);
         questRepository.delete(quest);
+
+        return leveledUp ? player.getLevel() : 0;
     }
 
     public void failQuestForPlayer(int playerId) {
@@ -192,6 +194,31 @@ public class QuestService {
 
         playerRepository.save(player);
         questRepository.delete(quest);
+    }
+
+    public void failAllActiveQuests() {
+        List<Quest> activeQuests = questRepository.findAll();
+        for (Quest quest : activeQuests) {
+            if (quest.getPlayer() == null) {
+                continue;
+            }
+            Player player = quest.getPlayer();
+            player.setQuest(null);
+
+            QuestHistory history = new QuestHistory();
+            history.setPlayer(player);
+            history.setPlayerLevel(player.getLevel());
+            history.setLocation(quest.getLocation());
+            history.setEnergyCost(quest.getEnergyCost());
+            history.setXpReward(quest.getXpReward());
+            history.setGoldReward(quest.getGoldReward());
+            history.setSuccess(false);
+            history.setCompletedAt(LocalDateTime.now());
+            questHistoryRepository.save(history);
+
+            playerRepository.save(player);
+            questRepository.delete(quest);
+        }
     }
 
     public List<QuestHistory> getQuestHistory(String playerName, String success, LocalDate date) {

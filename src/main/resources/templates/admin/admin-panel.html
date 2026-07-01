@@ -143,6 +143,9 @@
                 <form th:action="@{/admin/refresh-leaderboard}" method="post" onsubmit="return confirm('Opravdu chcete spustit aktualizaci legacy leaderboardu?');">
                     <button type="submit">Run legacy leaderboard update</button>
                 </form>
+                <form th:action="@{/admin/fail-active-quests}" method="post" onsubmit="return confirm('Opravdu chcete označit všechny aktivní questy jako neúspěšné?');">
+                    <button type="submit">Fail all active quests</button>
+                </form>
             </div>
         </div>
 

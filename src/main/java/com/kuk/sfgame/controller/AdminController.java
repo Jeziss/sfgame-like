@@ -14,6 +14,7 @@ import com.kuk.sfgame.repository.GuildRepository;
 import com.kuk.sfgame.repository.PlayerRepository;
 import com.kuk.sfgame.service.impl.PlayerService;
 import com.kuk.sfgame.service.impl.QuestLocationService;
+import com.kuk.sfgame.service.impl.QuestService;
 
 @Controller
 public class AdminController {
@@ -22,13 +23,16 @@ public class AdminController {
     private final GuildRepository guildRepository;
     private final QuestLocationService questLocationService;
     private final PlayerService playerService;
+    private final QuestService questService;
 
     public AdminController(PlayerRepository playerRepository, GuildRepository guildRepository,
-                           QuestLocationService questLocationService, PlayerService playerService) {
+                           QuestLocationService questLocationService, PlayerService playerService,
+                           QuestService questService) {
         this.playerRepository = playerRepository;
         this.guildRepository = guildRepository;
         this.questLocationService = questLocationService;
         this.playerService = playerService;
+        this.questService = questService;
     }
 
     @GetMapping("/admin")
@@ -141,6 +145,12 @@ public class AdminController {
     @PostMapping("/admin/refresh-leaderboard")
     public String refreshLegacyLeaderboard() {
         playerService.sortAllPlayersByPower();
+        return "redirect:/admin";
+    }
+
+    @PostMapping("/admin/fail-active-quests")
+    public String failAllActiveQuests() {
+        questService.failAllActiveQuests();
         return "redirect:/admin";
     }
 }

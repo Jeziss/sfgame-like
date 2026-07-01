@@ -18,6 +18,9 @@
         <h1 th:text="#{questProgressTitle}">🍺 Complete a quest</h1>
     </div>
 
+    <div th:if="${successMessage}" class="success-message" th:text="${successMessage}"></div>
+    <div th:if="${errorMessage}" class="error-message" th:text="${errorMessage}"></div>
+
     <div class="quest-card" th:if="${quest != null}">
         <h3 th:text="${quest.location}">Quest name</h3>
 

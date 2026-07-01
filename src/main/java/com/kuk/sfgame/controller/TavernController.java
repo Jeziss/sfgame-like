@@ -1,6 +1,5 @@
 package com.kuk.sfgame.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.stereotype.Controller;
@@ -16,7 +15,7 @@ import com.kuk.sfgame.model.Quest;
 import com.kuk.sfgame.service.impl.PlayerService;
 import com.kuk.sfgame.service.impl.QuestService;
 import org.springframework.web.bind.annotation.PostMapping;
-
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
 @Controller
@@ -75,13 +74,16 @@ public class TavernController {
     @PostMapping("tavern/fail-quest")
     public String failQuest(@RequestParam int playerId) {
         questService.failQuestForPlayer(playerId);
-        return "redirect:/player?target=TAVERN_LOCATIONS";
+        return "redirect:/tavern-location?playerId=" + playerId;
     }
     
     @PostMapping("tavern/finish-quest")
-    public String finishQuest(@RequestParam int playerId) {
-        questService.completeQuestForPlayer(playerId);
-        return "redirect:/player?target=TAVERN_LOCATIONS";
+    public String finishQuest(@RequestParam int playerId, RedirectAttributes redirectAttributes) {
+        int newLevel = questService.completeQuestForPlayer(playerId);
+        if (newLevel > 0) {
+            redirectAttributes.addFlashAttribute("successMessage", "Level up! Postava dosáhla úrovně " + newLevel + ".");
+        }
+        return "redirect:/tavern/tavern-locattion";
     }
     
 }
