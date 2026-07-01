@@ -1,23 +1,23 @@
 <!DOCTYPE html>
-<html lang="cs" xmlns:th="http://www.thymeleaf.org">
+<html lang="cs" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title th:text="#{mainMenuTitle}">Main Menu</title>
-    <link rel="stylesheet" href="/css/app.css" />
-</head>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title th:text="#{mainMenuTitle}">Main Menu</title>
+        <link rel="stylesheet" href="/css/app.css" />
+    </head>
 
-<body>
-    <div class="button-container">
-        <a th:href="@{/player(target=TAVERN)}" class="button" th:text="#{tavern}">Tavern</a>
-        <a th:href="@{/player(target=TAVERN_LOCATIONS)}" class="button" th:text="#{tavernLocations}">Tavern Locations</a>
-        <a th:href="@{/player(target=DETAILS)}" class="button" th:text="#{playerInventory}">Player Inventory</a>
-        <a th:href="@{/player(target=DUNGEONS)}" class="button" th:text="#{dungeons}">Dungeons</a>
-        <a th:href="@{/player(target=SHOP)}" class="button" th:text="#{weaponShop}">Weapon Shop</a>
-        <a href="/quest-history" class="button">Historie questů</a>
-        <a href="/legacy-leaderboard" class="button" th:text="#{legacyLeaderboard}">Legacy Leaderboard</a>
-        <a href="/guilds" class="button" th:text="#{guilds}">Guilds</a>
-    </div>
-</body>
+    <body>
+        <div class="button-container">
+            <a th:href="@{/player(target=TAVERN)}" class="button" th:text="#{tavern}">Tavern</a>
+            <a th:href="@{/player(target=TAVERN_LOCATIONS)}" class="button" th:text="#{tavernLocations}">Tavern Locations</a>
+            <a th:href="@{/player(target=DETAILS)}" class="button" th:text="#{playerInventory}">Player Inventory</a>
+            <a th:href="@{/player(target=SHOP)}" class="button" th:text="#{weaponShop}">Weapon Shop</a>
+            <a href="/quest-history" class="button">Historie questů</a>
+            <a href="/legacy-leaderboard" class="button" th:text="#{legacyLeaderboard}">Legacy Leaderboard</a>
+            <a href="/guilds" class="button" th:text="#{guilds}">Guilds</a>
+            <a href="/admin" class="button" sec:authorize="hasRole('ADMIN')">Admin panel</a>
+        </div>
+    </body>
 </html>

@@ -142,6 +142,7 @@
                 <tr>
                     <th>Datum</th>
                     <th>Hráč</th>
+                    <th>Level</th>
                     <th>Lokace</th>
                     <th>Energie</th>
                     <th>XP</th>
@@ -153,6 +154,7 @@
                 <tr th:each="historyItem : ${history}">
                     <td th:text="${#temporals.format(historyItem.completedAt, 'yyyy-MM-dd HH:mm')}">2026-06-30 14:00</td>
                     <td th:text="${historyItem.player.name}">Jindra</td>
+                    <td th:text="${historyItem.playerLevel != null ? historyItem.playerLevel : historyItem.player.level}">1</td>
                     <td th:text="${historyItem.location}">Forest</td>
                     <td th:text="${historyItem.energyCost}">10</td>
                     <td th:text="${historyItem.xpReward}">120</td>

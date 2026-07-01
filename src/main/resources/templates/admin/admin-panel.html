@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="cs" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin panel</title>
+    <link rel="stylesheet" href="/css/app.css" />
+    <style>
+        body { padding: 24px; }
+        .admin-grid { display: grid; gap: 24px; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); align-items: start; }
+        .card { background: white; border-radius: 14px; padding: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.08); }
+        .stack { display: flex; flex-direction: column; gap: 12px; }
+        .row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+        .field { display: flex; flex-direction: column; gap: 6px; }
+        label { font-weight: 600; font-size: 0.95rem; }
+        input, select, textarea { padding: 8px 10px; border: 1px solid #ccc; border-radius: 8px; }
+        button { padding: 10px 14px; border: none; border-radius: 8px; background: #3b6fd8; color: white; cursor: pointer; }
+        button:hover { background: #2f5fd7; }
+        .section-title { margin-top: 0; margin-bottom: 12px; }
+        .inline-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+        .toggle-group { display: flex; gap: 16px; margin-bottom: 6px; }
+        .location-list { display: flex; flex-direction: column; gap: 8px; max-height: 220px; overflow: auto; padding-right: 4px; }
+        .location-item { display: flex; align-items: center; gap: 8px; padding: 6px 8px; border-radius: 8px; background: #f7f9fc; }
+        .hint { color: #666; font-size: 0.9rem; margin: 0; }
+        .mode-panel { margin-bottom: 8px; }
+        .mode-panel .field { margin-top: 8px; }
+        @media (max-width: 720px) { .row { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Admin panel</h1>
+
+    <div class="actions">
+        <a href="/" class="btn-link">← Back to main menu</a>
+    </div>
+
+    <div class="admin-grid">
+        <div class="card">
+            <h2 class="section-title">Quest locations</h2>
+            <form th:action="@{/admin/locations}" method="post" class="stack">
+                <p class="hint">Check locations that should stay active. Uncheck to remove them.</p>
+                <div class="location-list">
+                    <div class="location-item" th:each="location : ${locations}">
+                        <input type="checkbox" name="activeLocations" th:value="${location}" checked>
+                        <span th:text="${location}"></span>
+                    </div>
+                </div>
+                <div class="inline-actions">
+                    <button type="submit" name="action" value="save">Save active locations</button>
+                    <button type="submit" name="action" value="delete">Delete selected</button>
+                </div>
+            </form>
+
+            <form th:action="@{/admin/locations}" method="post" class="stack" style="margin-top: 12px;">
+                <div class="field">
+                    <label for="newLocation">Add new location</label>
+                    <input id="newLocation" name="newLocation" type="text" placeholder="Enter a new location" />
+                </div>
+                <button type="submit" name="action" value="add">Add location</button>
+            </form>
+        </div>
+
+        <div class="card">
+            <h2 class="section-title">Update player</h2>
+            <form th:action="@{/admin/player}" method="post" class="stack">
+                <div class="field">
+                    <label for="playerId">Player</label>
+                    <select id="playerId" name="playerId">
+                        <option th:each="player : ${players}" th:value="${player.id}" th:text="${player.name} + ' (Lvl ' + ${player.level} + ')'"
+                                th:attr="data-level=${player.level}, data-xp=${player.experience}, data-gold=${player.gold}, data-strength=${player.strength}, data-constitution=${player.constitution}, data-luck=${player.luck}, data-energy=${player.energy != null ? player.energy : ''}" />
+                    </select>
+                </div>
+
+                <div class="mode-panel">
+                    <div class="toggle-group">
+                        <label><input type="radio" name="updateMode" value="set" checked> Set exact values</label>
+                        <label><input type="radio" name="updateMode" value="add"> Add values</label>
+                    </div>
+                    <p class="hint">In add mode only XP and gold are applied.</p>
+                </div>
+
+                <div id="set-fields" class="stack">
+                    <div class="row">
+                        <div class="field">
+                            <label for="level">Level</label>
+                            <input id="level" type="number" name="level" />
+                        </div>
+                        <div class="field">
+                            <label for="energy">Energy</label>
+                            <input id="energy" type="number" name="energy" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="field">
+                            <label for="strength">Strength</label>
+                            <input id="strength" type="number" name="strength" />
+                        </div>
+                        <div class="field">
+                            <label for="constitution">Constitution</label>
+                            <input id="constitution" type="number" name="constitution" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="field">
+                            <label for="luck">Luck</label>
+                            <input id="luck" type="number" name="luck" />
+                        </div>
+                        <div class="field">
+                            <label for="xpSet">XP</label>
+                            <input id="xpSet" type="number" name="xpSet" />
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label for="goldSet">Gold</label>
+                        <input id="goldSet" type="number" name="goldSet" />
+                    </div>
+                </div>
+
+                <div id="add-fields" class="stack" style="display: none;">
+                    <div class="row">
+                        <div class="field">
+                            <label for="xpAdd">XP to add</label>
+                            <input id="xpAdd" type="number" name="xpAdd" />
+                        </div>
+                        <div class="field">
+                            <label for="goldAdd">Gold to add</label>
+                            <input id="goldAdd" type="number" name="goldAdd" />
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit">Save player</button>
+            </form>
+        </div>
+
+        <div class="card">
+            <h2 class="section-title">Admin actions</h2>
+            <div class="stack">
+                <form th:action="@{/admin/reset-energy}" method="post" onsubmit="return confirm('Opravdu chcete obnovit energii všech hráčů na 100?');">
+                    <button type="submit">Restore all players energy to 100</button>
+                </form>
+                <form th:action="@{/admin/refresh-leaderboard}" method="post" onsubmit="return confirm('Opravdu chcete spustit aktualizaci legacy leaderboardu?');">
+                    <button type="submit">Run legacy leaderboard update</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2 class="section-title">Update guild bonuses</h2>
+            <form th:action="@{/admin/guilds}" method="post" class="stack">
+                <div class="field">
+                    <label for="guildId">Guild</label>
+                    <select id="guildId" name="guildId">
+                        <option th:each="guild : ${guilds}" th:value="${guild.id}" th:text="${guild.name}"
+                                th:attr="data-gold-bonus=${guild.goldBonusPercent}, data-xp-bonus=${guild.xpBonusPercent}, data-hp-bonus=${guild.hpBonusPercent}, data-dmg-bonus=${guild.dmgBonusPercent}" />
+                    </select>
+                </div>
+                <div class="row">
+                    <div class="field">
+                        <label for="goldBonus">Gold bonus %</label>
+                        <input id="goldBonus" type="number" name="goldBonus" />
+                    </div>
+                    <div class="field">
+                        <label for="xpBonus">XP bonus %</label>
+                        <input id="xpBonus" type="number" name="xpBonus" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="field">
+                        <label for="hpBonus">HP bonus %</label>
+                        <input id="hpBonus" type="number" name="hpBonus" />
+                    </div>
+                    <div class="field">
+                        <label for="dmgBonus">DMG bonus %</label>
+                        <input id="dmgBonus" type="number" name="dmgBonus" />
+                    </div>
+                </div>
+                <button type="submit">Save guild bonuses</button>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    function fillPlayerDetails() {
+        const selected = document.getElementById('playerId');
+        const option = selected.options[selected.selectedIndex];
+        if (!option) {
+            return;
+        }
+
+        const fields = {
+            level: option.getAttribute('data-level') || '',
+            xp: option.getAttribute('data-xp') || '',
+            gold: option.getAttribute('data-gold') || '',
+            strength: option.getAttribute('data-strength') || '',
+            constitution: option.getAttribute('data-constitution') || '',
+            luck: option.getAttribute('data-luck') || '',
+            energy: option.getAttribute('data-energy') || ''
+        };
+
+        document.getElementById('level').value = fields.level;
+        document.getElementById('xpSet').value = fields.xp;
+        document.getElementById('goldSet').value = fields.gold;
+        document.getElementById('strength').value = fields.strength;
+        document.getElementById('constitution').value = fields.constitution;
+        document.getElementById('luck').value = fields.luck;
+        document.getElementById('energy').value = fields.energy;
+
+        document.getElementById('xpAdd').value = '';
+        document.getElementById('goldAdd').value = '';
+    }
+
+    function fillGuildDetails() {
+        const selected = document.getElementById('guildId');
+        const option = selected.options[selected.selectedIndex];
+        if (!option) {
+            return;
+        }
+
+        document.getElementById('goldBonus').value = option.getAttribute('data-gold-bonus') || '';
+        document.getElementById('xpBonus').value = option.getAttribute('data-xp-bonus') || '';
+        document.getElementById('hpBonus').value = option.getAttribute('data-hp-bonus') || '';
+        document.getElementById('dmgBonus').value = option.getAttribute('data-dmg-bonus') || '';
+    }
+
+    function updateModeView() {
+        const addMode = document.querySelector('input[name="updateMode"]:checked').value === 'add';
+        document.getElementById('set-fields').style.display = addMode ? 'none' : 'block';
+        document.getElementById('add-fields').style.display = addMode ? 'block' : 'none';
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const playerSelect = document.getElementById('playerId');
+        const guildSelect = document.getElementById('guildId');
+        playerSelect.addEventListener('change', fillPlayerDetails);
+        guildSelect.addEventListener('change', fillGuildDetails);
+        document.querySelectorAll('input[name="updateMode"]').forEach(radio => {
+            radio.addEventListener('change', updateModeView);
+        });
+        fillPlayerDetails();
+        fillGuildDetails();
+        updateModeView();
+    });
+</script>
+</body>
+</html>

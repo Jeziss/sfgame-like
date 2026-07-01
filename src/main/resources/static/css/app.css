@@ -35,6 +35,34 @@
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
+/* === ACTION LINKS === */
+.action-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: center;
+    margin-bottom: 24px;
+}
+
+.action-buttons a {
+    display: inline-block;
+    padding: 10px 16px;
+    background: linear-gradient(135deg, #4f8cff, #3b6fd8);
+    color: white;
+    border-radius: 10px;
+    text-align: center;
+    text-decoration: none;
+    font-weight: 600;
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.action-buttons a:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    background: linear-gradient(135deg, #5a9bff, #457de6);
+}
+
 /* === ZÁKLAD === */
 body {
     font-family: "Segoe UI", sans-serif;
@@ -160,6 +188,143 @@ h1 {
 
 .data-table tbody tr:hover {
     background: #f8faff;
+}
+
+/* === PAGE HEADER / HERO === */
+.page-header {
+    text-align: center;
+    margin-bottom: 24px;
+}
+
+.page-header h1 {
+    margin-bottom: 8px;
+}
+
+.page-header .subheading {
+    color: #4b5563;
+    margin: 0 0 8px;
+    font-size: 1.1rem;
+}
+
+.page-header .hero-stat {
+    display: inline-block;
+    padding: 8px 14px;
+    border-radius: 999px;
+    background: #eef2ff;
+    color: #3b6fd8;
+    font-weight: 600;
+}
+
+/* === QUEST CARDS === */
+.quest-list {
+    display: grid;
+    gap: 18px;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+.quest-card {
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 18px;
+    padding: 22px;
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.06);
+    position: relative;
+    overflow: hidden;
+}
+
+.quest-card::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 4px;
+    background: linear-gradient(90deg, #4f8cff, #7c9cff);
+}
+
+.quest-card h3 {
+    margin: 0 0 12px;
+    color: #1f4e79;
+    font-size: 1.15rem;
+}
+
+.quest-meta {
+    display: grid;
+    gap: 8px;
+    margin-bottom: 14px;
+}
+
+.quest-meta .meta-item {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid #f1f5f9;
+    color: #475569;
+}
+
+.quest-meta .meta-item strong {
+    color: #0f172a;
+}
+
+.quest-meta .meta-item:last-child {
+    border-bottom: none;
+}
+
+.quest-state {
+    padding: 12px 14px;
+    border-radius: 12px;
+    margin-bottom: 16px;
+    font-weight: 600;
+    text-align: center;
+}
+
+.quest-state-error {
+    background: #fde8e8;
+    color: #b91c1c;
+}
+
+.quest-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 14px;
+}
+
+.quest-actions form {
+    margin: 0;
+    flex: 1 1 180px;
+}
+
+.quest-button {
+    width: 100%;
+    padding: 12px 16px;
+    border: none;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #4f8cff, #3b6fd8);
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.12);
+}
+
+.quest-button:hover {
+    background: linear-gradient(135deg, #5a9bff, #457de6);
+}
+
+.quest-button:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+.quest-empty {
+    padding: 24px;
+    border-radius: 16px;
+    border: 1px dashed #cbd5e1;
+    text-align: center;
+    background: white;
+    color: #475569;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.04);
 }
 
 /* === RESPONSIVE === */

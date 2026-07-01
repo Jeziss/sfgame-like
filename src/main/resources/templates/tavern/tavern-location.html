@@ -2,116 +2,47 @@
 <html lang="cs" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Hospoda</title>
-
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #2b2b2b;
-            color: #f0e6d2;
-        }
-
-        .container {
-            max-width: 900px;
-            margin: 40px auto;
-        }
-
-        h1 {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        .quest-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 20px;
-        }
-
-        .quest-card {
-            background: #3a2f25;
-            border: 2px solid #6b4e2e;
-            border-radius: 10px;
-            padding: 15px;
-        }
-
-        .quest-card h3 {
-            margin-top: 0;
-            color: #ffd479;
-        }
-
-        .quest-info {
-            margin: 8px 0;
-            font-size: 14px;
-        }
-
-        .quest-info span {
-            display: block;
-        }
-
-        .quest-card form {
-            margin-top: 15px;
-            text-align: center;
-        }
-
-        button {
-            background: #8b5a2b;
-            border: none;
-            padding: 10px 16px;
-            color: #fff;
-            font-weight: bold;
-            border-radius: 6px;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background: #a66a33;
-        }
-
-        .energy {
-            color: #6be3ff;
-        }
-
-        .xp {
-            color: #8cff6b;
-        }
-
-        .gold {
-            color: #ffd700;
-        }
-    </style>
+    <title th:text="#{tavern}">Tavern</title>
+    <link rel="stylesheet" href="/css/app.css" />
 </head>
 
 <body>
 <div class="container">
-    
+
     <div class="action-buttons">
         <a th:href="@{/player(target=TAVERN_LOCATIONS)}" th:text="#{backToPlayerList}">Back to Player List</a>
         <a href="/" th:text="#{backToMainMenu}">Back to Main Menu</a>
     </div>
-    
-    <h1>🍺 Splň quest</h1>
-    <div th:if="${quest != null}">
-        <h3 th:text="${quest.location}">Název questu</h3>
 
-        <div class="quest-info">
-            <span>⏱️ Délka: <b th:text="${quest.energyCost}">10</b> min</span>
-            <span class="xp">⭐ XP: <b th:text="${quest.xpReward}">120</b></span>
-            <span class="gold">💰 Gold: <b th:text="${quest.goldReward}">45</b></span>
-            <span class="energy">⚡ Energie: <b th:text="${quest.energyCost}">10</b></span>
+    <div class="page-header">
+        <h1 th:text="#{questProgressTitle}">🍺 Complete a quest</h1>
+    </div>
+
+    <div class="quest-card" th:if="${quest != null}">
+        <h3 th:text="${quest.location}">Quest name</h3>
+
+        <div class="quest-meta">
+            <div class="meta-item"><span th:text="#{questDurationLabel}"></span><strong th:text="${quest.energyCost} + ' min'"></strong></div>
+            <div class="meta-item"><span th:text="#{xpLabel}"></span><strong th:text="${quest.xpReward}"></strong></div>
+            <div class="meta-item"><span th:text="#{goldLabel}"></span><strong th:text="${quest.goldReward}"></strong></div>
+            <div class="meta-item"><span th:text="#{energyLabel}"></span><strong th:text="${quest.energyCost}"></strong></div>
         </div>
 
-        <form th:action="@{/tavern/finish-quest}" method="post">
-            <input type="hidden" name="playerId" th:value="${player.id}"/>
-            <button type="submit">Splněno?</button>
-        </form>
+        <div class="quest-actions">
+            <form th:action="@{/tavern/finish-quest}" method="post">
+                <input type="hidden" name="playerId" th:value="${player.id}"/>
+                <button class="quest-button" type="submit" th:text="#{questCompletedButton}">Completed?</button>
+            </form>
 
-        <form th:action="@{/tavern/fail-quest}" method="post">
-            <input type="hidden" name="playerId" th:value="${player.id}"/>
-            <button type="submit">Nesplněno?</button>
-        </form>
+            <form th:action="@{/tavern/fail-quest}" method="post">
+                <input type="hidden" name="playerId" th:value="${player.id}"/>
+                <button class="quest-button" type="submit" th:text="#{questFailedButton}">Failed?</button>
+            </form>
+        </div>
     </div>
-    <div th:if="${quest == null}">
-        <p>Nemáš žádný aktivní quest.</p>
+
+    <div class="quest-empty" th:if="${quest == null}">
+        <p th:text="#{noActiveQuestMessage}">You have no active quest.</p>
     </div>
 </div>
 </body>

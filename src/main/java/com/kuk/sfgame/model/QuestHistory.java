@@ -20,6 +20,9 @@ public class QuestHistory {
     @JoinColumn(name = "player_id", nullable = false)
     private Player player;
 
+    @Column(name = "player_level")
+    private Integer playerLevel;
+
     @Column(nullable = false)
     private String location;
 

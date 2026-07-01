@@ -20,17 +20,27 @@ public class SecurityConfig {
 
     @Bean
     public InMemoryUserDetailsManager userDetailsService() {
-        UserDetails user = User.builder()
+        UserDetails admin = User.builder()
                 .username("admin")
                 .password(passwordEncoder().encode("admin"))
+                .roles("ADMIN", "USER")
+                .build();
+
+        UserDetails regularUser = User.builder()
+                .username("player")
+                .password(passwordEncoder().encode("player"))
                 .roles("USER")
                 .build();
-        return new InMemoryUserDetailsManager(user);
+
+        return new InMemoryUserDetailsManager(admin, regularUser);
     }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests(auth -> auth.anyRequest().authenticated())
+        http.authorizeHttpRequests(auth -> auth
+                .requestMatchers("/admin/**").hasRole("ADMIN")
+                .requestMatchers("/legacy-leaderboard/update").hasRole("ADMIN")
+                .anyRequest().authenticated())
             .formLogin(form -> form.permitAll());
         return http.build();
     }

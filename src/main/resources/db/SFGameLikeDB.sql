@@ -88,12 +88,18 @@ CREATE TABLE legacy_leaderboard (
 CREATE TABLE quest_history (
     id SERIAL PRIMARY KEY,
     player_id INTEGER NOT NULL REFERENCES players(id) ON DELETE CASCADE,
+    player_level INTEGER,
     location VARCHAR(255) NOT NULL,
     energy_cost INTEGER NOT NULL,
     xp_reward INTEGER NOT NULL,
     gold_reward INTEGER NOT NULL,
     success BOOLEAN NOT NULL,
     completed_at TIMESTAMP NOT NULL
+);
+
+CREATE TABLE quest_locations (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL UNIQUE
 );
 
 -- --------------------------------------------------
@@ -137,6 +143,11 @@ INSERT INTO item_templates (name, slot, icon) VALUES
 ('Boots of Strength', 'BOOTS', 'ring_strength.png'),
 ('Amulet of Wisdom', 'AMULET', 'amulet_wisdom.png'),
 ('Shitting gloves', 'GLOVES', 'gloves_shitting.png');
+
+INSERT INTO quest_locations (name) VALUES
+('Forest'),
+('Cave'),
+('Ruins');
 
 INSERT INTO player_items (player_id, template_id, strength, constitution, luck, equipped_slot) VALUES
 (1, 1, 2, 1, 0, 'WEAPON'),

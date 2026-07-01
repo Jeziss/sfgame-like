@@ -15,7 +15,7 @@ import com.kuk.sfgame.model.Weapon;
 // - Add more complex calculations (e.g. damage, defense, etc.) based on the stats
 // - Add methods to calculate derived stats (e.g. HP, attack power, etc.) based on the core stats
 // - Calculate the amount of xp and gold received from the tavern - DONE
-// - Calculate price of the item
+// - Calculate price of the item - DONE
 // - Calculate the stats of the item based on level - DONE
 // - Calculate the price of attribute upgrade - DONE
 

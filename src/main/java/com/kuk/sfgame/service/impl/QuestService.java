@@ -41,6 +41,7 @@ public class QuestService {
     private final PlayerService playerService;
     
     private final GuildService guildService;
+    private final QuestLocationService questLocationService;
 
     public List<QuestDto> getQuestsForPlayer(int playerId) {
 
@@ -65,8 +66,8 @@ public class QuestService {
 
         int maxGold = Calculation.calculateTavernGoldMax(player.getLevel(),guildBonus.gold);
         int minGold  = Calculation.calculateTavernGoldMin(player.getLevel(),guildBonus.gold);
-        int maxXp = Calculation.calculateTavernXPmax(player.getLevel(),guildBonus.gold);
-        int minXp = Calculation.calculateTavernXPmin(player.getLevel(),guildBonus.gold);
+        int maxXp = Calculation.calculateTavernXPmax(player.getLevel(),guildBonus.xp);
+        int minXp = Calculation.calculateTavernXPmin(player.getLevel(),guildBonus.xp);
 
         //TODO: implement number of quests based on guild bonus, for now it's just 3 for everyone
         //int numberOfQuests = guildBonus.questOfferNumber;; 
@@ -89,7 +90,7 @@ public class QuestService {
             goldReward = (int) (goldReward * multiplier);
             xpReward = (int) (xpReward * multiplier);
 
-            String location = Constants.LOCATION_NAMES.get(ThreadLocalRandom.current().nextInt(Constants.LOCATION_NAMES.size()));
+            String location = questLocationService.getRandomLocation();
 
             quests.add(new QuestDto(xpReward, goldReward, energyCost, location));
         }
@@ -151,12 +152,13 @@ public class QuestService {
         Player player = quest.getPlayer();
         player.setQuest(null);
 
-
+        int levelAtCompletion = player.getLevel();
         player.earnExperience(quest.getXpReward());
         player.earnGold(quest.getGoldReward());
 
         QuestHistory history = new QuestHistory();
         history.setPlayer(player);
+        history.setPlayerLevel(levelAtCompletion);
         history.setLocation(quest.getLocation());
         history.setEnergyCost(quest.getEnergyCost());
         history.setXpReward(quest.getXpReward());
@@ -176,8 +178,10 @@ public class QuestService {
         Player player = quest.getPlayer();
         player.setQuest(null);
 
+        int levelAtCompletion = player.getLevel();
         QuestHistory history = new QuestHistory();
         history.setPlayer(player);
+        history.setPlayerLevel(levelAtCompletion);
         history.setLocation(quest.getLocation());
         history.setEnergyCost(quest.getEnergyCost());
         history.setXpReward(quest.getXpReward());
