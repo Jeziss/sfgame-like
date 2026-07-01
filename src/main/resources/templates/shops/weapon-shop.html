@@ -65,7 +65,7 @@
                             <input type="hidden" name="itemMinDamage" th:value="${item.minDamage}" />
                             <input type="hidden" name="itemPrice" th:value="${item.price}" />
                             <input type="hidden" name="playerId" th:value="${player.id}" />
-                            <button type="submit" class="buy-button">Buy</button>
+                            <button type="submit" class="buy-button" th:disabled="${player.gold < item.price}">Buy</button>
                         </form>
                     </td>
                 </tr>

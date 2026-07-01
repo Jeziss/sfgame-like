@@ -103,7 +103,7 @@
                     <form th:action="@{/player/increaseStat}" method="post" class="stat-form">
                         <input type="hidden" name="stat" value="strength" />
                         <input type="hidden" name="playerId" th:value="${player.id}" />
-                        <button type="submit" th:text="|+  (${upgradePrices.strength} 🪙)|"></button>
+                        <button type="submit" th:disabled="${player.gold < upgradePrices.strength}" th:text="|+  (${upgradePrices.strength} 🪙)|"></button>
                     </form>
                 </li> 
                 <li>
@@ -111,7 +111,7 @@
                     <form th:action="@{/player/increaseStat}" method="post" class="stat-form">
                         <input type="hidden" name="stat" value="constitution" />
                         <input type="hidden" name="playerId" th:value="${player.id}" />
-                        <button type="submit" th:text="|+  (${upgradePrices.constitution} 🪙)|"></button>
+                        <button type="submit" th:disabled="${player.gold < upgradePrices.constitution}" th:text="|+  (${upgradePrices.constitution} 🪙)|"></button>
                     </form>
                 </li>
                 <li>
@@ -119,7 +119,7 @@
                     <form th:action="@{/player/increaseStat}" method="post" class="stat-form">
                         <input type="hidden" name="stat" value="luck" />
                         <input type="hidden" name="playerId" th:value="${player.id}" />
-                        <button type="submit" th:text="|+  (${upgradePrices.luck} 🪙)|"></button>
+                        <button type="submit" th:disabled="${player.gold < upgradePrices.luck}" th:text="|+  (${upgradePrices.luck} 🪙)|"></button>
                     </form>
                 </li>
             </ul>

@@ -177,3 +177,8 @@ body {
     background-color: #1d2b3a;
     transform: translateY(-1px);
 }
+
+button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}

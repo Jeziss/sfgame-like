@@ -250,6 +250,12 @@ body {
     background-color: #1d2b3a;
 }
 
+.buy-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    background-color: #6b7785;
+}
+
 .action-buttons {
     display: flex;
     gap: 12px;

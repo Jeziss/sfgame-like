@@ -121,8 +121,16 @@ public final class Calculation {
     }
 
     public static int calculateItemPrice(int level) {
-        //TODO: implement, think about it
-        return 1;
+        return calculateItemPrice(level, 0);
+    }
+
+    public static int calculateItemPrice(int level, int ignoredStatSum) {
+        int questGoldFor20Energy = Math.max(8, calculateTavernGoldMin(level, 0) * 3);
+
+        int spread = Math.max(6, questGoldFor20Energy / 2);
+        int price = questGoldFor20Energy + ThreadLocalRandom.current().nextInt(-spread, spread + 1);
+
+        return Math.max(4, price);
     }
 
     public static int calculateMinPlayerDamage(Player player, GuildBonus guildBonus) {

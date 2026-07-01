@@ -79,16 +79,12 @@ public class ItemGenerationService {
 
         // Strength, constitution and luck are set at this point.
 
-        //TODO: solve price
-        int price = 1;
-
         ItemTemplate template = ALL_ITEM_TEMPLATES.get(ThreadLocalRandom.current().nextInt(ALL_ITEM_TEMPLATES.size()));
         
         Integer minDamage = null;
         Integer maxDamage = null;
 
         if (template.getSlot() == ItemSlot.WEAPON) {
-
             int rangeMedian = playerLevel * 2 + 2; // Base median damage on player level
 
             int minRange = rangeMedian / 2; // Minimum damage is half the median
@@ -104,6 +100,8 @@ public class ItemGenerationService {
                 maxDamage = temp;   
             }
         }
+
+        int price = Calculation.calculateItemPrice(playerLevel, strength + constitution + luck);
         
         return new ShopItemDto(template, price, template.getSlot(), strength, constitution, luck, minDamage, maxDamage);
     }
