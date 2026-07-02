@@ -83,7 +83,7 @@ public class TavernController {
         if (newLevel > 0) {
             redirectAttributes.addFlashAttribute("successMessage", "Level up! Postava dosáhla úrovně " + newLevel + ".");
         }
-        return "redirect:/tavern/tavern-locattion";
+        return "redirect:/tavern/tavern-location";
     }
     
 }
