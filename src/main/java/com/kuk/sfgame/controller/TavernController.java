@@ -6,6 +6,8 @@ import org.springframework.stereotype.Controller;
 
 import java.util.List;
 
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.ui.Model;
 
 import com.kuk.sfgame.dto.QuestDto;
@@ -25,9 +27,12 @@ public class TavernController {
 
     private final QuestService questService;
 
-    TavernController(PlayerService playerService, QuestService questService) {
+    private final MessageSource messageSource;
+
+    TavernController(PlayerService playerService, QuestService questService, MessageSource messageSource) {
         this.playerService = playerService;
         this.questService = questService;
+        this.messageSource = messageSource;
     }
 
     @GetMapping("/tavern")
@@ -63,27 +68,31 @@ public class TavernController {
                              @RequestParam String questLocation,
                              @RequestParam int questXp,
                              @RequestParam int questGold,
-                             @RequestParam int playerId) {
+                             @RequestParam int playerId,
+                             RedirectAttributes redirectAttributes) {
 
         questService.createQuestForPlayer(playerId, questGold, questXp, questEnergy, questLocation);
+        redirectAttributes.addFlashAttribute("successMessage", messageSource.getMessage("questAssigned", null, LocaleContextHolder.getLocale()));
 
         return "redirect:/player?target=TAVERN";
     }
 
 
     @PostMapping("tavern/fail-quest")
-    public String failQuest(@RequestParam int playerId) {
+    public String failQuest(@RequestParam int playerId, RedirectAttributes redirectAttributes) {
         questService.failQuestForPlayer(playerId);
-        return "redirect:/tavern-location?playerId=" + playerId;
+        redirectAttributes.addFlashAttribute("successMessage", messageSource.getMessage("questFailed", null, LocaleContextHolder.getLocale()));
+        return "redirect:/player?target=TAVERN_LOCATIONS";
     }
     
     @PostMapping("tavern/finish-quest")
     public String finishQuest(@RequestParam int playerId, RedirectAttributes redirectAttributes) {
         int newLevel = questService.completeQuestForPlayer(playerId);
+        redirectAttributes.addFlashAttribute("successMessage", messageSource.getMessage("questCompleted", null, LocaleContextHolder.getLocale()));
         if (newLevel > 0) {
-            redirectAttributes.addFlashAttribute("successMessage", "Level up! Postava dosáhla úrovně " + newLevel + ".");
+            redirectAttributes.addFlashAttribute("levelUpMessage", messageSource.getMessage("playerLeveledUp", new Object[]{newLevel}, LocaleContextHolder.getLocale()));
         }
-        return "redirect:/tavern/tavern-location";
+        return "redirect:/player?target=TAVERN_LOCATIONS";
     }
     
 }

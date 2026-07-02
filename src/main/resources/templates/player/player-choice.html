@@ -13,6 +13,8 @@
         <h1 th:text="#{chooseAPlayer}">Choose a Player</h1>
 
         <div th:if="${param.success}" class="success-message" th:text="${param.success}"></div>
+        <div th:if="${successMessage}" class="success-message" th:text="${successMessage}"></div>
+        <div th:if="${levelUpMessage}" class="success-message" th:text="${levelUpMessage}"></div>
         <div th:if="${errorMessage}" class="error-message" th:text="${errorMessage}"></div>
 
         <div class="actions">
